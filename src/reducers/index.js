@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-// import { userSession } from '../containers/authentication/reducer';
+import { categories } from '../containers/categories/reducer';
 
 export default combineReducers(
   Object.assign(
-    {},
+    {categories},
   )
 );
