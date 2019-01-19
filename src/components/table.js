@@ -28,23 +28,22 @@ class TableComponent extends Component {
     const visibleColumns = this.state.columns.filter(d => d.value)
     return(
       <div>
-        <HeaderSelector columns={this.state.columns} toggleColumns={this.toggleColumns}/>
+        <HeaderSelector columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.column))} toggleColumns={this.toggleColumns}/>
         <Table celled>
           <Table.Header>
             <Table.Row>
               {visibleColumns.map(c => c.header).map((header) => (
                 <Table.HeaderCell>{header}</Table.HeaderCell>
               ))}
-              {props.includeAction ? <Table.HeaderCell>Actions</Table.HeaderCell> : null}
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {props.data.map((data, index) => (
               <Table.Row>
                 {visibleColumns.map(c => c.column).map((cell) => (
-                  <Table.Cell> {props.complexRecords.includes(cell) ? props.findComplexRecords(cell, data[cell])  : data[cell]} </Table.Cell>
+                  cell !== 'action' ?
+                  <Table.Cell> {props.complexRecords.includes(cell) ? props.findComplexRecords(cell, data[cell])  : data[cell]} </Table.Cell> : <Table.Cell> <TableActions actions={['Edit', 'Delete']}/> </Table.Cell>
                 ))}
-              {props.includeAction ? <Table.Cell> <TableActions actions={['Edit', 'Delete']}/> </Table.Cell> : null }
               </Table.Row>
             ))}
           </Table.Body>
