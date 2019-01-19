@@ -7,22 +7,32 @@ import HeaderSelector from './headerSelector';
 class TableComponent extends Component {
   constructor(props){
     super(props);
-
     this.state = {
-      showColumns: props.headers,
-      hideColumns: []
+      columns: props.records.map(m => {
+        const obj = m
+         obj['value'] = true
+         return obj
+       })
     };
+  }
+
+  toggleColumns = (column, {checked}) => {
+    let columns = this.state.columns
+    let updatedColumn = this.state.columns.find(c => c.header === column) || {}
+    updatedColumn.value = !checked
+    this.setState({ columns })
   }
 
   render(){
     const props = this.props
+    const visibleColumns = this.state.columns.filter(d => d.value)
     return(
       <div>
-        <HeaderSelector/>
+        <HeaderSelector columns={this.state.columns} toggleColumns={this.toggleColumns}/>
         <Table celled>
           <Table.Header>
             <Table.Row>
-              {this.state.showColumns.map((header) => (
+              {visibleColumns.map(c => c.header).map((header) => (
                 <Table.HeaderCell>{header}</Table.HeaderCell>
               ))}
               {props.includeAction ? <Table.HeaderCell>Actions</Table.HeaderCell> : null}
@@ -31,7 +41,7 @@ class TableComponent extends Component {
           <Table.Body>
             {props.data.map((data, index) => (
               <Table.Row>
-                {props.records.map((cell) => (
+                {visibleColumns.map(c => c.column).map((cell) => (
                   <Table.Cell> {props.complexRecords.includes(cell) ? props.findComplexRecords(cell, data[cell])  : data[cell]} </Table.Cell>
                 ))}
               {props.includeAction ? <Table.Cell> <TableActions actions={['Edit', 'Delete']}/> </Table.Cell> : null }

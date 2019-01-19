@@ -24,7 +24,7 @@ class MenuItemList extends Component {
     return(
       <div>
         MenuItem list
-        <TableComponent data={menuItems} headers={['name', 'Description', 'Category', 'Availablity', 'Expertised', 'Feasible']} records={['name', 'desc', 'category', 'availablity', 'isExpertised', 'isFeasible']} includeAction complexRecords={['availablity', 'category']} findComplexRecords={this.findComplexRecords}
+        <TableComponent data={menuItems} records={[{header: 'Name', column: 'name'},{header: 'Description', column: 'desc'}, {header: 'Category', column: 'category'}, {header: 'Availablity', column: 'availablity'},{header: 'Expertised', column: 'isExpertised'}, {header: 'Feasible', column: 'isFeasible'}]} includeAction complexRecords={['availablity', 'category']} findComplexRecords={this.findComplexRecords}
         />
       </div>
     );

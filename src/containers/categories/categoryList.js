@@ -13,7 +13,7 @@ class CategoryList extends Component {
     return(
       <div>
         category list
-        <TableComponent data={categories} headers={['name', 'Description']} records={['name', 'desc']} includeAction mandatoryFeilds={['name']} />
+        <TableComponent data={categories} records={[{header: 'name', column: 'name'}, {value: 'Description', column: 'desc'}]} includeAction mandatoryFeilds={['name']} />
       </div>
     );
   }
