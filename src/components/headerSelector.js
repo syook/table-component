@@ -21,7 +21,7 @@ const HeaderSelector = (props) => {
   return(
       <div style={{textAlign: 'left'}}>
         <Popup
-          trigger={<Button icon> <Icon name='eye' /> n hidden feilds </Button>}
+          trigger={<Button icon> <Icon name='eye' /> {props.hiddenColumnCount} hidden feilds </Button>}
           content={<ColumnList columns={props.columns} toggleColumns={props.toggleColumns}/>}
           hoverable
         />

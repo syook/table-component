@@ -26,9 +26,10 @@ class TableComponent extends Component {
   render(){
     const props = this.props
     const visibleColumns = this.state.columns.filter(d => d.value)
+    const hiddenColumnCount = this.state.columns.filter(d => !d.value).length
     return(
       <div>
-        <HeaderSelector columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.column))} toggleColumns={this.toggleColumns}/>
+        <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.column))} toggleColumns={this.toggleColumns}/>
         <Table celled>
           <Table.Header>
             <Table.Row>
