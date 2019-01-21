@@ -3,16 +3,23 @@ import PropTypes from 'prop-types';
 import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 import TableActions from './tableActions';
 import HeaderSelector from './headerSelector';
+import TablePagination from './tablePagination';
+import { findPageRange, findStartPage } from './utils'
 
 class TableComponent extends Component {
   constructor(props){
     super(props);
+    const rowsPerPage = { value: 10, label: '10 Items' };
     this.state = {
       columns: props.records.map(m => {
         const obj = m
          obj['value'] = true
          return obj
-       })
+       }),
+       currentPage: 1,
+       numberOfPages: Math.ceil(
+        props.data.length / rowsPerPage.value
+      ),
     };
   }
 
@@ -27,6 +34,11 @@ class TableComponent extends Component {
     const props = this.props
     const visibleColumns = this.state.columns.filter(d => d.value)
     const hiddenColumnCount = this.state.columns.filter(d => !d.value).length
+    const startPage = findStartPage(
+      this.state.numberOfPages,
+      this.state.currentPage
+    );
+    const pageRange = findPageRange(this.state.numberOfPages, startPage);
     return(
       <div>
         <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.column))} toggleColumns={this.toggleColumns}/>
@@ -48,6 +60,17 @@ class TableComponent extends Component {
               </Table.Row>
             ))}
           </Table.Body>
+          <TablePagination
+            pageRange={pageRange}
+            currentPage={this.state.currentPage}
+            numberOfPages={this.state.numberOfPages}
+            numberOfColumns="3"
+            name={this.props.name || 'table'}
+            rowCount={this.props.data.length}
+            rowsPerPage={props.rowsPerPage}
+            onSelectRowsPerPage={this.props.onSelectRowsPerPage}
+            setTableCurrentPage={this.props.setTableCurrentPage}
+            />
         </Table>
       </div>
     );
@@ -57,6 +80,10 @@ class TableComponent extends Component {
 TableComponent.propTypes = {
   data: PropTypes.array.isRequired,
   includeAction: PropTypes.bool.isRequired
+}
+
+TableComponent.defaultProps = {
+  complexRecords: []
 }
 
 export default TableComponent;
