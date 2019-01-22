@@ -4,7 +4,7 @@ import { Button, Popup, List, Icon, Checkbox } from 'semantic-ui-react'
 
 const ColumnList = (props) => {
   return(
-    <div>
+    <>
       {props.columns.map((column) => (
         <List>
           <List.Item>
@@ -13,7 +13,7 @@ const ColumnList = (props) => {
           </List.Item>
         </List>
       ))}
-    </div>
+    </>
   )
 }
 

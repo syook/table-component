@@ -5,6 +5,7 @@ import TableActions from './tableActions';
 import HeaderSelector from './headerSelector';
 import TablePagination from './tablePagination';
 import Search from './tableSearch';
+import BulkActionList from './bulkActionDropdown';
 import { findPageRange, findStartPage, findCurrentData } from './utils'
 import _ from 'lodash';
 
@@ -115,18 +116,23 @@ class TableComponent extends Component {
       this.state.currentPage,
       this.state.rowsPerPage
     );
+    const hasBulkActions = props.bulkActions.length
     return(
       <div>
-        <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.column))} toggleColumns={this.toggleColumns}/>
-        <Search searchText={this.state.searchText} fullData={this.props.data}
-                searchKeys={this.props.searchKeys}
-                rowsPerPage={this.state.rowsPerPage}
-                setSearchedData={this.setSearchedData}
-              />
+        <div>
+          <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.column))} toggleColumns={this.toggleColumns}/>
+          <Search searchText={this.state.searchText} fullData={this.props.data}
+                  searchKeys={this.props.searchKeys}
+                  rowsPerPage={this.state.rowsPerPage}
+                  setSearchedData={this.setSearchedData}
+                />
+
+        {hasBulkActions  ? <BulkActionList bulkActions={this.props.bulkActions}/> : null}
+        </div>
         <Table celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell><Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> Sl.no</Table.HeaderCell>
+              <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no</Table.HeaderCell>
               {visibleColumns.map((column) => (
                 <Table.HeaderCell onClick={() => this.updateDefaultSortable(column)}>{column.column === this.state.defaultSortable ? <Icon name='arrow down'/> : null } {column.header}</Table.HeaderCell>
               ))}
@@ -139,7 +145,7 @@ class TableComponent extends Component {
                   <Label ribbon>
                     {(this.state.currentPage - 1) * this.state.rowsPerPage.value + index + 1}
                   </Label>
-                  <Checkbox checked={this.state.selectedRows.includes(data._id)} onChange={this.enableBulkSelect}/>
+                  {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(data._id)} onChange={this.enableBulkSelect}/> :  null}
                 </Table.Cell>
                 {visibleColumns.map(c => c.column).map((cell) => (
                   cell !== 'action' ?
@@ -171,7 +177,8 @@ TableComponent.propTypes = {
 }
 
 TableComponent.defaultProps = {
-  complexRecords: []
+  complexRecords: [],
+  bulkActions: []
 }
 
 export default TableComponent;
