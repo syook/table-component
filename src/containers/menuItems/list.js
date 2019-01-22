@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import TableComponent from '../../components/table';
-import { fetchMenuItems } from './reducer';
+import { fetchMenuItems, deleteMenuItems } from './reducer';
 import { connect } from 'react-redux';
 
 class MenuItemList extends Component {
@@ -18,6 +18,7 @@ class MenuItemList extends Component {
   }
 
   onDelete = () => {
+    this.props.dispatch(deleteMenuItems())
   }
 
   render(){

@@ -24,6 +24,18 @@ export function fetchMenuItems() {
   }
 }
 
+export function deleteMenuItems() {
+  return async function(dispatch) {
+    try {
+      let response = await getApi(`${menuItemsUrl}/deleteAll`)
+      dispatch(setMenuItems(response.data))
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+}
+
 // reducer
 export const menuItems = createReducer([], {
   [actions.SET_MENU_ITEMS](state, { payload }) {
