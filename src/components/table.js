@@ -24,6 +24,7 @@ class TableComponent extends Component {
       ),
       searchedDataFound: props.data,
       searchText: '',
+      defaultSortable: props.defaultSortable
     };
   }
 
@@ -79,6 +80,10 @@ class TableComponent extends Component {
     });
   };
 
+  updateDefaultSortable = (column) => {
+    this.setState({defaultSortable: column})
+  }
+
   render(){
     const props = this.props
     const visibleColumns = this.state.columns.filter(d => d.value)
@@ -106,8 +111,8 @@ class TableComponent extends Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Sl.no</Table.HeaderCell>
-              {visibleColumns.map(c => c.header).map((header) => (
-                <Table.HeaderCell>{header}</Table.HeaderCell>
+              {visibleColumns.map((column) => (
+                <Table.HeaderCell onClick={() => this.updateDefaultSortable(column.column)}>{column.column === this.state.defaultSortable ? <Icon name='arrow down'/> : null } {column.header}</Table.HeaderCell>
               ))}
             </Table.Row>
           </Table.Header>
