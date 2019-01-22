@@ -4,6 +4,7 @@ import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 import TableActions from './tableActions';
 import HeaderSelector from './headerSelector';
 import TablePagination from './tablePagination';
+import Search from './tableSearch';
 import { findPageRange, findStartPage, findCurrentData } from './utils'
 
 class TableComponent extends Component {
@@ -96,6 +97,11 @@ class TableComponent extends Component {
     return(
       <div>
         <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.column))} toggleColumns={this.toggleColumns}/>
+        <Search searchText={this.state.searchText} fullData={this.props.data}
+                searchKeys={this.props.searchKeys}
+                rowsPerPage={this.state.rowsPerPage}
+                setSearchedData={this.setSearchedData}
+              />
         <Table celled>
           <Table.Header>
             <Table.Row>
