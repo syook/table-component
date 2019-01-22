@@ -16,3 +16,18 @@ export const findPageRange = (numberOfPages, startPage) => {
     (x, i) => i + startPage
   );
 };
+
+// currentdata in paginations
+export const findCurrentData = (
+  searchedDataFound,
+  currentPage,
+  rowsPerPage
+) => {
+  if (searchedDataFound.length < rowsPerPage.value) {
+    return searchedDataFound;
+  }
+  return searchedDataFound.slice(
+    (currentPage - 1) * rowsPerPage.value,
+    currentPage * rowsPerPage.value
+  );
+};
