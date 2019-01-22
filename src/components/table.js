@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { Icon, Label, Menu, Table } from 'semantic-ui-react'
+import { Icon, Label, Menu, Table, Checkbox } from 'semantic-ui-react'
 import TableActions from './tableActions';
 import HeaderSelector from './headerSelector';
 import TablePagination from './tablePagination';
 import Search from './tableSearch';
 import { findPageRange, findStartPage, findCurrentData } from './utils'
+import _ from 'lodash';
 
 class TableComponent extends Component {
   constructor(props){
@@ -22,9 +23,11 @@ class TableComponent extends Component {
        numberOfPages: Math.ceil(
         props.data.length / rowsPerPage.value
       ),
-      searchedDataFound: props.data,
+      searchedDataFound: this.sortedData(props.data),
       searchText: '',
-      defaultSortable: props.defaultSortable
+      defaultSortable: props.defaultSortable,
+      bulkSelect: false,
+      selectedRows: []
     };
   }
 
@@ -33,9 +36,14 @@ class TableComponent extends Component {
       nextProps.data.length / this.state.rowsPerPage.value
     );
     this.setState({
-      searchedDataFound: nextProps.data,
+      searchedDataFound: this.sortedData(nextProps.data),
       numberOfPages,
     });
+  }
+
+  sortedData = (data) => {
+    const defaultSortable = (this.state || {}).defaultSortable
+    return _.sortBy(data, defaultSortable);
   }
 
   toggleColumns = (column, {checked}) => {
@@ -72,6 +80,7 @@ class TableComponent extends Component {
   searchText,
   currentPage = this.state.currentPage
   ) => {
+    searchedDataFound = this.sortedData(searchedDataFound)
     this.setState({
       searchedDataFound,
       numberOfPages,
@@ -80,8 +89,15 @@ class TableComponent extends Component {
     });
   };
 
-  updateDefaultSortable = (column) => {
-    this.setState({defaultSortable: column})
+  updateDefaultSortable = async(column) => {
+    await this.setState({defaultSortable: column.column})
+    const searchedDataFound = this.sortedData(this.state.searchedDataFound)
+    this.setState({searchedDataFound})
+  }
+
+  enableBulkSelect = ({checked}) => {
+    const selectedRows = checked ? this.state.searchedDataFound.map(i => i._id) : []
+    this.setState({bulkSelect: checked, selectedRows})
   }
 
   render(){
@@ -110,9 +126,9 @@ class TableComponent extends Component {
         <Table celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Sl.no</Table.HeaderCell>
+              <Table.HeaderCell><Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> Sl.no</Table.HeaderCell>
               {visibleColumns.map((column) => (
-                <Table.HeaderCell onClick={() => this.updateDefaultSortable(column.column)}>{column.column === this.state.defaultSortable ? <Icon name='arrow down'/> : null } {column.header}</Table.HeaderCell>
+                <Table.HeaderCell onClick={() => this.updateDefaultSortable(column)}>{column.column === this.state.defaultSortable ? <Icon name='arrow down'/> : null } {column.header}</Table.HeaderCell>
               ))}
             </Table.Row>
           </Table.Header>
@@ -123,6 +139,7 @@ class TableComponent extends Component {
                   <Label ribbon>
                     {(this.state.currentPage - 1) * this.state.rowsPerPage.value + index + 1}
                   </Label>
+                  <Checkbox checked={this.state.selectedRows.includes(data._id)} onChange={this.enableBulkSelect}/>
                 </Table.Cell>
                 {visibleColumns.map(c => c.column).map((cell) => (
                   cell !== 'action' ?
