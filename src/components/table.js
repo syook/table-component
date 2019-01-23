@@ -101,6 +101,14 @@ class TableComponent extends Component {
     this.setState({bulkSelect: checked, selectedRows})
   }
 
+  updateSelectedRows = ({checked}, row_id) => {
+    let selectedRows = this.state.selectedRows
+    const rowIndex = selectedRows.indexOf(row_id);
+    if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
+    if (rowIndex === -1) selectedRows.push(row_id);
+    this.setState({selectedRows});
+  }
+
   render(){
     const props = this.props
     const visibleColumns = this.state.columns.filter(d => d.value)
@@ -127,7 +135,7 @@ class TableComponent extends Component {
                   setSearchedData={this.setSearchedData}
                 />
 
-        {hasBulkActions  ? <BulkActionList bulkActions={this.props.bulkActions}/> : null}
+        {hasBulkActions && this.state.selectedRows.length ? <BulkActionList bulkActions={this.props.bulkActions} selectedCount={this.state.selectedRows.length}/> : null}
         </div>
         <Table celled>
           <Table.Header>
@@ -145,7 +153,7 @@ class TableComponent extends Component {
                   <Label ribbon>
                     {(this.state.currentPage - 1) * this.state.rowsPerPage.value + index + 1}
                   </Label>
-                  {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(data._id)} onChange={this.enableBulkSelect}/> :  null}
+                  {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(data._id)} onChange={(e, {checked}) => this.updateSelectedRows({checked}, data._id)}/> :  null}
                 </Table.Cell>
                 {visibleColumns.map(c => c.column).map((cell) => (
                   cell !== 'action' ?
