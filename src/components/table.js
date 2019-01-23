@@ -135,7 +135,7 @@ class TableComponent extends Component {
                   setSearchedData={this.setSearchedData}
                 />
 
-        {hasBulkActions && this.state.selectedRows.length ? <BulkActionList bulkActions={this.props.bulkActions} selectedCount={this.state.selectedRows.length}/> : null}
+        {hasBulkActions && this.state.selectedRows.length ? <BulkActionList bulkActions={this.props.bulkActions} selectedRows={this.state.selectedRows}/> : null}
         </div>
         <Table celled>
           <Table.Header>

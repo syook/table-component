@@ -17,8 +17,8 @@ class MenuItemList extends Component {
     }
   }
 
-  onDelete = () => {
-    this.props.dispatch(deleteMenuItems())
+  onDelete = (ids) => {
+    this.props.dispatch(deleteMenuItems(ids))
   }
 
   render(){

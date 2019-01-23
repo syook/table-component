@@ -22,7 +22,7 @@ export default function fetchAPI(apiErrorHandler, requestIntercepter) {
     }
     let headers = new Headers({
       'Content-Type': 'application/json',
-      'Content-Encoding': 'gzip',
+      // 'Content-Encoding': 'gzip',
     });
 
     requestIntercepter(url, { headers });

@@ -4,10 +4,10 @@ import {Dropdown } from 'semantic-ui-react';
 const BulkActionList = (props) => {
   return (
     <>
-      <Dropdown text= {`Bulk Action (${props.selectedCount} selected)`}>
+      <Dropdown text= {`Bulk Action (${props.selectedRows.length} selected)`}>
       <Dropdown.Menu>
         {props.bulkActions.map((action) => (
-          <Dropdown.Item text={action.action}  onClick={action.function}/>
+          <Dropdown.Item text={action.action}  onClick={() => action.function(props.selectedRows)}/>
         ))}
       </Dropdown.Menu>
     </Dropdown>
