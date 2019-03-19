@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import TableComponent from '../../components/table';
+import TableComponent from '../../components/newTable';
 import { fetchMenuItems, deleteMenuItems } from './reducer';
 import { connect } from 'react-redux';
 
@@ -21,12 +21,53 @@ class MenuItemList extends Component {
     this.props.dispatch(deleteMenuItems(ids))
   }
 
+  tableConfig = [
+    {
+      heading: 'Name',
+      cell: ({row}) => row.name,
+      sortable: true
+    },
+    {
+      heading: 'Description',
+      cell: ({row}) => row.desc,
+      sortable: true
+    },
+    {
+      heading: 'Category',
+      cell: ({row}) => row.category,
+      sortable: true
+    },
+    {
+      heading: 'Availablity',
+      cell: ({row}) => row.availablity,
+      sortable: true
+    },
+    {
+      heading: 'Expertised',
+      cell: ({row}) => {
+         return row.isExpertised ? 'true' : 'false'
+      },
+      sortable: true
+    },
+    {
+      heading: 'Feasible',
+      cell: ({row}) => row.isFeasible ? 'true' : 'false',
+      sortable: true
+    },
+    {
+      heading: 'Actions',
+      cell: ({data}) => <span> 'test' </span>,
+      sortable: true
+    },
+  ]
+
   render(){
     const {menuItems} = this.props
     return(
       <div>
         MenuItem list
-        <TableComponent data={menuItems} records={[{header: 'Name', column: 'name', sortable: true},{header: 'Description', column: 'desc', sortable: true}, {header: 'Category', column: 'category'}, {header: 'Availablity', column: 'availablity'},{header: 'Expertised', column: 'isExpertised'}, {header: 'Feasible', column: 'isFeasible'}, {header: 'Actions', column: 'action'}]} includeAction complexRecords={['availablity']} mandatoryFeilds={['name']} searchKeys={{name: true, desc: true}} findComplexRecords={this.findComplexRecords} name="Menuitems" defaultSortable='name' bulkActions={[{action: 'delete', function: this.onDelete}]}
+        <TableComponent data={menuItems} records={this.tableConfig} mandatoryFeilds={['name']}
+          // records={[{header: 'Name', column: 'name', sortable: true},{header: 'Description', column: 'desc', sortable: true}, {header: 'Category', column: 'category'}, {header: 'Availablity', column: 'availablity'},{header: 'Expertised', column: 'isExpertised'}, {header: 'Feasible', column: 'isFeasible'}, {header: 'Actions', column: 'action'}]} includeAction complexRecords={['availablity']} mandatoryFeilds={['name']} searchKeys={{name: true, desc: true}} findComplexRecords={this.findComplexRecords} name="Menuitems" defaultSortable='name' bulkActions={[{action: 'delete', function: this.onDelete}]}
         />
       </div>
     );

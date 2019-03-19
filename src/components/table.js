@@ -140,10 +140,12 @@ class TableComponent extends Component {
         <Table celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no</Table.HeaderCell>
-              {visibleColumns.map((column) => (
-                <Table.HeaderCell onClick={() => this.updateDefaultSortable(column)}>{column.column === this.state.defaultSortable ? <Icon name='arrow down'/> : null } {column.header}</Table.HeaderCell>
-              ))}
+              <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no
+              </Table.HeaderCell>
+              {
+                visibleColumns.map((column, index) =>
+                ( _TableHeader({column}, this.state.defaultSortable, this.updateDefaultSortable, index))
+              )}
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -177,6 +179,14 @@ class TableComponent extends Component {
       </div>
     );
   }
+}
+
+const _TableHeader = ({column}, defaultSortable, updateDefaultSortable, index) => {
+  return <Table.HeaderCell
+          key={`table-header-cell-${index}`}
+          onClick={() => updateDefaultSortable(column)}>
+          {column.column === defaultSortable ? <Icon name='arrow down'/> : null } {column.header}
+        </Table.HeaderCell>
 }
 
 TableComponent.propTypes = {
