@@ -10,10 +10,14 @@ const findColor = (action) => {
 }
 
 const TableActions = (props) =>  {
+  debugger
   return (
     <div>
-      {props.actions.map((action) => (
-        <Button color={findColor(action)}> {action} </Button>
+      {props.actions.map((action, index) => (
+        (typeof action.show === 'function') && action.show(props.row) ?
+        <Button key={index} color={findColor(action.action)} onClick={() => action.function([props.ids])}>
+          {action.action}
+        </Button> : null
       ))}
     </div>
   )
