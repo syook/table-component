@@ -10,7 +10,6 @@ const findColor = (action) => {
 }
 
 const TableActions = (props) =>  {
-  debugger
   return (
     <div>
       {props.actions.map((action, index) => (

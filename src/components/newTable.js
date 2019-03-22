@@ -1,30 +1,56 @@
-import React from 'react';
-import {  Table, Label, Menu } from 'semantic-ui-react'
+import React, { PureComponent } from 'react';
+import {  Table, Label, Menu, Checkbox } from 'semantic-ui-react'
 import TableActions from './tableActions';
+import BulkActionList from './bulkActionDropdown';
 
-const TableComponent = (props) => {
-  return (
-    <Table celled>
-      <Table.Header>
-        <Table.Row>
-          {props.records.map((column, index) => _TableHeader({column, index}))}
-          {props.includeAction ?  <Table.HeaderCell> Actions </Table.HeaderCell> : null}
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        {props.data.map((row, index) => (
+class TableComponent  extends PureComponent {
+  state = {
+    bulkSelect: false,
+    selectedRows: []
+  }
+
+  enableBulkSelect = ({checked}) => {
+    const selectedRows = checked ? this.props.data.map(i => i._id) : []
+    this.setState({bulkSelect: checked, selectedRows})
+  }
+
+  render(){
+    const props = this.props
+    const hasBulkActions = props.bulkActions.length
+    return(
+      <div>
+      {hasBulkActions && this.state.selectedRows.length ? <BulkActionList bulkActions={this.props.bulkActions} selectedRows={this.state.selectedRows}/> : null}
+      <Table celled>
+        <Table.Header>
           <Table.Row>
-            {props.records.map((column, index) => _TableCell({column, index, data: props.data, row}))}
-            {props.includeAction ?
-            <Table.Cell>
-              <TableActions actions={props.actionConfig} row={row} />
-            </Table.Cell> : null }
+            <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no
+            </Table.HeaderCell>
+            {props.records.map((column, index) => _TableHeader({column, index}))}
+            {props.includeAction ?  <Table.HeaderCell> Actions </Table.HeaderCell> : null}
           </Table.Row>
-          ))
-        }
-    </Table.Body>
-  </Table>
-  )
+        </Table.Header>
+        <Table.Body>
+          {props.data.map((row, index) => (
+            <Table.Row>
+              <Table.Cell>
+                <Label ribbon>
+                  {index + 1}
+                </Label>
+                {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} /> :  null}
+              </Table.Cell>
+              {props.records.map((column, index) => _TableCell({column, index, data: props.data, row}))}
+              {props.includeAction ?
+              <Table.Cell>
+                <TableActions actions={props.actionConfig} row={row} />
+              </Table.Cell> : null }
+            </Table.Row>
+            ))
+          }
+      </Table.Body>
+    </Table>
+    </div>
+    );
+  }
 }
 
 const _TableHeader = ({column, index}) => {
