@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import {  Table, Label, Menu, Checkbox } from 'semantic-ui-react'
 import TableActions from './tableActions';
 import BulkActionList from './bulkActionDropdown';
 
-class TableComponent  extends PureComponent {
+class TableComponent  extends Component {
   state = {
     bulkSelect: false,
     selectedRows: []
@@ -12,6 +12,14 @@ class TableComponent  extends PureComponent {
   enableBulkSelect = ({checked}) => {
     const selectedRows = checked ? this.props.data.map(i => i._id) : []
     this.setState({bulkSelect: checked, selectedRows})
+  }
+
+  updateSelectedRows = ({checked}, row_id) => {
+    let selectedRows = this.state.selectedRows
+    const rowIndex = selectedRows.indexOf(row_id);
+    if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
+    if (rowIndex === -1) selectedRows.push(row_id);
+    this.setState({selectedRows});
   }
 
   render(){
@@ -36,7 +44,7 @@ class TableComponent  extends PureComponent {
                 <Label ribbon>
                   {index + 1}
                 </Label>
-                {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} /> :  null}
+                {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} onChange={(e, {checked}) => this.updateSelectedRows({checked}, row._id)}/> :  null}
               </Table.Cell>
               {props.records.map((column, index) => _TableCell({column, index, data: props.data, row}))}
               {props.includeAction ?
