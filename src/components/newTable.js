@@ -9,10 +9,9 @@ class TableComponent  extends Component {
     super(props);
 
     this.state = {
-      columns: props.records.map(m => {
-        const obj = m
-         obj['value'] = true
-         return obj
+      columns: props.records.map(record => {
+         record.isVisible = true
+         return record
       }),
       bulkSelect: false,
       selectedRows: []
@@ -35,15 +34,15 @@ class TableComponent  extends Component {
   toggleColumns = (column, {checked}) => {
     let columns = this.state.columns
     let updatedColumn = this.state.columns.find(c => c.heading === column) || {}
-    updatedColumn.value = !checked
+    updatedColumn.isVisible = !checked
     this.setState({ columns })
   }
 
   render(){
     const props = this.props
     const hasBulkActions = props.bulkActions.length
-    const visibleColumns = this.state.columns.filter(d => d.value)
-    const hiddenColumnCount = this.state.columns.filter(d => !d.value).length
+    const visibleColumns = this.state.columns.filter(d => d.isVisible)
+    const hiddenColumnCount = this.state.columns.length - visibleColumns.length
     return(
       <div>
       <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.heading))} toggleColumns={this.toggleColumns}/>

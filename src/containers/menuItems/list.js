@@ -26,48 +26,38 @@ class MenuItemList extends Component {
     {
       heading: 'Name',
       cell: ({row}) => row.name,
-      sortable: true
+      isSortable: true,
     },
     {
       heading: 'Description',
       cell: ({row}) => row.desc,
-      sortable: true
+      isSortable: true
     },
     {
       heading: 'Category',
       cell: ({row}) => row.category,
-      sortable: true
+      isSortable: true
     },
     {
       heading: 'Availablity',
       cell: ({row}) => row.availablity,
-      sortable: true
+      isSortable: true
     },
     {
       heading: 'Expertised',
       cell: ({row}) => {
          return row.isExpertised ? 'true' : 'false'
       },
-      sortable: true
+      isSortable: true
     },
     {
       heading: 'Feasible',
       cell: ({row}) => row.isFeasible ? 'true' : 'false',
-      sortable: true
+      isSortable: true
     },
-    // {
-    //   heading: 'Actions',
-    //   cell: ({data}) => <span> 'test' </span>,
-    //   sortable: true
-    // },
   ]
 
   actionConfig = [
-    // {
-    //   action: 'Show',
-    //   show: ({row}) => true,
-    //   function: this.onShow
-    // },
     {
       action: 'Edit',
       show: (row) => {
