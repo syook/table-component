@@ -82,6 +82,7 @@ class MenuItemList extends Component {
           mandatoryFeilds={['Name']} includeAction={true}
           actionConfig={this.actionConfig}
           bulkActions={[{action: 'delete', function: this.onDelete}]}
+          name="MenuItems"
          />
           <OldTableComponent data={menuItems}
           records={[{header: 'Name', column: 'name', sortable: true},{header: 'Description', column: 'desc', sortable: true}, {header: 'Category', column: 'category'}, {header: 'Availablity', column: 'availablity'},{header: 'Expertised', column: 'isExpertised'}, {header: 'Feasible', column: 'isFeasible'}, {header: 'Actions', column: 'action'}]} includeAction complexRecords={['availablity']} mandatoryFeilds={['name']} searchKeys={{name: true, desc: true}} findComplexRecords={this.findComplexRecords} name="Menuitems" defaultSortable='name' bulkActions={[{action: 'delete', function: this.onDelete}]}
