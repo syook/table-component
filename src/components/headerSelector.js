@@ -8,8 +8,8 @@ const ColumnList = (props) => {
       {props.columns.map((column) => (
         <List>
           <List.Item>
-            <Checkbox checked={!column.value} toggle onChange={(e, {checked}) => props.toggleColumns(column.header, {checked})}/>
-            <List.Content>{column.header}</List.Content>
+            <Checkbox checked={!column.value} toggle onChange={(e, {checked}) => props.toggleColumns(column.heading, {checked})}/>
+            <List.Content>{column.heading}</List.Content>
           </List.Item>
         </List>
       ))}

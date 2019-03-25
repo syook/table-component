@@ -2,11 +2,21 @@ import React, { Component } from 'react';
 import {  Table, Label, Menu, Checkbox } from 'semantic-ui-react'
 import TableActions from './tableActions';
 import BulkActionList from './bulkActionDropdown';
+import HeaderSelector from './headerSelector';
 
 class TableComponent  extends Component {
-  state = {
-    bulkSelect: false,
-    selectedRows: []
+  constructor(props){
+    super(props);
+
+    this.state = {
+      columns: props.records.map(m => {
+        const obj = m
+         obj['value'] = true
+         return obj
+      }),
+      bulkSelect: false,
+      selectedRows: []
+    };
   }
 
   enableBulkSelect = ({checked}) => {
@@ -19,21 +29,31 @@ class TableComponent  extends Component {
     const rowIndex = selectedRows.indexOf(row_id);
     if (rowIndex > -1 && !checked) selectedRows.splice(rowIndex, 1);
     if (rowIndex === -1) selectedRows.push(row_id);
-    this.setState({selectedRows});
+    this.setState({ selectedRows });
+  }
+
+  toggleColumns = (column, {checked}) => {
+    let columns = this.state.columns
+    let updatedColumn = this.state.columns.find(c => c.heading === column) || {}
+    updatedColumn.value = !checked
+    this.setState({ columns })
   }
 
   render(){
     const props = this.props
     const hasBulkActions = props.bulkActions.length
+    const visibleColumns = this.state.columns.filter(d => d.value)
+    const hiddenColumnCount = this.state.columns.filter(d => !d.value).length
     return(
       <div>
+      <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.heading))} toggleColumns={this.toggleColumns}/>
       {hasBulkActions && this.state.selectedRows.length ? <BulkActionList bulkActions={this.props.bulkActions} selectedRows={this.state.selectedRows}/> : null}
       <Table celled>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no
             </Table.HeaderCell>
-            {props.records.map((column, index) => _TableHeader({column, index}))}
+            {visibleColumns.map((column, index) => _TableHeader({column, index}))}
             {props.includeAction ?  <Table.HeaderCell> Actions </Table.HeaderCell> : null}
           </Table.Row>
         </Table.Header>
@@ -46,7 +66,7 @@ class TableComponent  extends Component {
                 </Label>
                 {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} onChange={(e, {checked}) => this.updateSelectedRows({checked}, row._id)}/> :  null}
               </Table.Cell>
-              {props.records.map((column, index) => _TableCell({column, index, data: props.data, row}))}
+              {visibleColumns.map((column, index) => _TableCell({column, index, data: props.data, row}))}
               {props.includeAction ?
               <Table.Cell>
                 <TableActions actions={props.actionConfig} row={row} />

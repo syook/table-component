@@ -89,7 +89,7 @@ class MenuItemList extends Component {
         MenuItem list
         <TableComponent
           data={menuItems} records={this.tableConfig}
-          mandatoryFeilds={['name']} includeAction={true}
+          mandatoryFeilds={['Name']} includeAction={true}
           actionConfig={this.actionConfig}
           bulkActions={[{action: 'delete', function: this.onDelete}]}
          />
