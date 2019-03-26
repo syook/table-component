@@ -5,6 +5,8 @@ import BulkActionList from './bulkActionDropdown';
 import HeaderSelector from './headerSelector';
 import SearchProvider from './searchProvider';
 import { SearchContext } from './searchProvider';
+import PaginationProvider from './pagination'
+import { PaginationContext } from './pagination';
 
 class TableComponent  extends Component {
   constructor(props){
@@ -58,34 +60,39 @@ class TableComponent  extends Component {
             <div>
               <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.heading))} toggleColumns={this.toggleColumns}/>
               {hasBulkActions && this.state.selectedRows.length ? <BulkActionList bulkActions={this.props.bulkActions} selectedRows={this.state.selectedRows}/> : null}
-              <Table celled>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no
-                    </Table.HeaderCell>
-                    {visibleColumns.map((column, index) => _TableHeader({column, index}))}
-                    {props.includeAction ?  <Table.HeaderCell> Actions </Table.HeaderCell> : null}
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {searchProps.data.map((row, index) => (
-                    <Table.Row>
-                      <Table.Cell>
-                        <Label ribbon>
-                          {index + 1}
-                        </Label>
-                        {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} onChange={(e, {checked}) => this.updateSelectedRows({checked}, row._id)}/> :  null}
-                      </Table.Cell>
-                      {visibleColumns.map((column, index) => _TableCell({column, index, data: searchProps, row}))}
-                      {props.includeAction ?
-                      <Table.Cell>
-                        <TableActions actions={props.actionConfig} row={row} />
-                      </Table.Cell> : null }
-                    </Table.Row>
-                    ))
-                  }
-                </Table.Body>
-              </Table>
+              <PaginationProvider {...props} data={searchProps.data || []}>
+                <PaginationContext.Consumer>
+                  {paginationProps => !!paginationProps.data.length && (
+                  <Table celled>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no
+                        </Table.HeaderCell>
+                        {visibleColumns.map((column, index) => _TableHeader({column, index}))}
+                        {props.includeAction ?  <Table.HeaderCell> Actions </Table.HeaderCell> : null}
+                      </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                      {paginationProps.data.map((row, index) => (
+                        <Table.Row>
+                          <Table.Cell>
+                            <Label ribbon>
+                              {index + 1}
+                            </Label>
+                            {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} onChange={(e, {checked}) => this.updateSelectedRows({checked}, row._id)}/> :  null}
+                          </Table.Cell>
+                          {visibleColumns.map((column, index) => _TableCell({column, index, data: paginationProps, row}))}
+                          {props.includeAction ?
+                          <Table.Cell>
+                            <TableActions actions={props.actionConfig} row={row} />
+                          </Table.Cell> : null }
+                        </Table.Row>
+                        ))
+                      }
+                    </Table.Body>
+                  </Table> )}
+                </PaginationContext.Consumer>
+              </PaginationProvider>
             </div>
           )}
         </SearchContext.Consumer>
