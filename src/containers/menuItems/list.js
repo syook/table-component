@@ -25,35 +25,47 @@ class MenuItemList extends Component {
   tableConfig = [
     {
       heading: 'Name',
+      column: 'name',
       cell: ({row}) => row.name,
       isSortable: true,
+      isSearchable: true
     },
     {
       heading: 'Description',
+      column: 'desc',
       cell: ({row}) => row.desc,
-      isSortable: true
+      isSortable: true,
+      isSearchable: true
     },
     {
       heading: 'Category',
+      column: 'category',
       cell: ({row}) => row.category,
-      isSortable: true
+      isSortable: true,
+      isSearchable: true
     },
     {
       heading: 'Availablity',
+      column: 'availablity',
       cell: ({row}) => row.availablity,
-      isSortable: true
+      isSortable: true,
+      isSearchable: true
     },
     {
       heading: 'Expertised',
+      column: 'isExpertised',
       cell: ({row}) => {
          return row.isExpertised ? 'true' : 'false'
       },
-      isSortable: true
+      isSortable: true,
+      isSearchable: false
     },
     {
       heading: 'Feasible',
+      column: 'isFeasible',
       cell: ({row}) => row.isFeasible ? 'true' : 'false',
-      isSortable: true
+      isSortable: true,
+      isSearchable: false
     },
   ]
 
@@ -84,9 +96,9 @@ class MenuItemList extends Component {
           bulkActions={[{action: 'delete', function: this.onDelete}]}
           name="MenuItems"
          />
-          <OldTableComponent data={menuItems}
+          {/* <OldTableComponent data={menuItems}
           records={[{header: 'Name', column: 'name', sortable: true},{header: 'Description', column: 'desc', sortable: true}, {header: 'Category', column: 'category'}, {header: 'Availablity', column: 'availablity'},{header: 'Expertised', column: 'isExpertised'}, {header: 'Feasible', column: 'isFeasible'}, {header: 'Actions', column: 'action'}]} includeAction complexRecords={['availablity']} mandatoryFeilds={['name']} searchKeys={{name: true, desc: true}} findComplexRecords={this.findComplexRecords} name="Menuitems" defaultSortable='name' bulkActions={[{action: 'delete', function: this.onDelete}]}
-        />
+        /> */}
       </div>
     );
   }

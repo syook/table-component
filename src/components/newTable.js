@@ -4,18 +4,24 @@ import TableActions from './tableActions';
 import BulkActionList from './bulkActionDropdown';
 import HeaderSelector from './headerSelector';
 import SearchProvider from './searchProvider';
+import { SearchContext } from './searchProvider';
 
 class TableComponent  extends Component {
   constructor(props){
+    const searchkeys = {}
+    props.records.map(r => {
+      if(r.isSearchable) searchkeys[r.column] = true
+      return r;
+    })
     super(props);
-
     this.state = {
       columns: props.records.map(record => {
          record.isVisible = true
          return record
       }),
       bulkSelect: false,
-      selectedRows: []
+      selectedRows: [],
+      searchKeys: searchkeys
     };
   }
 
@@ -45,39 +51,44 @@ class TableComponent  extends Component {
     const visibleColumns = this.state.columns.filter(d => d.isVisible)
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length
     return(
-      <SearchProvider {...props}>
-        <div>
-        <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.heading))} toggleColumns={this.toggleColumns}/>
-        {hasBulkActions && this.state.selectedRows.length ? <BulkActionList bulkActions={this.props.bulkActions} selectedRows={this.state.selectedRows}/> : null}
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no
-              </Table.HeaderCell>
-              {visibleColumns.map((column, index) => _TableHeader({column, index}))}
-              {props.includeAction ?  <Table.HeaderCell> Actions </Table.HeaderCell> : null}
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {props.data.map((row, index) => (
-              <Table.Row>
-                <Table.Cell>
-                  <Label ribbon>
-                    {index + 1}
-                  </Label>
-                  {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} onChange={(e, {checked}) => this.updateSelectedRows({checked}, row._id)}/> :  null}
-                </Table.Cell>
-                {visibleColumns.map((column, index) => _TableCell({column, index, data: props.data, row}))}
-                {props.includeAction ?
-                <Table.Cell>
-                  <TableActions actions={props.actionConfig} row={row} />
-                </Table.Cell> : null }
-              </Table.Row>
-              ))
-            }
-        </Table.Body>
-      </Table>
-      </div>
+      <SearchProvider {...props} searchKeys={this.state.searchKeys}>
+        <SearchContext.Consumer>
+          {searchProps =>
+            !!searchProps.data.length && (
+            <div>
+              <HeaderSelector hiddenColumnCount = {hiddenColumnCount} columns={this.state.columns.filter(c => !props.mandatoryFeilds.includes(c.heading))} toggleColumns={this.toggleColumns}/>
+              {hasBulkActions && this.state.selectedRows.length ? <BulkActionList bulkActions={this.props.bulkActions} selectedRows={this.state.selectedRows}/> : null}
+              <Table celled>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>{hasBulkActions ? <Checkbox checked={this.state.bulkSelect} onChange={(e, {checked}) => this.enableBulkSelect({checked})}/> : null } Sl.no
+                    </Table.HeaderCell>
+                    {visibleColumns.map((column, index) => _TableHeader({column, index}))}
+                    {props.includeAction ?  <Table.HeaderCell> Actions </Table.HeaderCell> : null}
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {searchProps.data.map((row, index) => (
+                    <Table.Row>
+                      <Table.Cell>
+                        <Label ribbon>
+                          {index + 1}
+                        </Label>
+                        {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} onChange={(e, {checked}) => this.updateSelectedRows({checked}, row._id)}/> :  null}
+                      </Table.Cell>
+                      {visibleColumns.map((column, index) => _TableCell({column, index, data: searchProps, row}))}
+                      {props.includeAction ?
+                      <Table.Cell>
+                        <TableActions actions={props.actionConfig} row={row} />
+                      </Table.Cell> : null }
+                    </Table.Row>
+                    ))
+                  }
+                </Table.Body>
+              </Table>
+            </div>
+          )}
+        </SearchContext.Consumer>
       </SearchProvider>
     );
   }
