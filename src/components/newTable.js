@@ -73,15 +73,15 @@ class TableComponent  extends Component {
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                      {paginationProps.data.map((row, index) => (
+                      {paginationProps.data.map((row, index1) => (
                         <Table.Row>
                           <Table.Cell>
                             <Label ribbon>
-                              {index + 1}
+                              {paginationProps.startIndex + index1 + 1}
                             </Label>
                             {hasBulkActions ? <Checkbox checked={this.state.selectedRows.includes(row._id)} onChange={(e, {checked}) => this.updateSelectedRows({checked}, row._id)}/> :  null}
                           </Table.Cell>
-                          {visibleColumns.map((column, index) => _TableCell({column, index, data: paginationProps, row}))}
+                          {visibleColumns.map((column, index2) => _TableCell({column, index2, data: paginationProps, row}))}
                           {props.includeAction ?
                           <Table.Cell>
                             <TableActions actions={props.actionConfig} row={row} />
