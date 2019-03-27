@@ -70,7 +70,6 @@ export const menuItems = createReducer([], {
         newState.splice(indexOfItemToDelete, 1);
       }
     });
-    debugger
     return newState;
   },
 });

@@ -94,7 +94,6 @@ export default class PaginationProvider extends Component {
     let { children, data } = this.props;
     let { currentPage, rowsPerPage } = this.state;
     let pageRange = findPageRange({ ...this.state });
-    debugger
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
     return (
