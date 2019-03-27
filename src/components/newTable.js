@@ -79,7 +79,7 @@ class TableComponent  extends Component {
                         </Table.Header>
                         <Table.Body>
                           {paginationProps.data.map((row, index1) => (
-                            <Table.Row>
+                            <Table.Row key={index1}>
                               <Table.Cell>
                                 <Label ribbon>
                                   {paginationProps.startIndex + index1 + 1}
@@ -111,7 +111,6 @@ class TableComponent  extends Component {
 }
 
 const _TableHeader = ({column, index, sortProps}) => {
-  debugger
   return <Table.HeaderCell
           key={`table-header-cell-${index}`}>
             <Icon name="arrow circle up" disabled={(sortProps.column !== column.column || sortProps.direction !== 'ascending')} onClick={sortProps.handleSort(column.column, 'ascending')}></Icon>
@@ -120,10 +119,10 @@ const _TableHeader = ({column, index, sortProps}) => {
         </Table.HeaderCell>
 }
 
-const _TableCell = ({column, index, data, row}) => {
+const _TableCell = ({column, index2, data, row}) => {
   return (
     <Table.Cell
-            key={`table-header-cell-${index}`}
+            key={`table-cell-${index2}`}
           >
             {column.cell({row})}
     </Table.Cell>
