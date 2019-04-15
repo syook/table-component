@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TableComponent from '../../components/newTable';
-import OldTableComponent from '../../components/table';
+// import OldTableComponent from '../../components/table';
 import { fetchMenuItems, deleteMenuItems } from './reducer';
 import { connect } from 'react-redux';
 
@@ -101,7 +101,7 @@ class MenuItemList extends Component {
         <TableComponent
           data={menuItems}
           records={this.tableConfig}
-          mandatoryFeilds={['Name']}
+          mandatoryFields={['Name']}
           includeAction={true}
           actionConfig={this.actionConfig}
           bulkActions={[{ action: 'delete', function: this.onDelete }]}

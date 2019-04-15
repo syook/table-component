@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import TableComponent from '../../components/table';
+// import TableComponent from '../../components/table';
 import { fetchCategories } from './reducer';
 import { connect } from 'react-redux';
 
@@ -13,7 +13,7 @@ class CategoryList extends Component {
     return(
       <div>
         category list
-        <TableComponent data={categories} records={[{header: 'Name', column: 'name', sortable: true}, {header: 'Description', column: 'desc'}, {header: 'Actions', column: 'action'}]} includeAction mandatoryFeilds={['name']} searchKeys={{name: true}}/>
+        {/* <TableComponent data={categories} records={[{header: 'Name', column: 'name', sortable: true}, {header: 'Description', column: 'desc'}, {header: 'Actions', column: 'action'}]} includeAction mandatoryFeilds={['name']} searchKeys={{name: true}}/> */}
       </div>
     );
   }
