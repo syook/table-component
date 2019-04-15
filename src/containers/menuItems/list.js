@@ -21,6 +21,10 @@ class MenuItemList extends Component {
     this.props.dispatch(deleteMenuItems(ids));
   };
 
+  onShow = args => {
+    console.log(args);
+  };
+
   tableConfig = [
     {
       heading: 'Name',
@@ -70,16 +74,22 @@ class MenuItemList extends Component {
 
   actionConfig = [
     {
-      action: 'Edit',
-      show: row => {
-        return true;
-      },
+      action: 'Show',
+      show: _row => true,
       function: this.onShow,
+      icon: 'eye',
+    },
+    {
+      action: 'Edit',
+      show: _row => true,
+      function: this.onShow,
+      icon: 'pencil',
     },
     {
       action: 'Delete',
-      show: row => true,
-      function: this.onShow,
+      show: _row => true,
+      function: this.onDelete,
+      icon: 'trash',
     },
   ];
 

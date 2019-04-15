@@ -27,3 +27,10 @@ code {
 .paginationFooter .css-11unzgr > div {
   padding: 5px 10px !important;
 }
+
+.ui.button.dropdown.bulk-action {
+  background: #3496d8;
+  /* border: none; */
+  color: #fff;
+  margin-right: 10px;
+}

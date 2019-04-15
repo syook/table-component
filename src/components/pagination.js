@@ -92,12 +92,12 @@ export default class PaginationProvider extends Component {
 
   render() {
     let { children, data } = this.props;
-    let { currentPage, rowsPerPage } = this.state;
+    let { currentPage = 1, rowsPerPage = 5 } = this.state;
     let pageRange = findPageRange({ ...this.state });
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
     return (
-      <Table>
+      <Table sortable celled padded className='tableStyle left aligned'>
         <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
           {children}
           <Pagination
