@@ -29,6 +29,7 @@ class MenuItemList extends Component {
     {
       heading: 'Name',
       column: 'name',
+      type: 'String',
       cell: ({ row }) => row.name,
       isSortable: true,
       isSearchable: true,
@@ -36,6 +37,7 @@ class MenuItemList extends Component {
     {
       heading: 'Description',
       column: 'desc',
+      type: 'String',
       cell: ({ row }) => row.desc,
       isSortable: true,
       isSearchable: true,
@@ -43,6 +45,7 @@ class MenuItemList extends Component {
     {
       heading: 'Category',
       column: 'category',
+      type: 'String',
       cell: ({ row }) => row.category,
       isSortable: true,
       isSearchable: true,
@@ -64,9 +67,10 @@ class MenuItemList extends Component {
       isSearchable: false,
     },
     {
-      heading: 'Feasible',
-      column: 'isFeasible',
-      cell: ({ row }) => (row.isFeasible ? 'true' : 'false'),
+      heading: 'Created at',
+      column: 'createdAt',
+      cell: ({ row }) => row.createdAt,
+      type: 'Date',
       isSortable: true,
       isSearchable: false,
     },

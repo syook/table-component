@@ -1,14 +1,15 @@
+import { Checkbox, Icon, Label, Menu, Table } from 'semantic-ui-react';
 import React, { Component } from 'react';
-import { Table, Label, Menu, Checkbox, Icon } from 'semantic-ui-react';
-import TableActions from './tableActions';
+
 import BulkActionList from './bulkActionDropdown';
 import HeaderSelector from './headerSelector';
-import SearchProvider from './searchProvider';
-import { SearchContext } from './searchProvider';
-import PaginationProvider from './pagination';
 import { PaginationContext } from './pagination';
-import SortProvider from './sort';
+import PaginationProvider from './pagination';
+import { SearchContext } from './searchProvider';
+import SearchProvider from './searchProvider';
 import { SortContext } from './sort';
+import SortProvider from './sort';
+import TableActions from './tableActions';
 
 class TableComponent extends Component {
   constructor(props) {
@@ -97,9 +98,7 @@ class TableComponent extends Component {
                                           <Checkbox
                                             checked={this.state.bulkSelect}
                                             indeterminate={this.state.indeterminateSelect}
-                                            onChange={(e, { checked }) =>
-                                              console.log(e, checked) || this.enableBulkSelect({ checked })
-                                            }
+                                            onChange={(e, { checked }) => this.enableBulkSelect({ checked })}
                                           />
                                         ) : null}{' '}
                                       </Table.HeaderCell>
@@ -160,8 +159,12 @@ const _TableHeader = ({ column, index, sortProps }) => {
   return (
     <Table.HeaderCell
       key={`table-header-cell-${index}`}
-      sorted={column.column === sortProps.column ? sortProps.direction : null}
-      onClick={sortProps.handleSort(column.column, sortProps.direction === 'ascending' ? 'descending' : 'ascending')}
+      // sorted={column.column === sortProps.column ? sortProps.direction : null}
+      onClick={sortProps.handleSort(
+        column.column,
+        sortProps.direction === 'ascending' ? 'descending' : 'ascending',
+        column.type
+      )}
     >
       <Icon
         name='arrow up'
