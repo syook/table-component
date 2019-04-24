@@ -33,6 +33,7 @@ class MenuItemList extends Component {
       cell: ({ row }) => row.name,
       isSortable: true,
       isSearchable: true,
+      isFilterable: true,
     },
     {
       heading: 'Description',

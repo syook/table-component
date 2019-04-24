@@ -7,14 +7,12 @@ import thunk from 'redux-thunk';
 
 let middleware = [thunk];
 // Keep it off by default
-if (process.env.NODE_ENV !== 'production') {
-  const createLogger = require('redux-logger').createLogger;
-  middleware = [...middleware, createLogger()];
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   const createLogger = require('redux-logger').createLogger;
+//   middleware = [...middleware, createLogger()];
+// }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const configureStore = composeEnhancers(applyMiddleware(...middleware))(
-  createStore
-);
+const configureStore = composeEnhancers(applyMiddleware(...middleware))(createStore);
 
 const config = {
   key: 'root',
