@@ -42,14 +42,17 @@ class MenuItemList extends Component {
       cell: ({ row }) => row.desc,
       isSortable: true,
       isSearchable: true,
+      isFilterable: true,
     },
     {
       heading: 'Category',
       column: 'category',
-      type: 'String',
+      type: 'Select',
       cell: ({ row }) => row.category,
+      options: [{ value: 'Electrical', label: 'Electrical' }, { value: 'Mechanical', label: 'Mechanical' }],
       isSortable: true,
       isSearchable: true,
+      isFilterable: true,
     },
     {
       heading: 'Availablity',

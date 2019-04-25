@@ -69,16 +69,16 @@ export default class PaginationProvider extends Component {
   componentDidUpdate(prevProps) {
     if ((this.props.data || []).length !== (prevProps.data || []).length) {
       const rowCount = this.props.data.length;
-      let {currentPage = 1, rowsPerPage = { value: 10, label: '10 Items' } } = this.state;
+      let { currentPage = 1, rowsPerPage = { value: 10, label: '10 Items' } } = this.state;
       const numberOfPages = Math.ceil(rowCount / rowsPerPage.value);
       if (numberOfPages < currentPage) currentPage = numberOfPages;
 
+      this.props.resetBulkSelection();
       this.setState({ currentPage, numberOfPages, rowCount });
     }
   }
 
   setCurrentPage = currentPage => this.setState({ currentPage });
-
 
   onSelectRowsPerPage = (selectedRowsPerPage = { value: 10, label: '10 Items' }) => {
     let { currentPage, rowCount } = this.state;
