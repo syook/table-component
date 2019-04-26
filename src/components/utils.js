@@ -1,4 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
+import moment from 'moment';
 
 export const findStartPage = (numberOfPages, currentPage) => {
   let startPage;
@@ -59,48 +61,89 @@ export const createPropertyOption = (valueProperty, labelProperty) => option => 
   };
 };
 
-export const queryCondition = (attrValue = '', searchValue = '', query = '') => {
-  attrValue = (attrValue || '').toLowerCase();
-  searchValue = (searchValue || '').toLowerCase();
+export const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', query = '' }) => {
+  if (attributeType === 'String') {
+    attrValue = (attrValue || '').toLowerCase();
+    searchValue = (searchValue || '').toLowerCase();
+  }
+
+  if (attributeType === 'Date') {
+    attrValue = attrValue instanceof moment ? attrValue : moment(attrValue || '').startOf('day');
+    searchValue = searchValue instanceof moment ? searchValue : moment(searchValue || '').startOf('day');
+  }
+
   switch (query) {
-    case 'Contains':
-      return attrValue && attrValue.includes(searchValue);
-    case 'Does Not Contain':
-      return attrValue && !attrValue.includes(searchValue);
-    case 'Is':
-      return attrValue && attrValue === searchValue;
-    case 'IsNot':
-      return attrValue && attrValue !== searchValue;
-    case 'Is Empty':
+    case 'contains':
+      return attrValue && attrValue.toLowerCase().includes(searchValue.toLowerCase());
+    case 'does not contains':
+      return attrValue && !attrValue.toLowerCase().includes(searchValue.toLowerCase());
+    case 'is':
+      if (attributeType === 'Date') {
+        return attrValue && attrValue.isSame(searchValue);
+      }
+      return attrValue && isEqual(attrValue, searchValue);
+    case 'is not':
+      if (attributeType === 'Date') {
+        return attrValue && !attrValue.isSame(searchValue);
+      }
+      return attrValue && !isEqual(attrValue, searchValue);
+    case 'is empty':
       return isEmpty(attrValue);
-    case 'Is Not Empty':
+    case 'is not empty':
       return !isEmpty(attrValue);
+    case 'is before':
+      return attrValue.isBefore(searchValue);
+    case 'is after':
+      return attrValue.isAfter(searchValue);
+    case 'is on or before':
+      return attrValue.isSameOrBefore(searchValue);
+    case 'is on or after':
+      return attrValue.isSameOrAfter(searchValue);
+    case '=':
+      return +attrValue === +searchValue;
+    case '≠':
+      return +attrValue !== +searchValue;
+    case '<':
+      return +attrValue < +searchValue;
+    case '≤':
+      return +attrValue <= +searchValue;
+    case '>':
+      return +attrValue > +searchValue;
+    case '≥':
+      return +attrValue >= +searchValue;
+
     default:
       return;
   }
 };
 
-export const filterFunction = (data, attr, searchValue, query) => {
-  const val = data.filter(d => queryCondition(d[attr], searchValue, query));
+export const filterFunction = ({ data, attribute, value, query, type }) => {
+  const val = data.filter(d =>
+    queryCondition({
+      attrValue: d[attribute] || '',
+      searchValue: value || '',
+      query,
+      attributeType: type || '',
+    })
+  );
   return val;
 };
 
 export const loopFilters = (data, filters) => {
   if (!filters.length) return data;
-
   if (filters.length === 1) {
-    return filterFunction(data, filters[0].attribute, filters[0].value, filters[0].query);
+    return filterFunction({ data, ...filters[0] });
   } else {
     if (filters[1].predicate === 'And') {
       let filteredData = data;
       filters.forEach((filter, index) => {
-        filteredData = filterFunction(filteredData, filter.attribute, filter.value, filter.query);
+        filteredData = filterFunction({ data: filteredData, ...filter });
       });
       return filteredData;
     } else if (filters[1].predicate === 'Or') {
       let filteredData = [];
       filters.forEach((filter, index) => {
-        const indexedFilter = filterFunction(data, filter.attribute, filter.value, filter.query);
+        const indexedFilter = filterFunction({ data, ...filter });
         filteredData = [...filteredData, ...indexedFilter];
       });
       return filteredData;

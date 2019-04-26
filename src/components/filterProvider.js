@@ -5,6 +5,8 @@ import TableFilter from './tableFilter';
 
 import { loopFilters } from './utils';
 
+import { filterOperators } from './constants';
+
 export const FilterContext = React.createContext();
 
 export default class FilterProvider extends Component {
@@ -26,13 +28,20 @@ export default class FilterProvider extends Component {
     if (index === 1 && attribute === 'predicate') {
       filters.slice(2).forEach(element => (element.predicate = value));
     }
-
-    filterToBeUpdated['value'] = '';
+    if (attribute != 'query') {
+      filterToBeUpdated['value'] = undefined;
+    }
     filterToBeUpdated[attribute] = value;
     if (attribute === 'attribute') {
       const attrType = (columns.find(i => i.column === filterToBeUpdated[attribute]) || {}).type;
       filterToBeUpdated['type'] = attrType || '';
     }
+    if (attribute === 'attribute') {
+      filterToBeUpdated.label = (columns.find(i => i.column === value) || {}).heading || value;
+      const newQuery = ((filterOperators[filterToBeUpdated.type] || [])[0] || {}).value;
+      if (newQuery) filterToBeUpdated.query = newQuery;
+    }
+
     this.setState({ selectedFilters: filters });
   };
 
@@ -51,7 +60,9 @@ export default class FilterProvider extends Component {
     }
     newFilter.predicate = predicate;
     newFilter.attribute = firstFilterableAttribute.column;
-    newFilter.query = 'Contains';
+    newFilter.label = firstFilterableAttribute.heading;
+    const newQuery = ((filterOperators[firstFilterableAttribute.type] || [])[0] || {}).value;
+    newQuery ? (newFilter.query = newQuery) : (newFilter.query = 'contains');
     newFilter.value = '';
     newFilter.type = firstFilterableAttribute.type;
     filters.push(newFilter);

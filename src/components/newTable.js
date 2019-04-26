@@ -63,9 +63,9 @@ class TableComponent extends Component {
   };
 
   toggleColumns = (column, { checked }) => {
-    let columns = this.state.columns;
-    let updatedColumn = this.state.columns.find(c => c.heading === column) || {};
-    updatedColumn.isVisible = !checked;
+    let columns = this.state.columns || [];
+    let updatableColumn = this.state.columns.find(c => c.heading === column) || {};
+    updatableColumn.isVisible = checked;
     this.setState({ columns });
   };
 

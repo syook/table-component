@@ -44,31 +44,26 @@ class MenuItemList extends Component {
       isSearchable: true,
       isFilterable: true,
     },
-    {
-      heading: 'Category',
-      column: 'category',
-      type: 'Select',
-      cell: ({ row }) => row.category,
-      options: [{ value: 'Electrical', label: 'Electrical' }, { value: 'Mechanical', label: 'Mechanical' }],
-      isSortable: true,
-      isSearchable: true,
-      isFilterable: true,
-    },
-    {
-      heading: 'Availablity',
-      column: 'availablity',
-      cell: ({ row }) => row.availablity,
-      isSortable: true,
-      isSearchable: true,
-    },
+    // {
+    //   heading: 'Category',
+    //   column: 'category',
+    //   type: 'Select',
+    //   cell: ({ row }) => row.category,
+    //   options: [{ value: 'Electrical', label: 'Electrical' }, { value: 'Mechanical', label: 'Mechanical' }],
+    //   isSortable: true,
+    //   isSearchable: true,
+    //   isFilterable: true,
+    // },
     {
       heading: 'Expertised',
       column: 'isExpertised',
+      type: 'Boolean',
       cell: ({ row }) => {
         return row.isExpertised ? 'true' : 'false';
       },
       isSortable: true,
       isSearchable: false,
+      isFilterable: true,
     },
     {
       heading: 'Created at',
@@ -77,6 +72,7 @@ class MenuItemList extends Component {
       type: 'Date',
       isSortable: true,
       isSearchable: false,
+      isFilterable: true,
     },
   ];
 

@@ -9,7 +9,7 @@ const ColumnList = props => {
           <List.Item>
             <List.Content>
               <Checkbox
-                checked={!column.isVisible}
+                checked={column.isVisible}
                 toggle
                 onChange={(e, { checked }) => props.toggleColumns(column.heading, { checked })}
               />{' '}
