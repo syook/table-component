@@ -1,14 +1,13 @@
-import { Checkbox, Icon, Label, Table } from 'semantic-ui-react';
 import React, { Component } from 'react';
+import { Checkbox, Icon, Label, Table } from 'semantic-ui-react';
+
+import FilterProvider, { FilterContext } from './filter';
+import PaginationProvider, { PaginationContext } from './pagination';
+import SearchProvider, { SearchContext } from './search';
+import SortProvider, { SortContext } from './sort';
 
 import BulkActionList from './bulkActionDropdown';
 import HeaderSelector from './headerSelector';
-
-import PaginationProvider, { PaginationContext } from './pagination/paginationProvider';
-import SearchProvider, { SearchContext } from './search/searchProvider';
-import FilterProvider, { FilterContext } from './filter/filterProvider';
-import SortProvider, { SortContext } from './sort/sortProvider';
-
 import TableActions from './tableActions';
 
 class TableComponent extends Component {
