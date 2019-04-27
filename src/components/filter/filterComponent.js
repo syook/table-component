@@ -5,9 +5,10 @@ import Select from 'react-select';
 import moment from 'moment';
 import { Popup, Button, Icon, List, Grid, Input, Checkbox } from 'semantic-ui-react';
 
-import { findColumnOptions, createPropertyOption } from './utils';
+import { createPropertyOption } from '../utils';
+import { findColumnOptions } from './utils';
 
-import { predicateOptions, filterOperators } from './constants';
+import { predicateOptions, filterOperators } from '../constants';
 
 const TableFilter = memo(props => {
   const selectedFilters = (props.selectedFilters || []).length;

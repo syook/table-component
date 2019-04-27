@@ -10,7 +10,7 @@ const BulkActionList = memo(props => {
         className='icon bulk-action right labeled'
       >
         <Dropdown.Menu>
-          {props.bulkActions.map((action, index) => (
+          {(props.bulkActions || []).map((action, index) => (
             <Dropdown.Item
               key={`BulkActionList-${index}`}
               text={action.action}

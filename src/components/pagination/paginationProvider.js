@@ -1,55 +1,15 @@
 import { Label, Menu, MenuItem, Table } from 'semantic-ui-react';
 import React, { PureComponent } from 'react';
-
 import Select from 'react-select';
 
+import { findPageRange, findCurrentData } from './utils';
+
 export const PaginationContext = React.createContext();
-
-const findStartPage = (numberOfPages, currentPage) => {
-  let startPage;
-  if (numberOfPages <= 3 || currentPage === 1) {
-    startPage = 1;
-  } else if (currentPage === numberOfPages) {
-    startPage = currentPage - 2;
-  } else {
-    startPage = currentPage - 1;
-  }
-  return startPage;
-};
-
-const findPageRange = ({ numberOfPages, currentPage }) => {
-  const startPage = findStartPage(numberOfPages, currentPage);
-  return Array.from(new Array(Math.min(3, numberOfPages)), (x, i) => i + startPage);
-};
 
 const rowsPerPageOptions = [5, 10, 20, 50].map(num => ({
   value: num,
   label: `${num} Items`,
 }));
-
-const handlePageClick = props => (e, data) => {
-  props.setCurrentPage(+data.page || 1);
-};
-
-const handleDirectionClick = props => e => {
-  const direction = e.currentTarget.dataset['direction'];
-  let change = 0;
-  if (direction === 'LEFT' && props.currentPage > 1) {
-    change = -1;
-  } else if (direction === 'RIGHT' && props.currentPage < props.numberOfPages) {
-    change = 1;
-  }
-  if (change !== 0) {
-    props.setCurrentPage(props.currentPage + change || 1);
-  }
-};
-
-export const findCurrentData = (searchedDataFound = [], currentPage, rowsPerPage) => {
-  if (searchedDataFound.length < rowsPerPage.value) {
-    return searchedDataFound;
-  }
-  return searchedDataFound.slice((currentPage - 1) * rowsPerPage.value, currentPage * rowsPerPage.value);
-};
 
 export default class PaginationProvider extends PureComponent {
   constructor(props) {
@@ -114,6 +74,23 @@ export default class PaginationProvider extends PureComponent {
     );
   }
 }
+
+const handlePageClick = props => (e, data) => {
+  props.setCurrentPage(+data.page || 1);
+};
+
+const handleDirectionClick = props => e => {
+  const direction = e.currentTarget.dataset['direction'];
+  let change = 0;
+  if (direction === 'LEFT' && props.currentPage > 1) {
+    change = -1;
+  } else if (direction === 'RIGHT' && props.currentPage < props.numberOfPages) {
+    change = 1;
+  }
+  if (change !== 0) {
+    props.setCurrentPage(props.currentPage + change || 1);
+  }
+};
 
 const Pagination = props => {
   if (!props.data.length) return null;

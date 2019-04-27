@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-
-import sortBy from 'lodash/sortBy';
 import isEqual from 'lodash/isEqual';
+import sortBy from 'lodash/sortBy';
 
 export const SortContext = React.createContext();
 
@@ -37,7 +36,7 @@ export default class SortProvider extends PureComponent {
 
   handleSort = (clickedColumn, clickedDirection = 'ascending', columnType = 'String') => () => {
     if (!clickedColumn) return;
-    const { column, data, direction } = this.state;
+    const { column, data } = this.state;
 
     if (column !== clickedColumn) {
       const sortedData = this.fetchSortedData({ data, columnType, columnName: clickedColumn });

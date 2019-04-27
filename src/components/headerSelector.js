@@ -4,14 +4,14 @@ import { Button, Popup, List, Icon, Checkbox } from 'semantic-ui-react';
 const ColumnList = memo(props => {
   return (
     <>
-      {props.columns.map((column, index) => (
+      {(props.columns || []).map((column, index) => (
         <List key={`hide-selector-list-${index}`}>
           <List.Item>
             <List.Content>
               <Checkbox
                 checked={column.isVisible}
                 toggle
-                onChange={(e, { checked }) => props.toggleColumns(column.heading, { checked })}
+                onChange={(_e, { checked }) => props.toggleColumns(column.heading, { checked })}
               />{' '}
               <span>{column.heading}</span>
             </List.Content>

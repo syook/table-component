@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
-import TableComponent from '../../components/newTable';
-// import OldTableComponent from '../../components/table';
-import { fetchMenuItems, deleteMenuItems } from './reducer';
-import { connect } from 'react-redux';
-
 import moment from 'moment';
 
-class MenuItemList extends Component {
-  componentDidMount() {
-    this.props.dispatch(fetchMenuItems());
-  }
+import TableComponent from '../../components/table';
 
-  findComplexRecords(attr, value) {
-    switch (attr) {
-      case 'availablity':
-        return (value || []).join(',');
-      default:
+class MenuItemList extends Component {
+  state = { data: [] };
+
+  async componentDidMount() {
+    try {
+      const response = await fetch('http://localhost:5000/menuItems');
+      const { data } = await response.json();
+      if ((data || []).length) {
+        this.setState({ data });
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
   onDelete = ids => {
-    this.props.dispatch(deleteMenuItems(ids));
+    console.log(ids);
   };
 
   onShow = args => {
@@ -120,27 +119,21 @@ class MenuItemList extends Component {
   ];
 
   render() {
-    const { menuItems } = this.props;
     return (
       <div>
         MenuItem list
         <TableComponent
-          data={menuItems}
+          data={this.state.data || []}
           records={this.tableConfig}
           mandatoryFields={['Name']}
-          // includeAction={true}
+          includeAction={true}
           actionConfig={this.actionConfig}
           bulkActions={[{ action: 'delete', function: this.onDelete }]}
           name='MenuItems'
         />
-        {/* <OldTableComponent data={menuItems}
-          records={[{header: 'Name', column: 'name', sortable: true},{header: 'Description', column: 'desc', sortable: true}, {header: 'Category', column: 'category'}, {header: 'Availablity', column: 'availablity'},{header: 'Expertised', column: 'isExpertised'}, {header: 'Feasible', column: 'isFeasible'}, {header: 'Actions', column: 'action'}]} includeAction complexRecords={['availablity']} mandatoryFeilds={['name']} searchKeys={{name: true, desc: true}} findComplexRecords={this.findComplexRecords} name="Menuitems" defaultSortable='name' bulkActions={[{action: 'delete', function: this.onDelete}]}
-        /> */}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ menuItems }) => ({ menuItems });
-
-export default connect(mapStateToProps)(MenuItemList);
+export default MenuItemList;

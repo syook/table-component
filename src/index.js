@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.css';
-import AppContainer from './appContainer';
-import * as serviceWorker from './serviceWorker';
-import('semantic-ui-css/semantic.min.css');
+import 'semantic-ui-css/semantic.min.css';
 
-ReactDOM.render(<AppContainer />, document.getElementById('root'));
+import App from './App';
 
-serviceWorker.unregister();
+ReactDOM.render(<App />, document.getElementById('root'));

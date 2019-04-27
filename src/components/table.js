@@ -3,16 +3,12 @@ import React, { Component } from 'react';
 
 import BulkActionList from './bulkActionDropdown';
 import HeaderSelector from './headerSelector';
-import { PaginationContext } from './pagination';
-import PaginationProvider from './pagination';
-import { SearchContext } from './searchProvider';
-import SearchProvider from './searchProvider';
 
-import { FilterContext } from './filterProvider';
-import FilterProvider from './filterProvider';
+import PaginationProvider, { PaginationContext } from './pagination/paginationProvider';
+import SearchProvider, { SearchContext } from './search/searchProvider';
+import FilterProvider, { FilterContext } from './filter/filterProvider';
+import SortProvider, { SortContext } from './sort/sortProvider';
 
-import { SortContext } from './sort';
-import SortProvider from './sort';
 import TableActions from './tableActions';
 
 class TableComponent extends Component {

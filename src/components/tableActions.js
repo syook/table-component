@@ -1,16 +1,16 @@
 import React, { memo } from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 
-const findColor = action => {
-  switch (action) {
-    case 'Edit':
-      return 'yellow';
-    case 'Delete':
-      return 'red';
-    default:
-      return '';
-  }
-};
+// const findColor = action => {
+//   switch (action) {
+//     case 'Edit':
+//       return 'yellow';
+//     case 'Delete':
+//       return 'red';
+//     default:
+//       return '';
+//   }
+// };
 
 const TableActions = memo(props => {
   return (
@@ -20,7 +20,7 @@ const TableActions = memo(props => {
           <Button
             key={index}
             icon
-            // color={findColor(action.action)} // Parent need to pas color, if needed to display
+            // color={findColor(action.action)} // Parent need to pass the color, if needed to display
             onClick={() => action.function([props.ids])}
             size='small'
           >

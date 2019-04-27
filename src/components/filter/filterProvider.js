@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 
-import TableFilter from './tableFilter';
+import Filter from './filterComponent';
 
 import { loopFilters } from './utils';
 
-import { filterOperators } from './constants';
+import { filterOperators } from '../constants';
 
 export const FilterContext = React.createContext();
 
@@ -92,7 +92,7 @@ export default class FilterProvider extends PureComponent {
     const { children, filterableColumns } = this.props;
     return (
       <FilterContext.Provider value={{ ...this.state }}>
-        <TableFilter
+        <Filter
           filterableColumns={filterableColumns}
           selectedFilters={this.state.selectedFilters}
           addFilter={this.addFilter}
