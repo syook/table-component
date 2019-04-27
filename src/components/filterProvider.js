@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import TableFilter from './tableFilter';
@@ -9,7 +9,7 @@ import { filterOperators } from './constants';
 
 export const FilterContext = React.createContext();
 
-export default class FilterProvider extends Component {
+export default class FilterProvider extends PureComponent {
   state = {
     data: [...(this.props.data || [])],
     selectedFilters: [],
@@ -28,7 +28,7 @@ export default class FilterProvider extends Component {
     if (index === 1 && attribute === 'predicate') {
       filters.slice(2).forEach(element => (element.predicate = value));
     }
-    if (attribute != 'query') {
+    if (attribute !== 'query') {
       filterToBeUpdated['value'] = undefined;
     }
     filterToBeUpdated[attribute] = value;
@@ -41,7 +41,6 @@ export default class FilterProvider extends Component {
       const newQuery = ((filterOperators[filterToBeUpdated.type] || [])[0] || {}).value;
       if (newQuery) filterToBeUpdated.query = newQuery;
     }
-
     this.setState({ selectedFilters: filters });
   };
 

@@ -1,5 +1,5 @@
 import { Label, Menu, MenuItem, Table } from 'semantic-ui-react';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import Select from 'react-select';
 
@@ -51,7 +51,7 @@ export const findCurrentData = (searchedDataFound = [], currentPage, rowsPerPage
   return searchedDataFound.slice((currentPage - 1) * rowsPerPage.value, currentPage * rowsPerPage.value);
 };
 
-export default class PaginationProvider extends Component {
+export default class PaginationProvider extends PureComponent {
   constructor(props) {
     super(props);
     const rowsPerPage = { value: 10, label: '10 Items' };

@@ -2,9 +2,10 @@ const filterPredicates = ['And', 'Or'];
 
 const filterOperators = {
   Boolean: ['is'],
-  Date: ['is', 'is before', 'is after', 'is on or before', 'is on or after', 'is not', 'is empty', 'is not empty'],
+  Date: ['is', 'is not', 'is before', 'is after', 'is on or before', 'is on or after', 'is empty', 'is not empty'],
   Number: ['=', '≠', '<', '>', '≤', '≥', 'is empty', 'is not empty'],
-  Select: ['is', 'is not', 'is any of', 'is none of', 'is empty', 'is not empty'],
+  SingleSelect: ['is', 'is not', 'is any of', 'is none of', 'is empty', 'is not empty'],
+  MultiSelect: ['has any of', 'has none of', 'is empty', 'is not empty'],
   String: ['contains', 'does not contains', 'is', 'is not', 'is empty', 'is not empty'],
 };
 

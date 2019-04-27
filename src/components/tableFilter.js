@@ -1,6 +1,6 @@
 import DateTime from 'react-datetime';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { memo } from 'react';
 import Select from 'react-select';
 import moment from 'moment';
 import { Popup, Button, Icon, List, Grid, Input, Checkbox } from 'semantic-ui-react';
@@ -9,28 +9,23 @@ import { findColumnOptions, createPropertyOption } from './utils';
 
 import { predicateOptions, filterOperators } from './constants';
 
-class TableFilter extends Component {
-  render() {
-    const selectedFilters = (this.props.selectedFilters || []).length;
-    let buttonText =
-      selectedFilters === 1 ? '1 filter' : selectedFilters >= 1 ? `${selectedFilters} filters` : 'Filter';
+const TableFilter = memo(props => {
+  const selectedFilters = (props.selectedFilters || []).length;
+  let buttonText = selectedFilters === 1 ? '1 filter' : selectedFilters >= 1 ? `${selectedFilters} filters` : 'Filter';
 
-    return (
-      // <div style={{ textAlign: 'left' }}>
-      <Popup
-        trigger={
-          <Button size='small' style={{ backgroundColor: selectedFilters ? '#d1f7c4' : null }}>
-            <Icon name='filter' /> {buttonText}
-          </Button>
-        }
-        content={<FilterDiv {...this.props} filtersSelected={!!selectedFilters} />}
-        on='click'
-        position='bottom center'
-      />
-      // </div>
-    );
-  }
-}
+  return (
+    <Popup
+      trigger={
+        <Button size='small' style={{ backgroundColor: selectedFilters ? '#d1f7c4' : null }}>
+          <Icon name='filter' /> {buttonText}
+        </Button>
+      }
+      content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
+      on='click'
+      position='bottom center'
+    />
+  );
+});
 
 const FilterDiv = props => {
   const selectedFilters = props.selectedFilters || [];
@@ -138,14 +133,36 @@ const InputCategories = props => {
           onChange={e => props.updateSelectedFilters('value', e.target.value, props.index)}
         />
       );
-    case 'Select':
+    case 'SingleSelect':
+    case 'MultiSelect':
+      const isMultiSelect = !['is', 'is not'].includes(props.column.query);
+      const selectValue = isMultiSelect
+        ? (props.column.value || []).length
+          ? props.column.value.map(v => ({ value: v, label: v }))
+          : []
+        : (props.column.value || []).length === 1
+        ? { value: props.column.value[0], label: props.column.value[0] }
+        : null;
       return (
         <Select
+          isMulti={isMultiSelect}
           options={findColumnOptions(props.filterableColumns, props.column.attribute)}
-          value={{ value: props.column.value, label: props.column.value }}
-          onChange={({ value }) => props.updateSelectedFilters('value', value, props.index)}
+          value={selectValue}
+          onChange={value => {
+            const newValue = isMultiSelect ? value.map(({ value }) => value) : (value || {}).value ? [value.value] : [];
+            props.updateSelectedFilters('value', newValue, props.index);
+          }}
         />
       );
+    // case 'MultiSelect':
+    //   return (
+    //     <Select
+    //       isMulti
+    //       options={findColumnOptions(props.filterableColumns, props.column.attribute)}
+    //       value={(props.column.value || []).length ? props.column.value.map(v => ({ value: v, label: v })) : []}
+    //       onChange={value => props.updateSelectedFilters('value', value.map(({ value }) => value), props.index)}
+    //     />
+    //   );
     case 'Boolean':
       return (
         <Checkbox

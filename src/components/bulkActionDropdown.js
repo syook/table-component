@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
-const BulkActionList = props => {
+const BulkActionList = memo(props => {
   return (
     <>
       <Dropdown
@@ -21,6 +21,6 @@ const BulkActionList = props => {
       </Dropdown>
     </>
   );
-};
+});
 
 export default BulkActionList;

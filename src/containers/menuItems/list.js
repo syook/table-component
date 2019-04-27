@@ -4,6 +4,8 @@ import TableComponent from '../../components/newTable';
 import { fetchMenuItems, deleteMenuItems } from './reducer';
 import { connect } from 'react-redux';
 
+import moment from 'moment';
+
 class MenuItemList extends Component {
   componentDidMount() {
     this.props.dispatch(fetchMenuItems());
@@ -35,40 +37,60 @@ class MenuItemList extends Component {
       isSearchable: true,
       isFilterable: true,
     },
-    {
-      heading: 'Description',
-      column: 'desc',
-      type: 'String',
-      cell: ({ row }) => row.desc,
-      isSortable: true,
-      isSearchable: true,
-      isFilterable: true,
-    },
     // {
-    //   heading: 'Category',
-    //   column: 'category',
-    //   type: 'Select',
-    //   cell: ({ row }) => row.category,
-    //   options: [{ value: 'Electrical', label: 'Electrical' }, { value: 'Mechanical', label: 'Mechanical' }],
+    //   heading: 'Description',
+    //   column: 'desc',
+    //   type: 'String',
+    //   cell: ({ row }) => row.desc,
     //   isSortable: true,
     //   isSearchable: true,
     //   isFilterable: true,
     // },
     {
-      heading: 'Expertised',
+      heading: 'Category',
+      column: 'category',
+      type: 'SingleSelect',
+      cell: ({ row }) => row.category,
+      options: ['Electrical', 'Mechanical', 'Home', 'Shoes', 'Computers', 'Outdoors'].map(category => ({
+        value: category,
+        label: category,
+      })),
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+    },
+    {
+      heading: 'Price',
+      column: 'price',
+      type: 'Number',
+      cell: ({ row }) => row.price,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+    },
+    {
+      heading: 'Expertise',
       column: 'isExpertised',
       type: 'Boolean',
-      cell: ({ row }) => {
-        return row.isExpertised ? 'true' : 'false';
-      },
+      cell: ({ row }) => (row.isExpertised ? 'true' : 'false'),
       isSortable: true,
       isSearchable: false,
       isFilterable: true,
     },
     {
-      heading: 'Created at',
-      column: 'createdAt',
-      cell: ({ row }) => row.createdAt,
+      heading: 'Availability',
+      column: 'availability',
+      type: 'MultiSelect',
+      cell: ({ row }) => row.availability.join(', '),
+      options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
+      isSortable: true,
+      isSearchable: false,
+      isFilterable: true,
+    },
+    {
+      heading: 'Started at',
+      column: 'created',
+      cell: ({ row }) => moment(row.created).format('DD-MMM-YYYY'),
       type: 'Date',
       isSortable: true,
       isSearchable: false,
@@ -106,7 +128,7 @@ class MenuItemList extends Component {
           data={menuItems}
           records={this.tableConfig}
           mandatoryFields={['Name']}
-          includeAction={true}
+          // includeAction={true}
           actionConfig={this.actionConfig}
           bulkActions={[{ action: 'delete', function: this.onDelete }]}
           name='MenuItems'

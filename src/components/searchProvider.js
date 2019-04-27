@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 import { Icon, Input } from 'semantic-ui-react';
 
-import { searchObj } from '../containers/utils';
+import { searchObj } from './utils';
 
 export const SearchContext = React.createContext();
 
@@ -16,20 +16,16 @@ export default class SearchProvider extends PureComponent {
   }
 
   search = searchText => {
-    let searchedObjects = this.props.data.map(object => {
+    const searchedObjects = this.props.data.filter(object => {
       const isFound = searchObj(object, searchText.toLowerCase(), this.props.searchKeys);
-      return isFound ? object : null;
+      return isFound;
     });
 
-    // let currentSearchText = this.state.searchText;
-    // if (searchText !== currentSearchText) return;
-
-    let data = searchedObjects.filter(searchedObject => searchedObject);
-    this.setState({ data });
+    this.setState({ data: searchedObjects });
   };
 
   onChangeSearchText = e => {
-    const searchText = (e.target.value || '').trim();
+    const searchText = (e.target.value || '').trimStart();
     const currentSearchText = this.state.searchText;
     if (searchText === currentSearchText) return;
     this.setState({ searchText });

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import sortBy from 'lodash/sortBy';
 import isEqual from 'lodash/isEqual';
 
 export const SortContext = React.createContext();
 
-export default class SortProvider extends Component {
+export default class SortProvider extends PureComponent {
   state = {
     column: null,
     data: [...(this.props.data || [])],
@@ -22,10 +22,13 @@ export default class SortProvider extends Component {
     switch (columnType.toLowerCase()) {
       case 'date':
         return data.sort((a, b) => {
-          const date1 = new Date(b[columnName]);
-          const date2 = new Date(a[columnName]);
+          const date1 = new Date(a[columnName]);
+          const date2 = new Date(b[columnName]);
           return date1 - date2;
         });
+
+      case 'number':
+        return data.sort((a, b) => +a[columnName] - +b[columnName]);
 
       default:
         return sortBy(data, [columnName]);

@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
+import moize from 'moize';
 
 export const findStartPage = (numberOfPages, currentPage) => {
   let startPage;
@@ -18,7 +19,7 @@ export const findPageRange = (numberOfPages, startPage) => {
   return Array.from(new Array(Math.min(3, numberOfPages)), (x, i) => i + startPage);
 };
 
-// currentdata in paginations
+// current data in pagination
 export const findCurrentData = (searchedDataFound, currentPage, rowsPerPage) => {
   if (searchedDataFound.length < rowsPerPage.value) {
     return searchedDataFound;
@@ -29,7 +30,6 @@ export const findCurrentData = (searchedDataFound, currentPage, rowsPerPage) => 
 // search for a query in an object
 export const searchObj = (obj, query, searchKeys) => {
   let found = false;
-  // console.log(obj);
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(searchKeys, key)) {
       const value = obj[key];
@@ -62,12 +62,13 @@ export const createPropertyOption = (valueProperty, labelProperty) => option => 
 };
 
 export const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', query = '' }) => {
-  if (attributeType === 'String') {
+  attributeType = (attributeType || '').toLowerCase();
+  if (attributeType === 'string') {
     attrValue = (attrValue || '').toLowerCase();
     searchValue = (searchValue || '').toLowerCase();
   }
 
-  if (attributeType === 'Date') {
+  if (attributeType === 'date') {
     attrValue = attrValue instanceof moment ? attrValue : moment(attrValue || '').startOf('day');
     searchValue = searchValue instanceof moment ? searchValue : moment(searchValue || '').startOf('day');
   }
@@ -78,19 +79,27 @@ export const queryCondition = ({ attrValue = '', attributeType = '', searchValue
     case 'does not contains':
       return attrValue && !attrValue.toLowerCase().includes(searchValue.toLowerCase());
     case 'is':
-      if (attributeType === 'Date') {
+      if (attributeType === 'date') {
         return attrValue && attrValue.isSame(searchValue);
+      }
+      if (attributeType === 'singleselect') {
+        return (searchValue || [])[0] && isEqual(attrValue, searchValue[0]);
       }
       return attrValue && isEqual(attrValue, searchValue);
     case 'is not':
-      if (attributeType === 'Date') {
+      if (attributeType === 'date') {
         return attrValue && !attrValue.isSame(searchValue);
+      }
+      if (attributeType === 'singleselect') {
+        return (searchValue || [])[0] && !isEqual(attrValue, searchValue[0]);
       }
       return attrValue && !isEqual(attrValue, searchValue);
     case 'is empty':
       return isEmpty(attrValue);
     case 'is not empty':
       return !isEmpty(attrValue);
+
+    // Date
     case 'is before':
       return attrValue.isBefore(searchValue);
     case 'is after':
@@ -99,6 +108,8 @@ export const queryCondition = ({ attrValue = '', attributeType = '', searchValue
       return attrValue.isSameOrBefore(searchValue);
     case 'is on or after':
       return attrValue.isSameOrAfter(searchValue);
+
+    // Numbers
     case '=':
       return +attrValue === +searchValue;
     case '≠':
@@ -111,6 +122,18 @@ export const queryCondition = ({ attrValue = '', attributeType = '', searchValue
       return +attrValue > +searchValue;
     case '≥':
       return +attrValue >= +searchValue;
+
+    // Single-Select
+    case 'is any of':
+      return searchValue && attrValue && searchValue.includes(attrValue);
+    case 'is none of':
+      return searchValue && attrValue && !searchValue.includes(attrValue);
+
+    // Multi-select
+    case 'has any of':
+      return searchValue && attrValue && searchValue.some(v => attrValue.includes(v));
+    case 'has none of':
+      return searchValue && attrValue && !searchValue.some(v => attrValue.includes(v));
 
     default:
       return;
@@ -129,7 +152,7 @@ export const filterFunction = ({ data, attribute, value, query, type }) => {
   return val;
 };
 
-export const loopFilters = (data, filters) => {
+export const loopFilters = moize((data, filters) => {
   if (!filters.length) return data;
   if (filters.length === 1) {
     return filterFunction({ data, ...filters[0] });
@@ -149,7 +172,7 @@ export const loopFilters = (data, filters) => {
       return filteredData;
     }
   }
-};
+});
 
 export const findColumnOptions = (columns, attr) => {
   const column = columns.find(c => c.column === attr);

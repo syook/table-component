@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Button, Popup, List, Icon, Checkbox } from 'semantic-ui-react';
 
-const ColumnList = props => {
+const ColumnList = memo(props => {
   return (
     <>
       {props.columns.map((column, index) => (
@@ -20,7 +20,7 @@ const ColumnList = props => {
       ))}
     </>
   );
-};
+});
 
 const HeaderSelector = props => {
   const hiddenColumnsCount = props.hiddenColumnCount;
