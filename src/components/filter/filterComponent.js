@@ -1,6 +1,6 @@
 import DateTime from 'react-datetime';
 import PropTypes from 'prop-types';
-import React, { memo } from 'react';
+import React from 'react';
 import Select from 'react-select';
 import moment from 'moment';
 import { Popup, Button, Icon, List, Grid, Input, Checkbox } from 'semantic-ui-react';
@@ -10,7 +10,7 @@ import { findColumnOptions } from './utils';
 
 import { predicateOptions, filterOperators } from '../constants';
 
-const TableFilter = memo(props => {
+const TableFilter = props => {
   const selectedFilters = (props.selectedFilters || []).length;
   let buttonText = selectedFilters === 1 ? '1 filter' : selectedFilters >= 1 ? `${selectedFilters} filters` : 'Filter';
 
@@ -26,7 +26,7 @@ const TableFilter = memo(props => {
       position='bottom center'
     />
   );
-});
+};
 
 const FilterDiv = props => {
   const selectedFilters = props.selectedFilters || [];

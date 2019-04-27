@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import sortBy from 'lodash/sortBy';
 
 export const SortContext = React.createContext();
 
-export default class SortProvider extends PureComponent {
+export default class SortProvider extends Component {
   state = {
     column: null,
     data: [...(this.props.data || [])],

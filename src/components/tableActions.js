@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 
 // const findColor = action => {
@@ -12,7 +12,7 @@ import { Button, Icon } from 'semantic-ui-react';
 //   }
 // };
 
-const TableActions = memo(props => {
+const TableActions = props => {
   return (
     <div>
       {props.actions.map((action, index) =>
@@ -30,6 +30,6 @@ const TableActions = memo(props => {
       )}
     </div>
   );
-});
+};
 
 export default TableActions;

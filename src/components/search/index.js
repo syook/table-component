@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import { Icon, Input } from 'semantic-ui-react';
 
@@ -6,7 +6,7 @@ import { searchObj } from './utils';
 
 export const SearchContext = React.createContext();
 
-export default class SearchProvider extends PureComponent {
+export default class SearchProvider extends Component {
   state = { searchText: '', data: this.props.data };
 
   componentDidUpdate(prevProps) {

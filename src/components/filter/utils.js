@@ -1,6 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import moize from 'moize';
 import moment from 'moment';
 
 export const findColumnOptions = (columns, attr) => {
@@ -99,7 +98,7 @@ const filterFunction = ({ data, attribute, value, query, type }) => {
   return val;
 };
 
-export const loopFilters = moize((data, filters) => {
+export const loopFilters = (data, filters) => {
   if (!filters.length) return data;
   if (filters.length === 1) {
     return filterFunction({ data, ...filters[0] });
@@ -119,4 +118,4 @@ export const loopFilters = moize((data, filters) => {
       return filteredData;
     }
   }
-});
+};

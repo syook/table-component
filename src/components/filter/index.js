@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import Filter from './filterComponent';
@@ -9,7 +9,7 @@ import { filterOperators } from '../constants';
 
 export const FilterContext = React.createContext();
 
-export default class FilterProvider extends PureComponent {
+export default class FilterProvider extends Component {
   state = {
     data: [...(this.props.data || [])],
     selectedFilters: [],
@@ -17,7 +17,7 @@ export default class FilterProvider extends PureComponent {
 
   componentDidUpdate(prevProps) {
     if (this.props.data && !isEqual(this.props.data, prevProps.data)) {
-      this.setState({ data: [...(this.props.data || [])] });
+      this.applyFilter();
     }
   }
 

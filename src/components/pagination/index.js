@@ -1,5 +1,5 @@
 import { Label, Menu, MenuItem, Table } from 'semantic-ui-react';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Select from 'react-select';
 
 import { findPageRange, findCurrentData } from './utils';
@@ -11,7 +11,7 @@ const rowsPerPageOptions = [5, 10, 20, 50].map(num => ({
   label: `${num} Items`,
 }));
 
-export default class PaginationProvider extends PureComponent {
+export default class PaginationProvider extends Component {
   constructor(props) {
     super(props);
     const rowsPerPage = { value: 10, label: '10 Items' };
