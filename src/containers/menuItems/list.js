@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-// import { Button } from 'semantic-ui-react';
+import { Button, Input } from 'semantic-ui-react';
 
 import TableComponent from '../../components/table';
 
@@ -22,11 +22,15 @@ class MenuItemList extends Component {
   }
 
   onDelete = ids => {
-    console.log(ids);
+    console.log('onDelete', ids);
   };
 
   onShow = args => {
-    console.log(args);
+    console.log('onShow', args);
+  };
+
+  onInputChange = ({ row, value: newValue }) => {
+    console.log({ row, newValue });
   };
 
   tableConfig = [
@@ -34,7 +38,9 @@ class MenuItemList extends Component {
       heading: 'Name',
       column: 'name',
       type: 'String',
-      cell: ({ row }) => row.name,
+      cell: ({ row }) => (
+        <Input defaultValue={row.name} onChange={(_e, { value }) => this.onInputChange({ value, row })} />
+      ),
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
@@ -123,7 +129,9 @@ class MenuItemList extends Component {
 
   customComponents = () => (
     <>
-      {/* <Button onClick={() => null}>Button 1</Button> */}
+      <Button disabled size='small' onClick={() => null}>
+        Button 1
+      </Button>
       {/* <Button onClick={() => null}>Button 2</Button> */}
     </>
   );
