@@ -37,6 +37,9 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
       if (attributeType === 'singleselect') {
         return (searchValue || [])[0] && isEqual(attrValue, searchValue[0]);
       }
+      if (attributeType === 'boolean') {
+        return (attrValue || false) === (searchValue || false);
+      }
       return attrValue && isEqual(attrValue, searchValue);
     case 'is not':
       if (attributeType === 'date') {
@@ -92,8 +95,8 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
   }
 };
 
-const filterFunction = ({ data, attribute, value, query, type }) => {
-  const val = data.filter(d =>
+const filterData = ({ data, attribute, value, query, type }) => {
+  return data.filter(d =>
     queryCondition({
       attrValue: d[attribute] || '',
       searchValue: value || '',
@@ -101,25 +104,24 @@ const filterFunction = ({ data, attribute, value, query, type }) => {
       attributeType: type || '',
     })
   );
-  return val;
 };
 
 export const loopFilters = (data, filters) => {
   if (!filters.length) return data;
-  if (filters.length === 1) return filterFunction({ data, ...filters[0] });
+  if (filters.length === 1) return filterData({ data, ...filters[0] });
 
   switch (filters[1].predicate) {
     case 'And':
       let andPredicateFilteredData = data;
       filters.forEach(filter => {
-        andPredicateFilteredData = filterFunction({ data: andPredicateFilteredData, ...filter });
+        andPredicateFilteredData = filterData({ data: andPredicateFilteredData, ...filter });
       });
       return andPredicateFilteredData;
 
     case 'Or':
       let orPredicateFilteredData = [];
       filters.forEach(filter => {
-        const currentFilterData = filterFunction({ data, ...filter });
+        const currentFilterData = filterData({ data, ...filter });
         orPredicateFilteredData = [...new Set([...orPredicateFilteredData, ...currentFilterData])];
       });
       return orPredicateFilteredData;

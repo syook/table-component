@@ -38,9 +38,7 @@ class MenuItemList extends Component {
       heading: 'Name',
       column: 'name',
       type: 'String',
-      cell: ({ row }) => (
-        <Input defaultValue={row.name} onChange={(_e, { value }) => this.onInputChange({ value, row })} />
-      ),
+      cell: ({ row }) => <Input value={row.name} onChange={(_e, { value }) => this.onInputChange({ value, row })} />,
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
@@ -59,7 +57,7 @@ class MenuItemList extends Component {
       column: 'category',
       type: 'SingleSelect',
       cell: ({ row }) => row.category,
-      options: ['Electrical', 'Mechanical', 'Home', 'Shoes', 'Computers', 'Outdoors'].map(category => ({
+      options: ['Grocery', 'Electronics', 'Home', 'Shoes', 'Computers', 'Outdoors', 'Clothing'].map(category => ({
         value: category,
         label: category,
       })),
@@ -80,7 +78,7 @@ class MenuItemList extends Component {
       heading: 'Expertise',
       column: 'isExpertised',
       type: 'Boolean',
-      cell: ({ row }) => (row.isExpertised ? 'true' : 'false'),
+      cell: ({ row }) => (row.isExpertised ? 'Yes' : 'No'),
       isSortable: true,
       isSearchable: false,
       isFilterable: true,
