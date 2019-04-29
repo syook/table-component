@@ -2,9 +2,11 @@ import './search.css';
 
 import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
-import { Icon, Input } from 'semantic-ui-react';
+import isEmpty from 'lodash/isEmpty';
 
-import { searchObj } from './utils';
+import SearchComponent from './searchComponent';
+
+import { getSearchTextFilteredData } from './utils';
 
 export const SearchContext = React.createContext();
 
@@ -18,17 +20,20 @@ export default class SearchProvider extends Component {
   }
 
   search = searchText => {
-    const searchedObjects =
-      this.props.data.filter(object => {
-        const isFound = searchObj(object, searchText.toLowerCase(), this.props.searchKeys);
-        return isFound;
-      }) || [];
+    searchText = searchText || this.state.searchText;
+    if (!searchText || isEmpty(this.props.searchKeys)) return;
+
+    const searchedObjects = getSearchTextFilteredData({
+      data: this.props.data,
+      searchKeys: this.props.searchKeys,
+      searchText,
+    });
 
     this.setState({ data: searchedObjects });
   };
 
   onChangeSearchText = e => {
-    const searchText = (e.target.value || '').trimStart();
+    const searchText = (e.target.value || '').trimStart().toLowerCase();
     const currentSearchText = this.state.searchText;
     if (searchText === currentSearchText) return;
     this.setState({ searchText });
@@ -38,41 +43,11 @@ export default class SearchProvider extends Component {
   render() {
     return (
       <SearchContext.Provider value={{ ...this.state }}>
-        <div>
-          <span
-            style={{
-              fontSize: '24px',
-              fontWeight: 'normal',
-              color: 'rgb(102, 119, 151)',
-            }}
-          >
-            {this.props.name}
-          </span>
-
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <div id='tableButtons' />
-            <Input
-              iconPosition='left'
-              placeholder={this.props.placeholder || 'Search...'}
-              style={styles.searchInputDiv}
-              onChange={this.onChangeSearchText}
-            >
-              <Icon name='search' />
-              <input className='searchInput' style={styles.searchInput} value={this.state.searchText} />
-              <Icon
-                name='close'
-                style={styles.closeIcon}
-                onClick={() => this.onChangeSearchText({ target: { value: '' } })}
-              />
-            </Input>
-          </div>
-        </div>
+        <SearchComponent
+          name={this.props.name}
+          onChangeSearchText={this.onChangeSearchText}
+          searchText={this.state.searchText}
+        />
         {!(this.state.data || []).length && (
           <div className='noRecordsDiv'>
             {!(this.props.data || []).length ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
@@ -83,25 +58,3 @@ export default class SearchProvider extends Component {
     );
   }
 }
-
-const styles = {
-  searchInputDiv: {
-    border: '1px solid rgb(214, 231, 243)',
-    color: '#667797',
-    position: 'relative',
-    marginLeft: '10px',
-  },
-  closeIcon: {
-    position: 'absolute',
-    right: '0px',
-    left: 'unset',
-    cursor: 'pointer',
-    pointerEvents: 'auto',
-  },
-  searchInput: {
-    background: '#d6e7f3',
-    borderRadius: '0px',
-    fontWeight: 'normal',
-    border: '1px solid rgb(214, 231, 243)',
-  },
-};

@@ -13,10 +13,11 @@ export default class FilterProvider extends Component {
   state = {
     data: [...(this.props.data || [])],
     selectedFilters: [],
+    filterDisabled: false,
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.data && !isEqual(this.props.data, prevProps.data)) {
+    if ((this.props.data || []).length && !isEqual(this.props.data, prevProps.data)) {
       this.applyFilter();
     }
   }
@@ -78,15 +79,18 @@ export default class FilterProvider extends Component {
   };
 
   applyFilter = filters => {
+    console.time('Start-Filter');
+    this.setState({ filterDisabled: true });
     const selectedFilters = filters && filters.length ? filters : this.state.selectedFilters;
-    if (!selectedFilters.length) this.setFilteredData(this.props.data);
+    if (!selectedFilters.length) return this.setFilteredData(this.props.data);
 
     const searchedData = this.props.data || [];
     const filteredData = loopFilters(searchedData, selectedFilters);
     this.setFilteredData(filteredData);
+    console.timeEnd('Start-Filter');
   };
 
-  setFilteredData = (data = []) => this.setState({ data });
+  setFilteredData = (data = []) => this.setState({ data, filterDisabled: false });
 
   render() {
     const { children, filterableColumns } = this.props;
@@ -99,6 +103,7 @@ export default class FilterProvider extends Component {
           removeFilter={this.removeFilter}
           applyFilter={this.applyFilter}
           updateSelectedFilters={this.updateSelectedFilters}
+          filterDisabled={this.state.filterDisabled}
         />
         {children}
       </FilterContext.Provider>

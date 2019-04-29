@@ -59,7 +59,13 @@ const FilterDiv = props => {
         <Button primary size='small' onClick={props.addFilter}>
           <Icon name='add' /> Add Filter{' '}
         </Button>
-        <Button positive size='small' onClick={props.applyFilter} disabled={!props.filtersSelected}>
+        <Button
+          positive
+          size='small'
+          onClick={props.applyFilter}
+          disabled={!props.filtersSelected || props.filterDisabled}
+          loading={props.filterDisabled}
+        >
           {' '}
           Apply Filter{' '}
         </Button>
@@ -147,6 +153,7 @@ const InputCategories = props => {
       return (
         <Select
           isMulti={isMultiSelect}
+          closeMenuOnSelect={!isMultiSelect}
           options={findColumnOptions(props.filterableColumns, props.column.attribute)}
           value={selectValue}
           onChange={value => {

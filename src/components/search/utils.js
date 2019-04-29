@@ -18,7 +18,17 @@ export const searchObj = (obj, query, searchKeys) => {
         found = true;
         return found;
       }
-    } // end if key is searchable
-  } // end for every key in object
+    }
+  }
   return found;
-}; // end of searchObj
+};
+
+export const getSearchTextFilteredData = ({ data = [], searchText = '', searchKeys = {} }) => {
+  if (!searchText) return data;
+  return (
+    (data || []).filter(object => {
+      const isFound = searchObj(object, searchText.toLowerCase(), searchKeys);
+      return isFound;
+    }) || []
+  );
+};

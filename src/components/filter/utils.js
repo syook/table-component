@@ -1,6 +1,10 @@
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import moment from 'moment';
+
+// import moment from 'moment';
+// import roundToNearestMinutes from 'date-fns/roundToNearestMinutes';
+
+import { isAfter, isBefore, roundToNearestMinutes, isEqual as isEqualDate } from 'date-fns';
 
 export const findColumnOptions = (columns, attr) => {
   const column = columns.find(c => c.column === attr);
@@ -14,16 +18,22 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
     searchValue = (searchValue || '').toLowerCase();
   }
 
+  // date-fns
   if (attributeType === 'date') {
-    attrValue =
-      attrValue && attrValue instanceof moment
-        ? attrValue.startOf('minute')
-        : moment(attrValue || '').startOf('minute');
-    searchValue =
-      searchValue && searchValue instanceof moment
-        ? searchValue.startOf('minute')
-        : moment(searchValue || '').startOf('minute');
+    attrValue = attrValue ? roundToNearestMinutes(new Date(attrValue)) : '';
+    searchValue = searchValue ? roundToNearestMinutes(new Date(searchValue)) : '';
   }
+  // moment-js
+  // if (attributeType === 'date') {
+  //   attrValue =
+  //     attrValue && attrValue instanceof moment
+  //       ? attrValue.startOf('minute')
+  //       : moment(attrValue || '').startOf('minute');
+  //   searchValue =
+  //     searchValue && searchValue instanceof moment
+  //       ? searchValue.startOf('minute')
+  //       : moment(searchValue || '').startOf('minute');
+  // }
 
   switch (query) {
     case 'contains':
@@ -32,7 +42,7 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
       return attrValue && !attrValue.toLowerCase().includes(searchValue.toLowerCase());
     case 'is':
       if (attributeType === 'date') {
-        return attrValue && attrValue.isSame(searchValue);
+        return attrValue && isEqualDate(attrValue, searchValue);
       }
       if (attributeType === 'singleselect') {
         return (searchValue || [])[0] && isEqual(attrValue, searchValue[0]);
@@ -43,26 +53,30 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
       return attrValue && isEqual(attrValue, searchValue);
     case 'is not':
       if (attributeType === 'date') {
-        return attrValue && !attrValue.isSame(searchValue);
+        return attrValue && !isEqualDate(attrValue, searchValue);
       }
       if (attributeType === 'singleselect') {
         return (searchValue || [])[0] && !isEqual(attrValue, searchValue[0]);
       }
       return attrValue && !isEqual(attrValue, searchValue);
     case 'is empty':
+      if (attributeType === 'date') return !attrValue;
       return isEmpty(attrValue);
     case 'is not empty':
+      if (attributeType === 'date') return !!attrValue;
       return !isEmpty(attrValue);
 
     // Date
     case 'is before':
-      return attrValue.isBefore(searchValue);
+      // return attrValue.isBefore(searchValue);
+      return isBefore(attrValue, searchValue);
     case 'is after':
-      return attrValue.isAfter(searchValue);
-    case 'is on or before':
-      return attrValue.isSameOrBefore(searchValue);
-    case 'is on or after':
-      return attrValue.isSameOrAfter(searchValue);
+      // return attrValue.isAfter(searchValue);
+      return isAfter(attrValue, searchValue);
+    // case 'is on or before':
+    //   return attrValue.isSameOrBefore(searchValue);
+    // case 'is on or after':
+    //   return attrValue.isSameOrAfter(searchValue);
 
     // Numbers
     case '=':

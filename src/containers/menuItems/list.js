@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import moment from 'moment';
+import format from 'date-fns/format';
 import { Button, Input } from 'semantic-ui-react';
 
 import TableComponent from '../../components/table';
@@ -9,8 +9,10 @@ class MenuItemList extends Component {
 
   async componentDidMount() {
     try {
-      if (process.env.REACT_APP_BASE_URL) {
-        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/menuItems`);
+      // const baseUrl = process.env.REACT_APP_BASE_URL;
+      const baseUrl = 'http://localhost:5000';
+      if (baseUrl) {
+        const response = await fetch(`${baseUrl}/menuItems`);
         const { data } = await response.json();
         if ((data || []).length) {
           this.setState({ data });
@@ -96,7 +98,7 @@ class MenuItemList extends Component {
     {
       heading: 'Started at',
       column: 'created',
-      cell: ({ row }) => moment(row.created).format('DD-MMM-YYYY hh:mm A'),
+      cell: ({ row }) => format(new Date(row.created), 'dd-MMM-yyyy hh:mm a'),
       type: 'Date',
       isSortable: true,
       isSearchable: false,
