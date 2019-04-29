@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+// import { Button } from 'semantic-ui-react';
 
 import TableComponent from '../../components/table';
 
@@ -8,10 +9,12 @@ class MenuItemList extends Component {
 
   async componentDidMount() {
     try {
-      const response = await fetch('http://localhost:5000/menuItems');
-      const { data } = await response.json();
-      if ((data || []).length) {
-        this.setState({ data });
+      if (process.env.REACT_APP_BASE_URL) {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/menuItems`);
+        const { data } = await response.json();
+        if ((data || []).length) {
+          this.setState({ data });
+        }
       }
     } catch (error) {
       console.error(error);
@@ -89,7 +92,7 @@ class MenuItemList extends Component {
     {
       heading: 'Started at',
       column: 'created',
-      cell: ({ row }) => moment(row.created).format('DD-MMM-YYYY'),
+      cell: ({ row }) => moment(row.created).format('DD-MMM-YYYY hh:mm A'),
       type: 'Date',
       isSortable: true,
       isSearchable: false,
@@ -118,6 +121,13 @@ class MenuItemList extends Component {
     },
   ];
 
+  customComponents = () => (
+    <>
+      {/* <Button onClick={() => null}>Button 1</Button> */}
+      {/* <Button onClick={() => null}>Button 2</Button> */}
+    </>
+  );
+
   render() {
     return (
       <div>
@@ -130,7 +140,9 @@ class MenuItemList extends Component {
           actionConfig={this.actionConfig}
           bulkActions={[{ action: 'delete', function: this.onDelete }]}
           name='MenuItems'
-        />
+        >
+          {this.customComponents}
+        </TableComponent>
       </div>
     );
   }

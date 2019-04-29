@@ -1,0 +1,32 @@
+.searchInput {
+  height: 33px;
+}
+
+.searchInputDiv {
+  border: '1px solid rgb(214, 231, 243)';
+  color: '#667797';
+  position: 'relative';
+  margin-left: '10px';
+}
+.closeIcon {
+  position: 'absolute';
+  right: '0px';
+  left: 'unset';
+  cursor: 'pointer';
+  pointer-events: 'auto';
+}
+.searchInput {
+  background: '#d6e7f3';
+  border-radius: '0px';
+  font-weight: 'normal';
+  border: '1px solid rgb(214, 231, 243)';
+}
+
+.noRecordsDiv {
+  padding: 10px 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+}

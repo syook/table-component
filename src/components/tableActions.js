@@ -15,7 +15,7 @@ import { Button, Icon } from 'semantic-ui-react';
 const TableActions = props => {
   return (
     <div>
-      {props.actions.map((action, index) =>
+      {(props.actions || []).map((action, index) =>
         typeof action.show === 'function' && action.show(props.row) ? (
           <Button
             key={index}

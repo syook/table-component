@@ -1,3 +1,5 @@
+import './search.css';
+
 import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import { Icon, Input } from 'semantic-ui-react';
@@ -7,19 +9,20 @@ import { searchObj } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends Component {
-  state = { searchText: '', data: this.props.data };
+  state = { searchText: '', data: this.props.data || [] };
 
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.data, this.props.data)) {
-      this.setState({ data: this.props.data });
+      this.setState({ data: this.props.data || [] });
     }
   }
 
   search = searchText => {
-    const searchedObjects = this.props.data.filter(object => {
-      const isFound = searchObj(object, searchText.toLowerCase(), this.props.searchKeys);
-      return isFound;
-    });
+    const searchedObjects =
+      this.props.data.filter(object => {
+        const isFound = searchObj(object, searchText.toLowerCase(), this.props.searchKeys);
+        return isFound;
+      }) || [];
 
     this.setState({ data: searchedObjects });
   };
@@ -35,7 +38,7 @@ export default class SearchProvider extends Component {
   render() {
     return (
       <SearchContext.Provider value={{ ...this.state }}>
-        <div className='tableMenuHeader'>
+        <div>
           <span
             style={{
               fontSize: '24px',
@@ -70,10 +73,12 @@ export default class SearchProvider extends Component {
             </Input>
           </div>
         </div>
-        {!this.state.data.length && (
-          <div className='noRecordsDiv'>{!this.props.data.length ? this.props.noDataText : 'No Results Found'}</div>
+        {!(this.state.data || []).length && (
+          <div className='noRecordsDiv'>
+            {!(this.props.data || []).length ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
+          </div>
         )}
-        {!!this.state.data.length && this.props.children}
+        {!!(this.state.data || []).length && this.props.children}
       </SearchContext.Provider>
     );
   }

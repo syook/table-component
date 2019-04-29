@@ -15,8 +15,14 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
   }
 
   if (attributeType === 'date') {
-    attrValue = attrValue instanceof moment ? attrValue : moment(attrValue || '').startOf('day');
-    searchValue = searchValue instanceof moment ? searchValue : moment(searchValue || '').startOf('day');
+    attrValue =
+      attrValue && attrValue instanceof moment
+        ? attrValue.startOf('minute')
+        : moment(attrValue || '').startOf('minute');
+    searchValue =
+      searchValue && searchValue instanceof moment
+        ? searchValue.startOf('minute')
+        : moment(searchValue || '').startOf('minute');
   }
 
   switch (query) {
@@ -100,22 +106,24 @@ const filterFunction = ({ data, attribute, value, query, type }) => {
 
 export const loopFilters = (data, filters) => {
   if (!filters.length) return data;
-  if (filters.length === 1) {
-    return filterFunction({ data, ...filters[0] });
-  } else {
-    if (filters[1].predicate === 'And') {
-      let filteredData = data;
-      filters.forEach((filter, index) => {
-        filteredData = filterFunction({ data: filteredData, ...filter });
+  if (filters.length === 1) return filterFunction({ data, ...filters[0] });
+
+  switch (filters[1].predicate) {
+    case 'And':
+      let andPredicateFilteredData = data;
+      filters.forEach(filter => {
+        andPredicateFilteredData = filterFunction({ data: andPredicateFilteredData, ...filter });
       });
-      return filteredData;
-    } else if (filters[1].predicate === 'Or') {
-      let filteredData = [];
-      filters.forEach((filter, index) => {
-        const indexedFilter = filterFunction({ data, ...filter });
-        filteredData = [...filteredData, ...indexedFilter];
+      return andPredicateFilteredData;
+
+    case 'Or':
+      let orPredicateFilteredData = [];
+      filters.forEach(filter => {
+        const currentFilterData = filterFunction({ data, ...filter });
+        orPredicateFilteredData = [...new Set([...orPredicateFilteredData, ...currentFilterData])];
       });
-      return filteredData;
-    }
+      return orPredicateFilteredData;
+    default:
+      return [];
   }
 };

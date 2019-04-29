@@ -175,13 +175,15 @@ const InputCategories = props => {
       return (
         <DateTime
           closeOnSelect={true}
-          dateFormat='DD-MMM-YYYY'
+          dateFormat='DD-MMM-YYYY hh:mm A'
           open={false}
           value={
-            props.column.value instanceof moment ? props.column.value : moment(props.column.value || '', 'DD-MMM-YYYY')
+            props.column.value && props.column.value instanceof moment
+              ? props.column.value
+              : moment(props.column.value || '', 'DD-MMM-YYYY hh:mm A')
           }
           onChange={date => props.updateSelectedFilters('value', date, props.index)}
-          timeFormat={false}
+          // timeFormat={false}
         />
       );
     default:
