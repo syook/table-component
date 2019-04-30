@@ -1,11 +1,10 @@
 {
-  "name": "lunch-app-fe",
+  "name": "table-component",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "date-fns": "^2.0.0-alpha.27",
     "lodash": "^4.17.11",
-    "moize": "^5.4.4",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

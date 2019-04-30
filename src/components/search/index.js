@@ -1,60 +1,65 @@
-import './search.css';
+import React from 'react';
+import { Icon, Input } from 'semantic-ui-react';
 
-import React, { Component } from 'react';
-import isEqual from 'lodash/isEqual';
-import isEmpty from 'lodash/isEmpty';
+const SearchComponent = props => {
+  return (
+    <div>
+      <span
+        style={{
+          fontSize: '24px',
+          fontWeight: 'normal',
+          color: 'rgb(102, 119, 151)',
+        }}
+      >
+        {props.name}
+      </span>
 
-import SearchComponent from './searchComponent';
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <Input
+          iconPosition='left'
+          placeholder={props.placeholder || 'Search...'}
+          style={styles.searchInputDiv}
+          onChange={props.onChangeSearchText}
+        >
+          <Icon name='search' />
+          <input className='searchInput' style={styles.searchInput} value={props.searchText} />
+          <Icon
+            name='close'
+            style={styles.closeIcon}
+            onClick={() => props.onChangeSearchText({ target: { value: '' } })}
+          />
+        </Input>
+      </div>
+    </div>
+  );
+};
 
-import { getSearchTextFilteredData } from './utils';
+const styles = {
+  searchInputDiv: {
+    border: '1px solid rgb(214, 231, 243)',
+    color: '#667797',
+    position: 'relative',
+    marginLeft: '10px',
+  },
+  closeIcon: {
+    position: 'absolute',
+    right: '0px',
+    left: 'unset',
+    cursor: 'pointer',
+    pointerEvents: 'auto',
+  },
+  searchInput: {
+    background: '#d6e7f3',
+    borderRadius: '0px',
+    fontWeight: 'normal',
+    border: '1px solid rgb(214, 231, 243)',
+  },
+};
 
-export const SearchContext = React.createContext();
-
-export default class SearchProvider extends Component {
-  state = { searchText: '', data: this.props.data || [] };
-
-  componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.data, this.props.data)) {
-      this.setState({ data: this.props.data || [] });
-    }
-  }
-
-  search = searchText => {
-    searchText = searchText || this.state.searchText;
-    if (!searchText || isEmpty(this.props.searchKeys)) return;
-
-    const searchedObjects = getSearchTextFilteredData({
-      data: this.props.data,
-      searchKeys: this.props.searchKeys,
-      searchText,
-    });
-
-    this.setState({ data: searchedObjects });
-  };
-
-  onChangeSearchText = e => {
-    const searchText = (e.target.value || '').trimStart().toLowerCase();
-    const currentSearchText = this.state.searchText;
-    if (searchText === currentSearchText) return;
-    this.setState({ searchText });
-    this.search(searchText);
-  };
-
-  render() {
-    return (
-      <SearchContext.Provider value={{ ...this.state }}>
-        <SearchComponent
-          name={this.props.name}
-          onChangeSearchText={this.onChangeSearchText}
-          searchText={this.state.searchText}
-        />
-        {!(this.state.data || []).length && (
-          <div className='noRecordsDiv'>
-            {!(this.props.data || []).length ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
-          </div>
-        )}
-        {!!(this.state.data || []).length && this.props.children}
-      </SearchContext.Provider>
-    );
-  }
-}
+export default SearchComponent;

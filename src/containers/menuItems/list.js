@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import format from 'date-fns/format';
 import { Button, Input } from 'semantic-ui-react';
 
-import TableComponent from '../../components/table';
+import TableComponent from '../table';
 
 class MenuItemList extends Component {
   state = { data: [] };
 
   async componentDidMount() {
     try {
-      // const baseUrl = process.env.REACT_APP_BASE_URL;
-      const baseUrl = 'http://localhost:5000';
+      const baseUrl = process.env.REACT_APP_BASE_URL;
+      // const baseUrl = 'http://localhost:5000';
       if (baseUrl) {
         const response = await fetch(`${baseUrl}/menuItems`);
         const { data } = await response.json();
@@ -138,20 +138,17 @@ class MenuItemList extends Component {
 
   render() {
     return (
-      <div>
-        MenuItem list
-        <TableComponent
-          data={this.state.data || []}
-          records={this.tableConfig}
-          mandatoryFields={['Name']}
-          includeAction={true}
-          actionConfig={this.actionConfig}
-          bulkActions={[{ action: 'delete', function: this.onDelete }]}
-          name='MenuItems'
-        >
-          {this.customComponents}
-        </TableComponent>
-      </div>
+      <TableComponent
+        data={this.state.data || []}
+        records={this.tableConfig}
+        mandatoryFields={['Name']}
+        includeAction={true}
+        actionConfig={this.actionConfig}
+        bulkActions={[{ action: 'delete', function: this.onDelete }]}
+        name='MenuItems'
+      >
+        {this.customComponents}
+      </TableComponent>
     );
   }
 }
