@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 import { Table } from 'semantic-ui-react';
 
@@ -8,19 +8,34 @@ import { findPageRange, findCurrentData } from './utils';
 
 export const PaginationContext = React.createContext();
 
-export default class PaginationProvider extends Component {
+export default class PaginationProvider extends PureComponent {
   constructor(props) {
     super(props);
     const rowsPerPage = { value: 10, label: '10 Items' };
     const rowCount = (props.data || []).length;
     this.state = {
       currentPage: 1,
-      name: this.props.name || '',
       numberOfColumns: 16,
       numberOfPages: Math.ceil(rowCount / rowsPerPage.value),
       rowsPerPage,
     };
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (!isEqual(nextProps.data, this.props.data)) {
+  //     return true;
+  //   }
+  //   if (nextState.currentPage !== this.state.currentPage) {
+  //     return true;
+  //   }
+  //   if (nextState.numberOfPages !== this.state.numberOfPages) {
+  //     return true;
+  //   }
+  //   if ((nextState.rowsPerPage || {}).value !== (this.state.rowsPerPage || {}).value) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentDidUpdate(prevProps) {
     if ((this.props.data || []).length && !isEqual(this.props.data, prevProps.data)) {
@@ -77,7 +92,7 @@ export default class PaginationProvider extends Component {
     const startIndex = (currentPage - 1) * rowsPerPage.value;
 
     return (
-      <Table sortable celled padded className='tableStyle left aligned'>
+      <Table sortable celled padded className="tableStyle left aligned">
         <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
           {children}
           <Pagination

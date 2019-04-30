@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import Filter from '../../components/filter';
@@ -9,12 +9,28 @@ import { filterOperators } from '../../constants';
 
 export const FilterContext = React.createContext();
 
-export default class FilterProvider extends Component {
+export default class FilterProvider extends PureComponent {
   state = {
     data: [...(this.props.data || [])],
     selectedFilters: [],
     filterDisabled: false,
   };
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (!isEqual(nextProps.data, this.props.data)) {
+  //     return true;
+  //   }
+  //   if (!isEqual(nextState.data, this.state.data)) {
+  //     return true;
+  //   }
+  //   if (!isEqual(nextState.selectedFilters, this.state.selectedFilters)) {
+  //     return true;
+  //   }
+  //   if (nextState.filterDisabled !== this.state.filterDisabled) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentDidUpdate(prevProps) {
     if ((this.props.data || []).length && !isEqual(this.props.data, prevProps.data)) {
@@ -42,7 +58,7 @@ export default class FilterProvider extends Component {
       const newQuery = ((filterOperators[filterToBeUpdated.type] || [])[0] || {}).value;
       if (newQuery) filterToBeUpdated.query = newQuery;
     }
-    this.setState({ selectedFilters: filters });
+    this.setState({ selectedFilters: [...filters] });
   };
 
   addFilter = () => {
@@ -66,7 +82,7 @@ export default class FilterProvider extends Component {
     newFilter.value = '';
     newFilter.type = firstFilterableAttribute.type;
     filters.push(newFilter);
-    this.setState({ selectedFilters: filters });
+    this.setState({ selectedFilters: [...filters] });
   };
 
   removeFilter = index => {
@@ -74,7 +90,7 @@ export default class FilterProvider extends Component {
     if (index === 0) index = filters.length - 1;
 
     filters.splice(index, 1);
-    this.setState({ selectedFilters: filters });
+    this.setState({ selectedFilters: [...filters] });
     this.applyFilter(filters);
   };
 
@@ -82,9 +98,9 @@ export default class FilterProvider extends Component {
     console.time('Start-Filter');
     this.setState({ filterDisabled: true });
     const selectedFilters = filters && filters.length ? filters : this.state.selectedFilters;
-    if (!selectedFilters.length) return this.setFilteredData(this.props.data);
+    const searchedData = [...this.props.data] || [];
+    if (!selectedFilters.length) return this.setFilteredData(searchedData);
 
-    const searchedData = this.props.data || [];
     const filteredData = loopFilters(searchedData, selectedFilters);
     this.setFilteredData(filteredData);
     console.timeEnd('Start-Filter');
@@ -94,6 +110,7 @@ export default class FilterProvider extends Component {
 
   render() {
     const { children, filterableColumns } = this.props;
+
     return (
       <FilterContext.Provider value={{ ...this.state }}>
         <Filter

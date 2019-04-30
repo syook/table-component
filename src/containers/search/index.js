@@ -9,17 +9,18 @@ import { getSearchTextFilteredData } from './utils';
 export const SearchContext = React.createContext();
 
 export default class SearchProvider extends Component {
-  state = { searchText: '', data: this.props.data || [] };
+  state = { searchText: '', data: [...(this.props.data || [])] };
 
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.data, this.props.data)) {
-      this.setState({ data: this.props.data || [] });
+      this.setState({ data: [...(this.props.data || [])] });
     }
   }
 
   search = searchText => {
-    searchText = searchText || this.state.searchText;
-    if (!searchText || isEmpty(this.props.searchKeys)) return;
+    if (!searchText || isEmpty(this.props.searchKeys)) {
+      this.setState({ data: [...(this.props.data || [])] });
+    }
 
     const searchedObjects = getSearchTextFilteredData({
       data: this.props.data,
@@ -34,6 +35,7 @@ export default class SearchProvider extends Component {
     const searchText = (e.target.value || '').trimStart().toLowerCase();
     const currentSearchText = this.state.searchText;
     if (searchText === currentSearchText) return;
+
     this.setState({ searchText });
     this.search(searchText);
   };
@@ -47,7 +49,7 @@ export default class SearchProvider extends Component {
           searchText={this.state.searchText}
         />
         {!(this.state.data || []).length && (
-          <div className='noRecordsDiv'>
+          <div className="noRecordsDiv">
             {!(this.props.data || []).length ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
           </div>
         )}

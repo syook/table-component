@@ -129,7 +129,7 @@ class MenuItemList extends Component {
 
   customComponents = () => (
     <>
-      <Button disabled size='small' onClick={() => null}>
+      <Button disabled size="small" onClick={() => null}>
         Button 1
       </Button>
       {/* <Button onClick={() => null}>Button 2</Button> */}
@@ -145,8 +145,7 @@ class MenuItemList extends Component {
         includeAction={true}
         actionConfig={this.actionConfig}
         bulkActions={[{ action: 'delete', function: this.onDelete }]}
-        name='MenuItems'
-      >
+        name="MenuItems">
         {this.customComponents}
       </TableComponent>
     );
