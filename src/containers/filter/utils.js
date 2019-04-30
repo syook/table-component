@@ -2,9 +2,9 @@ import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
 // import moment from 'moment';
-// import roundToNearestMinutes from 'date-fns/roundToNearestMinutes';
+// import startOfMinute from 'date-fns/startOfMinute';
 
-import { isAfter, isBefore, roundToNearestMinutes, isEqual as isEqualDate } from 'date-fns';
+import { isAfter, isBefore, startOfMinute, isEqual as isEqualDate } from 'date-fns';
 
 export const findColumnOptions = (columns, attr) => {
   const column = columns.find(c => c.column === attr);
@@ -20,8 +20,8 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
 
   // date-fns
   if (attributeType === 'date') {
-    attrValue = attrValue ? roundToNearestMinutes(new Date(attrValue)) : '';
-    searchValue = searchValue ? roundToNearestMinutes(new Date(searchValue)) : '';
+    attrValue = attrValue ? startOfMinute(new Date(attrValue)) : '';
+    searchValue = searchValue ? startOfMinute(new Date(searchValue)) : '';
   }
   // moment-js
   // if (attributeType === 'date') {
