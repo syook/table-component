@@ -29,18 +29,18 @@ const HeaderSelector = props => {
       <Popup
         trigger={
           <Button icon color={hiddenColumnsCount ? 'blue' : null}>
-            <Icon name='eye slash outline' />{' '}
+            <Icon name="eye slash outline" />{' '}
             {hiddenColumnsCount === 1
               ? '1 hidden field'
               : hiddenColumnsCount >= 1
-              ? `${hiddenColumnsCount} hidden fields`
-              : 'Hide fields'}
+                ? `${hiddenColumnsCount} hidden fields`
+                : 'Hide fields'}
           </Button>
         }
         content={<ColumnList columns={props.columns || []} toggleColumns={props.toggleColumns} />}
         hoverable
-        on='click'
-        position='bottom center'
+        on="click"
+        position="bottom center"
       />
     </div>
   );

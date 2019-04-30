@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Checkbox, Icon, Label, Table } from 'semantic-ui-react';
+import { Checkbox, Label, Table } from 'semantic-ui-react';
 
 import FilterProvider, { FilterContext } from '../filter';
 import PaginationProvider, { PaginationContext } from '../pagination';
 import SearchProvider, { SearchContext } from '../search';
 import SortProvider, { SortContext } from '../sort';
 
-import BulkActionList from '../../components/bulkActionDropdown';
-import HeaderSelector from '../../components/headerSelector';
-import TableActions from '../../components/tableActions';
+import BulkActionList from '../../components/table/bulkActionDropdown';
+import HeaderSelector from '../../components/table/headerSelector';
+import TableActions from '../../components/table/actions';
+import TableHeader from '../../components/table/header';
+import TableCell from '../../components/table/cell';
 
 class TableComponent extends Component {
   constructor(props) {
@@ -88,8 +90,7 @@ class TableComponent extends Component {
                 <FilterProvider
                   data={searchProps.data || []}
                   filterableColumns={filterableColumns}
-                  columns={this.state.columns}
-                >
+                  columns={this.state.columns}>
                   <FilterContext.Consumer>
                     {filterProps => (
                       <>
@@ -101,8 +102,7 @@ class TableComponent extends Component {
                                 <PaginationProvider
                                   {...props}
                                   data={sortProps.data || []}
-                                  resetBulkSelection={this.resetBulkSelection}
-                                >
+                                  resetBulkSelection={this.resetBulkSelection}>
                                   <PaginationContext.Consumer>
                                     {paginationProps =>
                                       !!paginationProps.data.length && (
@@ -122,7 +122,7 @@ class TableComponent extends Component {
                                                 ) : null}{' '}
                                               </Table.HeaderCell>
                                               {visibleColumns.map((column, index) =>
-                                                _TableHeader({ column, index, sortProps })
+                                                TableHeader({ column, index, sortProps })
                                               )}
                                               {props.includeAction ? (
                                                 <Table.HeaderCell> Actions </Table.HeaderCell>
@@ -148,7 +148,7 @@ class TableComponent extends Component {
                                                   ) : null}
                                                 </Table.Cell>
                                                 {visibleColumns.map((column, index2) =>
-                                                  _TableCell({ column, index2, data: paginationProps, row })
+                                                  TableCell({ column, index2, data: paginationProps, row })
                                                 )}
                                                 {props.includeAction ? (
                                                   <Table.Cell>
@@ -179,49 +179,5 @@ class TableComponent extends Component {
     );
   }
 }
-
-const _TableHeader = ({ column, index, sortProps }) => {
-  const { isSortable } = column;
-  const isAscendingDisabled =
-    isSortable && sortProps.column && sortProps.column === column.column && sortProps.direction === 'ascending';
-  const isDescendingDisabled =
-    isSortable && sortProps.column && sortProps.column === column.column && sortProps.direction === 'descending';
-  return (
-    <Table.HeaderCell
-      key={`table-header-cell-${index}`}
-      // sorted={column.column === sortProps.column ? sortProps.direction : null}
-      onClick={
-        isSortable &&
-        sortProps.handleSort(
-          column.column,
-          sortProps.direction === 'ascending' ? 'descending' : 'ascending',
-          column.type
-        )
-      }
-    >
-      {isSortable && (
-        <>
-          <Icon
-            name='arrow up'
-            color={isAscendingDisabled ? 'blue' : 'grey'}
-            disabled={isAscendingDisabled}
-            // onClick={sortProps.handleSort(column.column, 'ascending')}
-          />
-          <Icon
-            name='arrow down'
-            color={isDescendingDisabled ? 'blue' : 'grey'}
-            // disabled={isDescendingDisabled}
-            // onClick={sortProps.handleSort(column.column, 'descending')}
-          />
-        </>
-      )}
-      {column.heading}
-    </Table.HeaderCell>
-  );
-};
-
-const _TableCell = ({ column, index2, data, row }) => {
-  return <Table.Cell key={`table-cell-${index2}`}>{column.cell({ row })}</Table.Cell>;
-};
 
 export default TableComponent;

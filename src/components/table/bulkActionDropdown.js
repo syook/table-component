@@ -7,8 +7,7 @@ const BulkActionList = props => {
       <Dropdown
         text={`Bulk Action (${(props.selectedRows || []).length} selected)`}
         button
-        className='icon bulk-action right labeled'
-      >
+        className="icon bulk-action right labeled">
         <Dropdown.Menu>
           {(props.bulkActions || []).map((action, index) => (
             <Dropdown.Item
