@@ -3,7 +3,7 @@ import { Icon, Table } from 'semantic-ui-react';
 import './header.css';
 
 const TableHeader = ({ column, index, sortProps }) => {
-  const { isSortable } = column;
+  const { isSortable, isResizable = false } = column;
   const isAscendingDisabled =
     isSortable && sortProps.columnName && sortProps.columnName === column.column && sortProps.direction === 'ascending';
   //   const isDescendingDisabled =
@@ -11,10 +11,9 @@ const TableHeader = ({ column, index, sortProps }) => {
   //     sortProps.columnName &&
   //     sortProps.columnName === column.column &&
   //     sortProps.direction === 'descending';
-
   return (
     <Table.HeaderCell
-      className="sort-table"
+      className={`sort-table ${isResizable ? 'resizable' : ''}`}
       key={`table-header-cell-${index}`}
       onClick={
         isSortable &&

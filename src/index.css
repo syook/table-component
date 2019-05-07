@@ -35,10 +35,10 @@ code {
   margin-right: 10px;
 }
 
-/* .description {
+.resizable {
   resize: horizontal;
   overflow: auto;
-  width: 210px;
+  /* width: 210px; */
   display: block;
   min-width: 210px;
-} */
+}

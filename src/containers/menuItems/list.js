@@ -60,7 +60,7 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
-      // className: 'description',
+      isResizable: true,
     },
     {
       heading: 'Category',
@@ -75,6 +75,7 @@ class MenuItemList extends Component {
       isSearchable: true,
       isFilterable: true,
     },
+
     {
       heading: 'Price',
       column: 'price',
@@ -83,6 +84,7 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
+      isResizable: true,
     },
     {
       heading: 'Expertise',
