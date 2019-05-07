@@ -28,13 +28,13 @@ const HeaderSelector = props => {
     <div style={{ textAlign: 'left' }}>
       <Popup
         trigger={
-          <Button icon color={hiddenColumnsCount ? 'blue' : null}>
+          <Button icon color={hiddenColumnsCount ? 'blue' : null} style={{ background: '#5DA1CD', color: '#fff' }}>
             <Icon name="eye slash outline" />{' '}
             {hiddenColumnsCount === 1
               ? '1 hidden field'
               : hiddenColumnsCount >= 1
-                ? `${hiddenColumnsCount} hidden fields`
-                : 'Hide fields'}
+              ? `${hiddenColumnsCount} hidden fields`
+              : 'Hide fields'}
           </Button>
         }
         content={<ColumnList columns={props.columns || []} toggleColumns={props.toggleColumns} />}

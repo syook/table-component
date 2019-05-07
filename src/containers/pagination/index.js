@@ -1,3 +1,4 @@
+import './table.css';
 import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 import { Table } from 'semantic-ui-react';
@@ -92,21 +93,23 @@ export default class PaginationProvider extends PureComponent {
     const startIndex = (currentPage - 1) * rowsPerPage.value;
 
     return (
-      <Table sortable celled padded className="tableStyle left aligned">
-        <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
-          {children}
-          <Pagination
-            {...this.props}
-            {...this.state}
-            handleDirectionClick={this.handleDirectionClick}
-            handlePageClick={this.handlePageClick}
-            onSelectRowsPerPage={this.onSelectRowsPerPage}
-            pageRange={pageRange}
-            rowCount={(this.props.data || []).length}
-            setCurrentPage={this.setCurrentPage}
-          />
-        </PaginationContext.Provider>
-      </Table>
+      <div className="scrollable-table" style={{ maxWidth: '100vw', overflow: 'auto hidden', marginTop: '10px' }}>
+        <Table sortable celled padded className="tableStyle left aligned">
+          <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
+            {children}
+            <Pagination
+              {...this.props}
+              {...this.state}
+              handleDirectionClick={this.handleDirectionClick}
+              handlePageClick={this.handlePageClick}
+              onSelectRowsPerPage={this.onSelectRowsPerPage}
+              pageRange={pageRange}
+              rowCount={(this.props.data || []).length}
+              setCurrentPage={this.setCurrentPage}
+            />
+          </PaginationContext.Provider>
+        </Table>
+      </div>
     );
   }
 }

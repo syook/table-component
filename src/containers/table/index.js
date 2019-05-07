@@ -78,7 +78,7 @@ class TableComponent extends Component {
         <SearchContext.Consumer>
           {searchProps =>
             !!searchProps.data.length && (
-              <div>
+              <div style={{ padding: '0 15px' }}>
                 <HeaderSelector
                   hiddenColumnCount={hiddenColumnCount}
                   columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.heading))}
@@ -87,6 +87,7 @@ class TableComponent extends Component {
                 {hasBulkActions && this.state.selectedRows.length ? (
                   <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
                 ) : null}
+
                 <FilterProvider
                   data={searchProps.data || []}
                   filterableColumns={filterableColumns}
@@ -107,7 +108,7 @@ class TableComponent extends Component {
                                     {paginationProps =>
                                       !!paginationProps.data.length && (
                                         <>
-                                          <Table.Header>
+                                          <Table.Header style={{ textAlign: 'center' }}>
                                             <Table.Row>
                                               <Table.HeaderCell>
                                                 Sl.no{' '}
@@ -132,7 +133,7 @@ class TableComponent extends Component {
                                           <Table.Body>
                                             {paginationProps.data.map((row, index1) => (
                                               <Table.Row key={index1}>
-                                                <Table.Cell>
+                                                <Table.Cell style={{ display: 'flex', alignItems: 'center' }}>
                                                   <Label ribbon>{paginationProps.startIndex + index1 + 1}</Label>
                                                   {hasBulkActions ? (
                                                     <Checkbox
@@ -151,7 +152,7 @@ class TableComponent extends Component {
                                                   TableCell({ column, index2, data: paginationProps, row })
                                                 )}
                                                 {props.includeAction ? (
-                                                  <Table.Cell>
+                                                  <Table.Cell style={{ whiteSpace: 'nowrap' }}>
                                                     <TableActions actions={props.actionConfig} row={row} />
                                                   </Table.Cell>
                                                 ) : null}

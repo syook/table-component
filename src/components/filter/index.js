@@ -1,12 +1,14 @@
-import DateTime from 'react-datetime';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 import moment from 'moment';
-import { Popup, Button, Icon, List, Grid, Input, Checkbox } from 'semantic-ui-react';
+import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
 
 import { createPropertyOption } from '../utils';
 import { findColumnOptions } from '../utils';
+import './filter.css';
+
+import DateTimeComponent from '../dateTime';
 
 import { predicateOptions, filterOperators } from '../../constants';
 
@@ -16,14 +18,17 @@ const TableFilter = props => {
 
   return (
     <Popup
+      className="filter-popUp"
       trigger={
-        <Button size='small' style={{ backgroundColor: selectedFilters ? '#d1f7c4' : null }}>
-          <Icon name='filter' /> {buttonText}
+        <Button
+          size="small"
+          style={{ backgroundColor: selectedFilters ? '#FCB400' : 'rgba(252, 180, 0, 0.8)', color: '#fff' }}>
+          <Icon name="filter" /> {buttonText}
         </Button>
       }
       content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
-      on='click'
-      position='bottom center'
+      on="click"
+      position="bottom center"
     />
   );
 };
@@ -33,39 +38,36 @@ const FilterDiv = props => {
   const indexOnePredicate = selectedFilters.length > 1 ? selectedFilters[1].predicate : null;
   const secondarySelectionDisabled = selectedFilters.length > 1;
   return (
-    <div style={{ width: '60em' }}>
+    <div className="filter-wrapper">
       {selectedFilters.length ? (
-        <List divided relaxed>
+        <div>
           {selectedFilters.map((column, index) => (
-            <List.Item key={index}>
-              <List.Content>
-                <FilterGrid
-                  index={index}
-                  column={column}
-                  removeFilter={props.removeFilter}
-                  updateSelectedFilters={props.updateSelectedFilters}
-                  indexOnePredicate={indexOnePredicate}
-                  filterableColumns={props.filterableColumns}
-                  secondarySelectionDisabled={secondarySelectionDisabled}
-                />
-              </List.Content>
-            </List.Item>
+            <div key={index}>
+              <FilterGrid
+                index={index}
+                column={column}
+                removeFilter={props.removeFilter}
+                updateSelectedFilters={props.updateSelectedFilters}
+                indexOnePredicate={indexOnePredicate}
+                filterableColumns={props.filterableColumns}
+                secondarySelectionDisabled={secondarySelectionDisabled}
+              />
+            </div>
           ))}
-        </List>
+        </div>
       ) : (
-        <div style={{ opacity: 0.5 }}>No filters applied</div>
+        <div style={{ opacity: 0.5, marginBottom: 10 }}>No filters applied</div>
       )}
-      <div>
-        <Button primary size='small' onClick={props.addFilter}>
-          <Icon name='add' /> Add Filter{' '}
+      <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
+        <Button primary size="small" onClick={props.addFilter}>
+          <Icon name="add" /> Add Filter{' '}
         </Button>
         <Button
           positive
-          size='small'
+          size="small"
           onClick={props.applyFilter}
           disabled={!props.filtersSelected || props.filterDisabled}
-          loading={props.filterDisabled}
-        >
+          loading={props.filterDisabled}>
           {' '}
           Apply Filter{' '}
         </Button>
@@ -85,47 +87,45 @@ const FilterGrid = props => {
   }
   const queryOperatorOptions = filterOperators[props.column.type] || [];
   return (
-    <Grid columns={5}>
-      <Grid.Row>
-        <Grid.Column style={{ maxWidth: '40px', paddingTop: 'inherit' }}>
-          <Icon name='remove' onClick={() => props.removeFilter(props.index)} />
-        </Grid.Column>
-        <Grid.Column>
-          <Select
-            isSearchable={false}
-            isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
-            options={predicateOptionConditions}
-            value={{ value: props.column.predicate, label: props.column.predicate }}
-            onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
+    <div style={{ display: 'flex', flexFlow: 'row', justifyContent: 'space-between', alignItems: 'baseline' }}>
+      <div style={{ maxWidth: '40px', paddingTop: 'inherit', flex: '1 0 auto' }}>
+        <Icon name="remove" onClick={() => props.removeFilter(props.index)} />
+      </div>
+      <div style={{ flex: '1 0 auto', minWidth: '130px', marginLeft: 10 }}>
+        <Select
+          isSearchable={false}
+          isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
+          options={predicateOptionConditions}
+          value={{ value: props.column.predicate, label: props.column.predicate }}
+          onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
+        />
+      </div>
+      <div style={{ flex: '1 0 auto', minWidth: '130px', marginLeft: 10 }}>
+        <Select
+          options={props.filterableColumns.map(createPropertyOption('column', 'heading'))}
+          value={{ value: props.column.label, label: props.column.label }}
+          onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
+        />
+      </div>
+      <div style={{ flex: '1 0 auto', minWidth: '130px', marginLeft: 10 }}>
+        <Select
+          options={queryOperatorOptions}
+          isDisabled={queryOperatorOptions.length <= 1}
+          value={{ value: props.column.query, label: props.column.query }}
+          onChange={value => props.updateSelectedFilters('query', value.value, props.index)}
+        />
+      </div>
+      {['is empty', 'is not empty'].includes(props.column.query) ? null : (
+        <div className="text-input" style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
+          <InputCategories
+            column={props.column}
+            updateSelectedFilters={props.updateSelectedFilters}
+            index={props.index}
+            filterableColumns={props.filterableColumns}
           />
-        </Grid.Column>
-        <Grid.Column>
-          <Select
-            options={props.filterableColumns.map(createPropertyOption('column', 'heading'))}
-            value={{ value: props.column.label, label: props.column.label }}
-            onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
-          />
-        </Grid.Column>
-        <Grid.Column>
-          <Select
-            options={queryOperatorOptions}
-            isDisabled={queryOperatorOptions.length <= 1}
-            value={{ value: props.column.query, label: props.column.query }}
-            onChange={value => props.updateSelectedFilters('query', value.value, props.index)}
-          />
-        </Grid.Column>
-        {['is empty', 'is not empty'].includes(props.column.query) ? null : (
-          <Grid.Column>
-            <InputCategories
-              column={props.column}
-              updateSelectedFilters={props.updateSelectedFilters}
-              index={props.index}
-              filterableColumns={props.filterableColumns}
-            />
-          </Grid.Column>
-        )}
-      </Grid.Row>
-    </Grid>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -180,19 +180,17 @@ const InputCategories = props => {
       );
     case 'Date':
       return (
-        <DateTime
-          closeOnSelect={true}
-          dateFormat='DD-MMM-YYYY hh:mm A'
-          open={false}
+        <DateTimeComponent
+          dateFormat="DD-MMM-YYYY"
           value={
             props.column.value && props.column.value instanceof moment
               ? props.column.value
               : moment(props.column.value || '', 'DD-MMM-YYYY hh:mm A')
           }
           onChange={date => props.updateSelectedFilters('value', date, props.index)}
-          // timeFormat={false}
         />
       );
+
     default:
       return null;
   }

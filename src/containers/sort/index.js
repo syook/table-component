@@ -23,6 +23,9 @@ export default class SortProvider extends Component {
     if (nextState.direction !== this.state.direction) {
       return true;
     }
+    if (nextState.columnName !== this.state.columnName) {
+      return true;
+    }
     return false;
   }
 
@@ -44,8 +47,8 @@ export default class SortProvider extends Component {
 
     if (!clickedColumn) return;
     const { columnName, data } = this.state;
-
     if (columnName !== clickedColumn) {
+      direction = 'ascending';
       const sortedData = fetchSortedData({
         data,
         columnType,

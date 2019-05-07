@@ -1,0 +1,9 @@
+.sort-table .arrow.up {
+  transform: rotate(0deg);
+  transition: transform 0.4s linear;
+}
+
+.sort-table .arrow.up.down {
+  transform: rotate(180deg);
+  transition: transform 0.4s linear;
+}

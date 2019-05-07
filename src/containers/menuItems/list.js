@@ -1,3 +1,4 @@
+import './list.css';
 import React, { Component } from 'react';
 import format from 'date-fns/format';
 import { Button, Input } from 'semantic-ui-react';
@@ -40,20 +41,27 @@ class MenuItemList extends Component {
       heading: 'Name',
       column: 'name',
       type: 'String',
-      cell: ({ row }) => <Input value={row.name} onChange={(_e, { value }) => this.onInputChange({ value, row })} />,
+      cell: ({ row }) => (
+        <Input
+          className="name_input"
+          value={row.name}
+          onChange={(_e, { value }) => this.onInputChange({ value, row })}
+        />
+      ),
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
     },
-    // {
-    //   heading: 'Description',
-    //   column: 'desc',
-    //   type: 'String',
-    //   cell: ({ row }) => row.desc,
-    //   isSortable: true,
-    //   isSearchable: true,
-    //   isFilterable: true,
-    // },
+    {
+      heading: 'Description',
+      column: 'description',
+      type: 'String',
+      cell: ({ row }) => row.description,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+      // className: 'description',
+    },
     {
       heading: 'Category',
       column: 'category',
@@ -104,6 +112,62 @@ class MenuItemList extends Component {
       isSearchable: false,
       isFilterable: true,
     },
+    {
+      heading: 'Price',
+      column: 'price',
+      type: 'Number',
+      cell: ({ row }) => row.price,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+    },
+    {
+      heading: 'Expertise',
+      column: 'isExpertised',
+      type: 'Boolean',
+      cell: ({ row }) => (row.isExpertised ? 'Yes' : 'No'),
+      isSortable: true,
+      isSearchable: false,
+      isFilterable: true,
+    },
+    {
+      heading: 'Availability',
+      column: 'availability',
+      type: 'MultiSelect',
+      cell: ({ row }) => row.availability.join(', '),
+      options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
+      isSortable: true,
+      isSearchable: false,
+      isFilterable: true,
+    },
+    {
+      heading: 'Price',
+      column: 'price',
+      type: 'Number',
+      cell: ({ row }) => row.price,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+    },
+    {
+      heading: 'Expertise',
+      column: 'isExpertised',
+      type: 'Boolean',
+      cell: ({ row }) => (row.isExpertised ? 'Yes' : 'No'),
+      isSortable: true,
+      isSearchable: false,
+      isFilterable: true,
+    },
+    {
+      heading: 'Availability',
+      column: 'availability',
+      type: 'MultiSelect',
+      cell: ({ row }) => row.availability.join(', '),
+      options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
+      isSortable: true,
+      isSearchable: false,
+      isFilterable: true,
+    },
   ];
 
   actionConfig = [
@@ -118,12 +182,14 @@ class MenuItemList extends Component {
       show: _row => true,
       function: this.onShow,
       icon: 'pencil',
+      color: '#FAC51D',
     },
     {
       action: 'Delete',
       show: _row => true,
       function: this.onDelete,
       icon: 'trash',
+      color: '#E8515D',
     },
   ];
 
@@ -153,3 +219,10 @@ class MenuItemList extends Component {
 }
 
 export default MenuItemList;
+
+// resize: horizontal;
+//     overflow: auto;
+//     width: 210px;
+
+//     display: block;
+//     min-width: 210px;

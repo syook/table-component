@@ -1,0 +1,14 @@
+.tableStyle thead > tr th {
+  border: none !important;
+  color: #26547c !important;
+  background: #f1f5f7 !important;
+}
+
+.tableStyle .ui.ribbon.label {
+  background: #d6e7f3;
+  color: #26547c;
+}
+
+.tableStyle tbody tr td {
+  color: #26547c;
+}

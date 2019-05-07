@@ -34,3 +34,11 @@ code {
   color: #fff;
   margin-right: 10px;
 }
+
+/* .description {
+  resize: horizontal;
+  overflow: auto;
+  width: 210px;
+  display: block;
+  min-width: 210px;
+} */

@@ -9,8 +9,7 @@ const SearchComponent = props => {
           fontSize: '24px',
           fontWeight: 'normal',
           color: 'rgb(102, 119, 151)',
-        }}
-      >
+        }}>
         {props.name}
       </span>
 
@@ -19,18 +18,18 @@ const SearchComponent = props => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
-        }}
-      >
+          position: 'absolute',
+          right: '15px',
+        }}>
         <Input
-          iconPosition='left'
+          iconPosition="left"
           placeholder={props.placeholder || 'Search...'}
           style={styles.searchInputDiv}
-          onChange={props.onChangeSearchText}
-        >
-          <Icon name='search' />
-          <input className='searchInput' style={styles.searchInput} value={props.searchText} />
+          onChange={props.onChangeSearchText}>
+          <Icon name="search" />
+          <input className="searchInput" style={styles.searchInput} value={props.searchText} />
           <Icon
-            name='close'
+            name="close"
             style={styles.closeIcon}
             onClick={() => props.onChangeSearchText({ target: { value: '' } })}
           />
