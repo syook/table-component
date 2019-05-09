@@ -41,19 +41,21 @@ export default class SearchProvider extends Component {
   };
 
   render() {
+    const mainDataCount = (this.props.data || []).length;
     return (
       <SearchContext.Provider value={{ ...this.state }}>
         <SearchComponent
+          disabled={!mainDataCount}
           name={this.props.name}
           onChangeSearchText={this.onChangeSearchText}
           searchText={this.state.searchText}
         />
+        {this.props.children}
         {!(this.state.data || []).length && (
           <div className="noRecordsDiv">
-            {!(this.props.data || []).length ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
+            {!mainDataCount ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
           </div>
         )}
-        {!!(this.state.data || []).length && this.props.children}
       </SearchContext.Provider>
     );
   }

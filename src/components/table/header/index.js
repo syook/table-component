@@ -1,8 +1,9 @@
-import React from 'react';
-import { Icon, Table } from 'semantic-ui-react';
 import './header.css';
 
-const TableHeader = ({ column, index, sortProps }) => {
+import React from 'react';
+import { Icon, Table } from 'semantic-ui-react';
+
+const TableHeader = ({ column, index, sortProps, disabled }) => {
   const { isSortable } = column;
   const isAscendingDisabled =
     isSortable && sortProps.columnName && sortProps.columnName === column.column && sortProps.direction === 'ascending';
@@ -17,17 +18,15 @@ const TableHeader = ({ column, index, sortProps }) => {
       className="sort-table"
       key={`table-header-cell-${index}`}
       onClick={
-        isSortable &&
-        sortProps.handleSort({
-          ...column,
-          direction: sortProps.direction === 'ascending' ? 'descending' : 'ascending',
-        })
+        isSortable && !disabled
+          ? sortProps.handleSort({
+              ...column,
+              direction: sortProps.direction === 'ascending' ? 'descending' : 'ascending',
+            })
+          : undefined
       }>
-      {isSortable && (
-        <Icon
-          name={isAscendingDisabled ? 'arrow up ' : 'arrow up down'}
-          color={isAscendingDisabled ? 'blue' : 'grey'}
-        />
+      {isSortable && !disabled && sortProps.columnName && sortProps.columnName === column.column && (
+        <Icon name={isAscendingDisabled ? 'arrow up' : 'arrow up down'} color="blue" />
       )}
       {column.heading}
     </Table.HeaderCell>

@@ -1,3 +1,5 @@
+import './search.css';
+
 import React from 'react';
 import { Icon, Input } from 'semantic-ui-react';
 
@@ -22,16 +24,18 @@ const SearchComponent = props => {
           right: '15px',
         }}>
         <Input
+          disabled={props.disabled}
           iconPosition="left"
+          onChange={props.onChangeSearchText}
           placeholder={props.placeholder || 'Search...'}
-          style={styles.searchInputDiv}
-          onChange={props.onChangeSearchText}>
+          style={styles.searchInputDiv}>
           <Icon name="search" />
           <input className="searchInput" style={styles.searchInput} value={props.searchText} />
           <Icon
+            disabled={props.disabled}
             name="close"
-            style={styles.closeIcon}
             onClick={() => props.onChangeSearchText({ target: { value: '' } })}
+            style={styles.closeIcon}
           />
         </Input>
       </div>

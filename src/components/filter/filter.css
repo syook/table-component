@@ -21,3 +21,8 @@
   min-width: 120px;
   max-width: 120px;
 }
+
+.ui.button:disabled {
+  cursor: not-allowed !important;
+  pointer-events: all !important;
+}

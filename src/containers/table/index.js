@@ -76,105 +76,103 @@ class TableComponent extends Component {
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
-          {searchProps =>
-            !!searchProps.data.length && (
-              <div style={{ padding: '0 15px' }}>
-                <HeaderSelector
-                  hiddenColumnCount={hiddenColumnCount}
-                  columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.heading))}
-                  toggleColumns={this.toggleColumns}
-                />
-                {hasBulkActions && this.state.selectedRows.length ? (
-                  <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
-                ) : null}
+          {searchProps => (
+            <div style={{ padding: '0 15px' }}>
+              <HeaderSelector
+                hiddenColumnCount={hiddenColumnCount}
+                columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.heading))}
+                toggleColumns={this.toggleColumns}
+              />
+              {hasBulkActions && this.state.selectedRows.length ? (
+                <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
+              ) : null}
 
-                <FilterProvider
-                  data={searchProps.data || []}
-                  filterableColumns={filterableColumns}
-                  columns={this.state.columns}>
-                  <FilterContext.Consumer>
-                    {filterProps => (
-                      <>
-                        {this.props.children()}
-                        <SortProvider data={filterProps.data || []}>
-                          <SortContext.Consumer>
-                            {sortProps =>
-                              !!sortProps.data.length && (
-                                <PaginationProvider
-                                  {...props}
-                                  data={sortProps.data || []}
-                                  resetBulkSelection={this.resetBulkSelection}>
-                                  <PaginationContext.Consumer>
-                                    {paginationProps =>
-                                      !!paginationProps.data.length && (
-                                        <>
-                                          <Table.Header style={{ textAlign: 'center' }}>
-                                            <Table.Row>
-                                              <Table.HeaderCell>
-                                                Sl.no{' '}
-                                                {hasBulkActions ? (
-                                                  <Checkbox
-                                                    checked={this.state.bulkSelect}
-                                                    indeterminate={this.state.indeterminateSelect}
-                                                    onChange={(e, { checked }) =>
-                                                      this.enableBulkSelect({ checked }, filterProps.data)
-                                                    }
-                                                  />
-                                                ) : null}{' '}
-                                              </Table.HeaderCell>
-                                              {visibleColumns.map((column, index) =>
-                                                TableHeader({ column, index, sortProps })
-                                              )}
-                                              {props.includeAction ? (
-                                                <Table.HeaderCell> Actions </Table.HeaderCell>
-                                              ) : null}
-                                            </Table.Row>
-                                          </Table.Header>
-                                          <Table.Body>
-                                            {paginationProps.data.map((row, index1) => (
-                                              <Table.Row key={index1}>
-                                                <Table.Cell style={{ display: 'flex', alignItems: 'center' }}>
-                                                  <Label ribbon>{paginationProps.startIndex + index1 + 1}</Label>
-                                                  {hasBulkActions ? (
-                                                    <Checkbox
-                                                      checked={this.state.selectedRows.includes(row._id)}
-                                                      onChange={(e, { checked }) =>
-                                                        this.updateSelectedRows(
-                                                          { checked },
-                                                          row._id,
-                                                          paginationProps.rowCount
-                                                        )
-                                                      }
-                                                    />
-                                                  ) : null}
-                                                </Table.Cell>
-                                                {visibleColumns.map((column, index2) =>
-                                                  TableCell({ column, index2, data: paginationProps, row })
-                                                )}
-                                                {props.includeAction ? (
-                                                  <Table.Cell style={{ whiteSpace: 'nowrap' }}>
-                                                    <TableActions actions={props.actionConfig} row={row} />
-                                                  </Table.Cell>
-                                                ) : null}
-                                              </Table.Row>
-                                            ))}
-                                          </Table.Body>
-                                        </>
-                                      )
-                                    }
-                                  </PaginationContext.Consumer>
-                                </PaginationProvider>
-                              )
-                            }
-                          </SortContext.Consumer>
-                        </SortProvider>
-                      </>
-                    )}
-                  </FilterContext.Consumer>
-                </FilterProvider>
-              </div>
-            )
-          }
+              <FilterProvider
+                data={searchProps.data || []}
+                filterableColumns={filterableColumns}
+                columns={this.state.columns}>
+                <FilterContext.Consumer>
+                  {filterProps => (
+                    <>
+                      {this.props.children()}
+                      <SortProvider data={filterProps.data || []}>
+                        <SortContext.Consumer>
+                          {sortProps => (
+                            <PaginationProvider
+                              {...props}
+                              data={sortProps.data || []}
+                              resetBulkSelection={this.resetBulkSelection}>
+                              <PaginationContext.Consumer>
+                                {paginationProps => (
+                                  <>
+                                    <Table.Header style={{ textAlign: 'center' }}>
+                                      <Table.Row>
+                                        <Table.HeaderCell>
+                                          Sl.no{' '}
+                                          {hasBulkActions ? (
+                                            <Checkbox
+                                              checked={this.state.bulkSelect}
+                                              disabled={!paginationProps.rowCount}
+                                              indeterminate={this.state.indeterminateSelect}
+                                              onChange={(e, { checked }) =>
+                                                this.enableBulkSelect({ checked }, filterProps.data)
+                                              }
+                                            />
+                                          ) : null}{' '}
+                                        </Table.HeaderCell>
+                                        {visibleColumns.map((column, index) =>
+                                          TableHeader({
+                                            column,
+                                            index,
+                                            sortProps,
+                                            disabled: !paginationProps.rowCount,
+                                          })
+                                        )}
+                                        {props.includeAction ? <Table.HeaderCell> Actions </Table.HeaderCell> : null}
+                                      </Table.Row>
+                                    </Table.Header>
+                                    <Table.Body>
+                                      {paginationProps.data.map((row, index1) => (
+                                        <Table.Row key={index1}>
+                                          <Table.Cell style={{ display: 'flex', alignItems: 'center' }}>
+                                            <Label ribbon>{paginationProps.startIndex + index1 + 1}</Label>
+                                            {hasBulkActions ? (
+                                              <Checkbox
+                                                checked={this.state.selectedRows.includes(row._id)}
+                                                onChange={(e, { checked }) =>
+                                                  this.updateSelectedRows(
+                                                    { checked },
+                                                    row._id,
+                                                    paginationProps.rowCount
+                                                  )
+                                                }
+                                              />
+                                            ) : null}
+                                          </Table.Cell>
+                                          {visibleColumns.map((column, index2) =>
+                                            TableCell({ column, index2, data: paginationProps, row })
+                                          )}
+                                          {props.includeAction ? (
+                                            <Table.Cell style={{ whiteSpace: 'nowrap' }}>
+                                              <TableActions actions={props.actionConfig} row={row} />
+                                            </Table.Cell>
+                                          ) : null}
+                                        </Table.Row>
+                                      ))}
+                                    </Table.Body>
+                                  </>
+                                )}
+                              </PaginationContext.Consumer>
+                            </PaginationProvider>
+                          )}
+                        </SortContext.Consumer>
+                      </SortProvider>
+                    </>
+                  )}
+                </FilterContext.Consumer>
+              </FilterProvider>
+            </div>
+          )}
         </SearchContext.Consumer>
       </SearchProvider>
     );

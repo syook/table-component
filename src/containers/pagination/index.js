@@ -16,7 +16,7 @@ export default class PaginationProvider extends PureComponent {
     const rowCount = (props.data || []).length;
     this.state = {
       currentPage: 1,
-      numberOfColumns: 16,
+      numberOfColumns: 30,
       numberOfPages: Math.ceil(rowCount / rowsPerPage.value),
       rowsPerPage,
     };
@@ -39,7 +39,7 @@ export default class PaginationProvider extends PureComponent {
   // }
 
   componentDidUpdate(prevProps) {
-    if ((this.props.data || []).length && !isEqual(this.props.data, prevProps.data)) {
+    if ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) {
       const rowCount = this.props.data.length;
 
       let { currentPage = 1, rowsPerPage = { value: 10, label: '10 Items' } } = this.state;
@@ -47,7 +47,7 @@ export default class PaginationProvider extends PureComponent {
       if (numberOfPages < currentPage) currentPage = numberOfPages;
 
       this.props.resetBulkSelection();
-      this.setState({ currentPage, numberOfPages });
+      this.setState({ currentPage: currentPage || 1, numberOfPages });
     }
   }
 
@@ -63,7 +63,7 @@ export default class PaginationProvider extends PureComponent {
     this.setState({
       numberOfPages,
       rowsPerPage: selectedRowsPerPage,
-      currentPage,
+      currentPage: currentPage || 1,
     });
   };
 
@@ -91,11 +91,11 @@ export default class PaginationProvider extends PureComponent {
     let pageRange = findPageRange({ ...this.state });
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
-
+    const rowCount = (this.props.data || []).length;
     return (
       <div className="scrollable-table" style={{ maxWidth: '100vw', overflow: 'auto hidden', marginTop: '10px' }}>
         <Table sortable celled padded className="tableStyle left aligned">
-          <PaginationContext.Provider value={{ ...this.state, data, startIndex }}>
+          <PaginationContext.Provider value={{ ...this.state, data, startIndex, rowCount }}>
             {children}
             <Pagination
               {...this.props}
@@ -104,7 +104,7 @@ export default class PaginationProvider extends PureComponent {
               handlePageClick={this.handlePageClick}
               onSelectRowsPerPage={this.onSelectRowsPerPage}
               pageRange={pageRange}
-              rowCount={(this.props.data || []).length}
+              rowCount={rowCount}
               setCurrentPage={this.setCurrentPage}
             />
           </PaginationContext.Provider>
