@@ -77,8 +77,8 @@ class TableComponent extends Component {
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
           {searchProps => (
-            <div style={{ padding: '0 15px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+            <div style={{ padding: '0 15px', position: 'relative' }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <HeaderSelector
                   hiddenColumnCount={hiddenColumnCount}
                   columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.heading))}
@@ -96,7 +96,7 @@ class TableComponent extends Component {
                 <FilterContext.Consumer>
                   {filterProps => (
                     <>
-                      {this.props.children()}
+                      <div style={{ position: 'absolute', top: 0, left: '50%' }}>{this.props.children()}</div>
                       <SortProvider data={filterProps.data || []}>
                         <SortContext.Consumer>
                           {sortProps => (

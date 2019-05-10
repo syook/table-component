@@ -146,7 +146,7 @@ class MenuItemList extends Component {
 
   customComponents = () => (
     <>
-      <Button disabled style={{ position: 'absolute', top: 25, left: '50%' }} size="small" onClick={() => null}>
+      <Button disabled size="small" onClick={() => null}>
         Button 1
       </Button>
       {/* <Button onClick={() => null}>Button 2</Button> */}
@@ -161,7 +161,7 @@ class MenuItemList extends Component {
         data={this.state.data || []}
         includeAction={true}
         mandatoryFields={['Name']}
-        name={'Menu Items'}
+        name={'Table Name'}
         records={this.tableConfig}>
         {this.customComponents}
       </TableComponent>
