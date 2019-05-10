@@ -1,9 +1,11 @@
-.sort-table .arrow.up {
+.sort-table .arrow.up.arrowUp {
   transform: rotate(0deg);
   transition: transform 0.4s linear;
+  transform-origin: 50% 25%;
 }
 
-.sort-table .arrow.up.down {
+.sort-table .arrow.up.arrowDown {
   transform: rotate(180deg);
   transition: transform 0.4s linear;
+  transform-origin: 50% 25%;
 }

@@ -24,11 +24,8 @@
 
 .noRecordsDiv {
   padding: 10px 10px;
-  background: #fff;
   border: 1px solid #ddd;
   text-align: center;
-  font-size: 1.2rem;
-  margin: 0.5rem;
 }
 
 .ui.disabled.input {

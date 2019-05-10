@@ -18,11 +18,57 @@
 }
 
 .filter-wrapper .text-input .ui.input input {
-  min-width: 120px;
-  max-width: 120px;
+  min-width: 150px;
+  max-width: 150px;
 }
 
 .ui.button:disabled {
   cursor: not-allowed !important;
   pointer-events: all !important;
+}
+
+/* show only 2 values for multi-select */
+.filter-multi-select {
+  vertical-align: top;
+  min-width: 150px;
+  max-width: 150px;
+}
+
+.css-1pcexqc-container.filter-multi-select .css-1hwfws3 {
+  display: flex;
+  flex-wrap: nowrap !important;
+}
+
+.css-es53b3-multiValue {
+  margin: 0 !important;
+}
+
+.css-es53b3-multiValue:nth-last-child(n + 3) {
+  width: 0px;
+  border: none;
+  background: transparent;
+  color: transparent;
+}
+
+.css-es53b3-multiValue:nth-last-child(n + 3) .css-12jo7m5 {
+  color: transparent;
+}
+
+.css-es53b3-multiValue:nth-last-child(n + 3) .css-1alnv5e {
+  display: none;
+}
+
+.css-es53b3-multiValue:nth-last-child(3) {
+  position: relative;
+  width: 15px;
+}
+
+.css-es53b3-multiValue:nth-last-child(3) ::before {
+  position: absolute;
+  content: '...';
+  color: rgb(38, 84, 124);
+  width: 10px;
+  font-size: 18px;
+  bottom: -3px;
+  left: 0px;
 }

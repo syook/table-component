@@ -32,6 +32,10 @@ class MenuItemList extends Component {
     console.log('onShow', args);
   };
 
+  onEdit = args => {
+    console.log('onEdit', args);
+  };
+
   onInputChange = ({ row, value: newValue }) => {
     console.log({ row, newValue });
   };
@@ -127,7 +131,7 @@ class MenuItemList extends Component {
     {
       name: 'Edit',
       show: _row => true,
-      function: this.onShow,
+      function: this.onEdit,
       icon: 'pencil',
       color: '#FAC51D',
     },
@@ -142,7 +146,7 @@ class MenuItemList extends Component {
 
   customComponents = () => (
     <>
-      <Button disabled size="small" onClick={() => null}>
+      <Button disabled style={{ position: 'absolute', top: 25, left: '50%' }} size="small" onClick={() => null}>
         Button 1
       </Button>
       {/* <Button onClick={() => null}>Button 2</Button> */}

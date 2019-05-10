@@ -28,7 +28,7 @@ const HeaderSelector = props => {
     <div style={{ textAlign: 'left' }}>
       <Popup
         trigger={
-          <Button icon style={{ background: hiddenColumnsCount ? '#3498DB' : '#85C1E9', color: '#fff' }}>
+          <Button icon style={{ background: hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)', color: '#fff' }}>
             <Icon name="eye slash outline" />{' '}
             {hiddenColumnsCount === 1
               ? '1 hidden field'

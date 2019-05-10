@@ -1,3 +1,8 @@
+.scrollable-table .tableStyle {
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+
 .tableStyle thead > tr th {
   border: none !important;
   color: #26547c !important;

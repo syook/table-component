@@ -26,6 +26,9 @@ const TableFilter = props => {
           style={{
             backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
             color: '#fff',
+            position: 'absolute',
+            top: 25,
+            right: '50%',
           }}>
           <Icon name="filter" /> {buttonText}
         </Button>
@@ -46,7 +49,7 @@ const FilterDiv = props => {
       {selectedFilters.length ? (
         <div>
           {selectedFilters.map((column, index) => (
-            <div key={index}>
+            <div key={index} style={{ margin: '8px 0' }}>
               <FilterGrid
                 index={index}
                 column={column}
@@ -91,11 +94,11 @@ const FilterGrid = props => {
   }
   const queryOperatorOptions = filterOperators[props.column.type] || [];
   return (
-    <div style={{ display: 'flex', flexFlow: 'row', justifyContent: 'space-between', alignItems: 'baseline' }}>
+    <div style={{ display: 'flex', flexFlow: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ maxWidth: '40px', paddingTop: 'inherit', flex: '1 0 auto' }}>
         <Icon name="remove" onClick={() => props.removeFilter(props.index)} />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '130px', marginLeft: 10 }}>
+      <div style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
         <Select
           isSearchable={false}
           isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
@@ -104,14 +107,14 @@ const FilterGrid = props => {
           onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
         />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '130px', marginLeft: 10 }}>
+      <div style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
         <Select
           options={props.filterableColumns.map(createPropertyOption('column', 'heading'))}
           value={{ value: props.column.label, label: props.column.label }}
           onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
         />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '130px', marginLeft: 10 }}>
+      <div style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
         <Select
           options={queryOperatorOptions}
           isDisabled={queryOperatorOptions.length <= 1}
@@ -156,6 +159,7 @@ const InputCategories = props => {
         : null;
       return (
         <Select
+          className="filter-multi-select"
           isMulti={isMultiSelect}
           closeMenuOnSelect={!isMultiSelect}
           options={findColumnOptions(props.filterableColumns, props.column.attribute)}

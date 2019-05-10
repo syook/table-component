@@ -6,9 +6,9 @@ import MenuItemList from './containers/menuItems/list';
 class App extends Component {
   render() {
     return (
-      <div className='App'>
-        <MenuItemList />
-      </div>
+      // <div className="App">
+      <MenuItemList />
+      // </div>
     );
   }
 }

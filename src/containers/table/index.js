@@ -78,14 +78,16 @@ class TableComponent extends Component {
         <SearchContext.Consumer>
           {searchProps => (
             <div style={{ padding: '0 15px' }}>
-              <HeaderSelector
-                hiddenColumnCount={hiddenColumnCount}
-                columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.heading))}
-                toggleColumns={this.toggleColumns}
-              />
-              {hasBulkActions && this.state.selectedRows.length ? (
-                <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
-              ) : null}
+              <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+                <HeaderSelector
+                  hiddenColumnCount={hiddenColumnCount}
+                  columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.heading))}
+                  toggleColumns={this.toggleColumns}
+                />
+                {hasBulkActions && this.state.selectedRows.length ? (
+                  <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
+                ) : null}
+              </div>
 
               <FilterProvider
                 data={searchProps.data || []}

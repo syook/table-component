@@ -42,21 +42,40 @@ export default class SearchProvider extends Component {
 
   render() {
     const mainDataCount = (this.props.data || []).length;
+    const stateDataCount = (this.state.data || []).length;
+
     return (
-      <SearchContext.Provider value={{ ...this.state }}>
-        <SearchComponent
-          disabled={!mainDataCount}
-          name={this.props.name}
-          onChangeSearchText={this.onChangeSearchText}
-          searchText={this.state.searchText}
-        />
-        {this.props.children}
-        {!(this.state.data || []).length && (
-          <div className="noRecordsDiv">
-            {!mainDataCount ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
-          </div>
-        )}
-      </SearchContext.Provider>
+      <div style={{ textAlign: 'center' }}>
+        <SearchContext.Provider value={{ ...this.state }}>
+          <SearchComponent
+            disabled={!mainDataCount}
+            name={this.props.name}
+            onChangeSearchText={this.onChangeSearchText}
+            searchText={this.state.searchText}
+          />
+          {this.props.children}
+          {!stateDataCount && (
+            <div style={{ padding: '0 15px' }}>
+              <div
+                className="noRecordsDiv"
+                style={{
+                  fontSize: '1.1em',
+                  letterSpacing: '0.5px',
+                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  margin: 0,
+                  borderTop: 'none',
+                }}>
+                {!mainDataCount ? `No ${this.props.name || 'data'} to Display` : 'No Results Found'}
+              </div>
+            </div>
+          )}
+        </SearchContext.Provider>
+      </div>
     );
   }
 }

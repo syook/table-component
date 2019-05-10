@@ -92,6 +92,7 @@ export default class PaginationProvider extends PureComponent {
     data = findCurrentData(data, currentPage, rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage.value;
     const rowCount = (this.props.data || []).length;
+
     return (
       <div className="scrollable-table" style={{ maxWidth: '100vw', overflow: 'auto hidden', marginTop: '10px' }}>
         <Table sortable celled padded className="tableStyle left aligned">
