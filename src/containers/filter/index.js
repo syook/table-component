@@ -33,7 +33,7 @@ export default class FilterProvider extends PureComponent {
   // }
 
   componentDidUpdate(prevProps) {
-    if ((this.props.data || []).length && !isEqual(this.props.data, prevProps.data)) {
+    if ((this.props.data || []) && !isEqual(this.props.data, prevProps.data)) {
       this.applyFilter();
     }
   }
@@ -110,17 +110,19 @@ export default class FilterProvider extends PureComponent {
 
   render() {
     const { children, filterableColumns } = this.props;
+    const parentDataCount = (this.props.data || []).length;
 
     return (
       <FilterContext.Provider value={{ ...this.state }}>
         <Filter
-          filterableColumns={filterableColumns}
-          selectedFilters={this.state.selectedFilters}
           addFilter={this.addFilter}
-          removeFilter={this.removeFilter}
           applyFilter={this.applyFilter}
-          updateSelectedFilters={this.updateSelectedFilters}
+          disabled={!parentDataCount}
           filterDisabled={this.state.filterDisabled}
+          filterableColumns={filterableColumns}
+          removeFilter={this.removeFilter}
+          selectedFilters={this.state.selectedFilters}
+          updateSelectedFilters={this.updateSelectedFilters}
         />
         {children}
       </FilterContext.Provider>

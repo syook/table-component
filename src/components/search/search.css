@@ -30,3 +30,8 @@
   font-size: 1.2rem;
   margin: 0.5rem;
 }
+
+.ui.disabled.input {
+  cursor: not-allowed !important;
+  pointer-events: all !important;
+}

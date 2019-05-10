@@ -114,80 +114,25 @@ class MenuItemList extends Component {
       isSearchable: false,
       isFilterable: true,
     },
-    {
-      heading: 'Price',
-      column: 'price',
-      type: 'Number',
-      cell: ({ row }) => row.price,
-      isSortable: true,
-      isSearchable: true,
-      isFilterable: true,
-    },
-    {
-      heading: 'Expertise',
-      column: 'isExpertised',
-      type: 'Boolean',
-      cell: ({ row }) => (row.isExpertised ? 'Yes' : 'No'),
-      isSortable: true,
-      isSearchable: false,
-      isFilterable: true,
-    },
-    {
-      heading: 'Availability',
-      column: 'availability',
-      type: 'MultiSelect',
-      cell: ({ row }) => row.availability.join(', '),
-      options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
-      isSortable: true,
-      isSearchable: false,
-      isFilterable: true,
-    },
-    {
-      heading: 'Price',
-      column: 'price',
-      type: 'Number',
-      cell: ({ row }) => row.price,
-      isSortable: true,
-      isSearchable: true,
-      isFilterable: true,
-    },
-    {
-      heading: 'Expertise',
-      column: 'isExpertised',
-      type: 'Boolean',
-      cell: ({ row }) => (row.isExpertised ? 'Yes' : 'No'),
-      isSortable: true,
-      isSearchable: false,
-      isFilterable: true,
-    },
-    {
-      heading: 'Availability',
-      column: 'availability',
-      type: 'MultiSelect',
-      cell: ({ row }) => row.availability.join(', '),
-      options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
-      isSortable: true,
-      isSearchable: false,
-      isFilterable: true,
-    },
   ];
 
   actionConfig = [
     {
-      action: 'Show',
+      name: 'Show',
       show: _row => true,
       function: this.onShow,
       icon: 'eye',
+      // color: 'blue',
     },
     {
-      action: 'Edit',
+      name: 'Edit',
       show: _row => true,
       function: this.onShow,
       icon: 'pencil',
       color: '#FAC51D',
     },
     {
-      action: 'Delete',
+      name: 'Delete',
       show: _row => true,
       function: this.onDelete,
       icon: 'trash',
@@ -207,13 +152,13 @@ class MenuItemList extends Component {
   render() {
     return (
       <TableComponent
-        data={this.state.data || []}
-        records={this.tableConfig}
-        mandatoryFields={['Name']}
-        includeAction={true}
         actionConfig={this.actionConfig}
         bulkActions={[{ action: 'delete', function: this.onDelete }]}
-        name="MenuItems">
+        data={this.state.data || []}
+        includeAction={true}
+        mandatoryFields={['Name']}
+        name={'Menu Items'}
+        records={this.tableConfig}>
         {this.customComponents}
       </TableComponent>
     );

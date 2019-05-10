@@ -22,7 +22,11 @@ const TableFilter = props => {
       trigger={
         <Button
           size="small"
-          style={{ backgroundColor: selectedFilters ? '#FCB400' : 'rgba(252, 180, 0, 0.8)', color: '#fff' }}>
+          disabled={props.disabled}
+          style={{
+            backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
+            color: '#fff',
+          }}>
           <Icon name="filter" /> {buttonText}
         </Button>
       }
@@ -135,7 +139,7 @@ const InputCategories = props => {
     case 'Number':
       return (
         <Input
-          // placeholder='Search...'
+          type={props.column.type === 'Number' ? 'number' : 'text'}
           value={props.column.value}
           onChange={e => props.updateSelectedFilters('value', e.target.value, props.index)}
         />
@@ -156,21 +160,13 @@ const InputCategories = props => {
           closeMenuOnSelect={!isMultiSelect}
           options={findColumnOptions(props.filterableColumns, props.column.attribute)}
           value={selectValue}
+          hideSelectedOptions={false}
           onChange={value => {
             const newValue = isMultiSelect ? value.map(({ value }) => value) : (value || {}).value ? [value.value] : [];
             props.updateSelectedFilters('value', newValue, props.index);
           }}
         />
       );
-    // case 'MultiSelect':
-    //   return (
-    //     <Select
-    //       isMulti
-    //       options={findColumnOptions(props.filterableColumns, props.column.attribute)}
-    //       value={(props.column.value || []).length ? props.column.value.map(v => ({ value: v, label: v })) : []}
-    //       onChange={value => props.updateSelectedFilters('value', value.map(({ value }) => value), props.index)}
-    //     />
-    //   );
     case 'Boolean':
       return (
         <Checkbox

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import { fetchSortedData } from './utils';
 
 export const SortContext = React.createContext();
 
-export default class SortProvider extends Component {
+export default class SortProvider extends PureComponent {
   state = {
     columnName: null,
     columnType: null,
@@ -13,21 +13,25 @@ export default class SortProvider extends Component {
     direction: null,
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!isEqual(nextProps.data, this.props.data)) {
-      return true;
-    }
-    if (!isEqual(nextState.data, this.state.data)) {
-      return true;
-    }
-    if (nextState.direction !== this.state.direction) {
-      return true;
-    }
-    if (nextState.columnName !== this.state.columnName) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (!isEqual(nextProps.data, this.props.data)) {
+  //     return true;
+  //   }
+  //   if (!isEqual(nextState.data, this.state.data)) {
+  //     return true;
+  //   }
+  //   if (nextState.direction !== this.state.direction) {
+  //     return true;
+  //   }
+  //   if (nextState.columnName !== this.state.columnName) {
+  //     return true;
+  //   }
+  //   if (nextState.columnType !== this.state.columnType) {
+  //     return true;
+  //   }
+  //   console.log('Sort not rendering');
+  //   return false;
+  // }
 
   componentDidUpdate(prevProps) {
     if (this.props.data && !isEqual(this.props.data, prevProps.data)) {
