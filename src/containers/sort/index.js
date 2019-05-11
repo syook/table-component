@@ -46,7 +46,7 @@ export default class SortProvider extends PureComponent {
     }
   }
 
-  handleSort = ({ column: clickedColumn, type: columnType, direction }) => () => {
+  handleSort = ({ field: clickedColumn, type: columnType, direction }) => () => {
     direction = direction || 'ascending';
 
     if (!clickedColumn) return;

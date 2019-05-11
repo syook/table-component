@@ -69,15 +69,17 @@ const FilterDiv = props => {
         <Button primary size="small" onClick={props.addFilter}>
           <Icon name="add" /> Add Filter{' '}
         </Button>
-        <Button
-          positive
-          size="small"
-          onClick={props.applyFilter}
-          disabled={!props.filtersSelected || props.filterDisabled}
-          loading={props.filterDisabled}>
-          {' '}
-          Apply Filter{' '}
-        </Button>
+        {!props.filtersSelected || props.filterDisabled ? null : (
+          <Button
+            positive
+            size="small"
+            onClick={props.applyFilter}
+            // disabled={}
+            loading={props.filterDisabled}>
+            {' '}
+            Apply Filter{' '}
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -93,6 +95,7 @@ const FilterGrid = props => {
     predicateOptionConditions = predicateOptions;
   }
   const queryOperatorOptions = filterOperators[props.column.type] || [];
+
   return (
     <div style={{ display: 'flex', flexFlow: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ maxWidth: '40px', paddingTop: 'inherit', flex: '1 0 auto' }}>
@@ -109,7 +112,7 @@ const FilterGrid = props => {
       </div>
       <div style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
         <Select
-          options={props.filterableColumns.map(createPropertyOption('column', 'heading'))}
+          options={props.filterableColumns.map(createPropertyOption('field', 'headerName'))}
           value={{ value: props.column.label, label: props.column.label }}
           onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
         />
@@ -143,7 +146,7 @@ const InputCategories = props => {
       return (
         <Input
           type={props.column.type === 'Number' ? 'number' : 'text'}
-          value={props.column.value}
+          value={props.column.value || ''}
           onChange={e => props.updateSelectedFilters('value', e.target.value, props.index)}
         />
       );

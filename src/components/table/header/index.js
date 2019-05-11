@@ -4,14 +4,10 @@ import React from 'react';
 import { Icon, Table } from 'semantic-ui-react';
 
 const TableHeader = ({ column, index, sortProps, disabled }) => {
-  const { isSortable, isResizable = false } = column;
-  const isAscendingDisabled =
-    isSortable && sortProps.columnName && sortProps.columnName === column.column && sortProps.direction === 'ascending';
-  //   const isDescendingDisabled =
-  //     isSortable &&
-  //     sortProps.columnName &&
-  //     sortProps.columnName === column.column &&
-  //     sortProps.direction === 'descending';
+  const { isSortable, isResizable = false, headerName, field } = column;
+  const isAscending =
+    isSortable && sortProps.columnName && sortProps.columnName === field && sortProps.direction === 'ascending';
+
   return (
     <Table.HeaderCell
       className={`sort-table ${!disabled && isResizable ? 'resizable' : ''}`}
@@ -24,14 +20,12 @@ const TableHeader = ({ column, index, sortProps, disabled }) => {
             })
           : undefined
       }>
-      {/* // {isSortable && !disabled && sortProps.columnName && sortProps.columnName === column.column && ( */}
-
-      {column.heading}
-      {isSortable && !disabled && sortProps.columnName && sortProps.columnName === column.column ? (
+      {headerName}
+      {isSortable && !disabled && sortProps.columnName && sortProps.columnName === field ? (
         <sup>
           <Icon
             style={{ fontSize: '11px', marginLeft: 5 }}
-            className={isAscendingDisabled ? 'arrowUp' : 'arrowDown'}
+            className={isAscending ? 'arrowUp' : 'arrowDown'}
             name="arrow up"
             color={'blue'}
           />

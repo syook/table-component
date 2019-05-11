@@ -20,8 +20,6 @@ const SearchComponent = props => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
-          position: 'absolute',
-          right: '15px',
         }}>
         <Input
           disabled={props.disabled}
@@ -48,7 +46,11 @@ const styles = {
     border: '1px solid rgb(214, 231, 243)',
     color: '#667797',
     position: 'relative',
+    top: '35px',
     marginLeft: '10px',
+    zIndex: 99999,
+    right: '15px',
+    borderRadius: '3px',
   },
   closeIcon: {
     position: 'absolute',
@@ -59,7 +61,7 @@ const styles = {
   },
   searchInput: {
     background: '#d6e7f3',
-    borderRadius: '0px',
+    borderRadius: '2px',
     fontWeight: 'normal',
     border: '1px solid rgb(214, 231, 243)',
   },

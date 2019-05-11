@@ -28,7 +28,7 @@
   text-align: center;
 }
 
-.ui.disabled.input {
+/* .ui.disabled.input {
   cursor: not-allowed !important;
   pointer-events: all !important;
-}
+} */

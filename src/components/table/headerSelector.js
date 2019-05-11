@@ -10,10 +10,9 @@ const ColumnList = props => {
             <List.Content>
               <Checkbox
                 checked={column.isVisible}
-                toggle
-                onChange={(_e, { checked }) => props.toggleColumns(column.heading, { checked })}
+                onChange={(_e, { checked }) => props.toggleColumns(column.headerName, { checked })}
               />{' '}
-              <span>{column.heading}</span>
+              <span>{column.headerName}</span>
             </List.Content>
           </List.Item>
         </List>
@@ -34,10 +33,10 @@ const HeaderSelector = props => {
             style={{ background: hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)', color: '#fff' }}>
             <Icon name="eye slash outline" />{' '}
             {hiddenColumnsCount === 1
-              ? '1 hidden field'
+              ? '1 hidden column'
               : hiddenColumnsCount >= 1
-              ? `${hiddenColumnsCount} hidden fields`
-              : 'Hide fields'}
+              ? `${hiddenColumnsCount} hidden columns`
+              : 'Hide columns'}
           </Button>
         }
         content={<ColumnList columns={props.columns || []} toggleColumns={props.toggleColumns} />}

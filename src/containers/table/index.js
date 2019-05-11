@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Checkbox, Label, Table } from 'semantic-ui-react';
+import { Checkbox, Table } from 'semantic-ui-react';
 
 import FilterProvider, { FilterContext } from '../filter';
 import PaginationProvider, { PaginationContext } from '../pagination';
@@ -15,14 +15,13 @@ import TableCell from '../../components/table/cell';
 class TableComponent extends Component {
   constructor(props) {
     const searchKeys = {};
-    (props.records || []).map(r => {
-      if (r.isSearchable) searchKeys[r.column] = true;
-      return r;
-    });
     super(props);
     this.state = {
       columns:
-        (props.records || []).map(record => {
+        (props.columnDefs || []).map(record => {
+          if (record.isSearchable && record.field) {
+            searchKeys[record.field] = true;
+          }
           record.isVisible = true;
           return record;
         }) || [],
@@ -59,9 +58,9 @@ class TableComponent extends Component {
     this.setState({ selectedRows, bulkSelect, indeterminateSelect });
   };
 
-  toggleColumns = (column, { checked }) => {
+  toggleColumns = (columnName, { checked }) => {
     let columns = this.state.columns || [];
-    let updatableColumn = this.state.columns.find(c => c.heading === column) || {};
+    let updatableColumn = this.state.columns.find(c => c.headerName === columnName) || {};
     updatableColumn.isVisible = checked;
     this.setState({ columns });
   };
@@ -81,7 +80,7 @@ class TableComponent extends Component {
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <HeaderSelector
                   hiddenColumnCount={hiddenColumnCount}
-                  columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.heading))}
+                  columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName))}
                   toggleColumns={this.toggleColumns}
                 />
                 {hasBulkActions && this.state.selectedRows.length ? (
@@ -109,9 +108,8 @@ class TableComponent extends Component {
                                   <>
                                     <Table.Header style={{ textAlign: 'center' }}>
                                       <Table.Row>
-                                        <Table.HeaderCell>
-                                          Sl.no{' '}
-                                          {hasBulkActions ? (
+                                        {hasBulkActions ? (
+                                          <Table.HeaderCell>
                                             <Checkbox
                                               checked={this.state.bulkSelect}
                                               disabled={!paginationProps.rowCount}
@@ -120,8 +118,9 @@ class TableComponent extends Component {
                                                 this.enableBulkSelect({ checked }, filterProps.data)
                                               }
                                             />
-                                          ) : null}{' '}
-                                        </Table.HeaderCell>
+                                          </Table.HeaderCell>
+                                        ) : null}
+                                        <Table.HeaderCell>S.No </Table.HeaderCell>
                                         {visibleColumns.map((column, index) =>
                                           TableHeader({
                                             column,
@@ -136,27 +135,31 @@ class TableComponent extends Component {
                                     <Table.Body>
                                       {paginationProps.data.map((row, index1) => (
                                         <Table.Row key={index1}>
-                                          <Table.Cell style={{ display: 'flex', alignItems: 'center' }}>
-                                            <Label ribbon>{paginationProps.startIndex + index1 + 1}</Label>
-                                            {hasBulkActions ? (
+                                          {hasBulkActions ? (
+                                            <Table.Cell>
                                               <Checkbox
-                                                checked={this.state.selectedRows.includes(row._id)}
+                                                checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
                                                 onChange={(e, { checked }) =>
                                                   this.updateSelectedRows(
                                                     { checked },
-                                                    row._id,
+                                                    row['_id'] || row['id'],
                                                     paginationProps.rowCount
                                                   )
                                                 }
                                               />
-                                            ) : null}
+                                            </Table.Cell>
+                                          ) : null}
+
+                                          <Table.Cell>
+                                            <label>{paginationProps.startIndex + index1 + 1}</label>
                                           </Table.Cell>
+
                                           {visibleColumns.map((column, index2) =>
                                             TableCell({ column, index2, data: paginationProps, row })
                                           )}
                                           {props.includeAction ? (
                                             <Table.Cell style={{ whiteSpace: 'nowrap' }}>
-                                              <TableActions actions={props.actionConfig} row={row} />
+                                              <TableActions actions={props.actionDefs} row={row} />
                                             </Table.Cell>
                                           ) : null}
                                         </Table.Row>

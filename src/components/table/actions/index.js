@@ -7,12 +7,14 @@ const TableActions = ({ actions, row }) => {
   return (
     <div className="table-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       {(actions || []).map((action, index) =>
-        typeof action.show === 'function' && action.show(row) ? (
+        typeof action.isVisible === 'function' && action.isVisible(row) ? (
           <Button
             icon
             key={`TableActions-${index}`}
-            onClick={() => action.function(row)}
+            onClick={() => typeof action.function === 'function' && action.function(row)}
             size="small"
+            disabled={typeof action.isDisabled === 'function' && action.isDisabled(row)}
+            loading={typeof action.isLoading === 'function' && action.isLoading(row)}
             style={{ flex: '1 0 auto', background: action.color || '#5DA1CD' }}>
             <Icon name={action.icon} /> {action.name}
           </Button>

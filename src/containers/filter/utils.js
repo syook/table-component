@@ -6,11 +6,6 @@ import isEqual from 'lodash/isEqual';
 
 import { isAfter, isBefore, startOfMinute, isEqual as isEqualDate } from 'date-fns';
 
-export const findColumnOptions = (columns, attr) => {
-  const column = columns.find(c => c.column === attr);
-  return column.options || [];
-};
-
 const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', query = '' }) => {
   attributeType = (attributeType || '').toLowerCase();
   if (attributeType === 'string') {
@@ -121,8 +116,9 @@ const filterData = ({ data, attribute, value, query, type }) => {
 };
 
 export const loopFilters = (data, filters) => {
-  if (!filters.length) return data;
-  if (filters.length === 1) return filterData({ data, ...filters[0] });
+  const filterLength = (filters || []).length;
+  if (!filterLength) return data;
+  if (filterLength === 1) return filterData({ data, ...filters[0] });
 
   switch (filters[1].predicate) {
     case 'And':

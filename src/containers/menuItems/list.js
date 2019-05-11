@@ -36,41 +36,37 @@ class MenuItemList extends Component {
     console.log('onEdit', args);
   };
 
-  onInputChange = ({ row, value: newValue }) => {
-    console.log({ row, newValue });
+  onInputChange = ({ rowObject, value: newValue }) => {
+    console.log({ rowObject, newValue });
   };
 
-  tableConfig = [
+  columnDefs = [
     {
-      heading: 'Name',
-      column: 'name',
+      headerName: 'Name',
+      field: 'name',
       type: 'String',
-      cell: ({ row }) => (
-        <Input
-          className="name_input"
-          value={row.name}
-          onChange={(_e, { value }) => this.onInputChange({ value, row })}
-        />
+      cell: rowObject => (
+        <Input value={rowObject.name} onChange={(_e, { value }) => this.onInputChange({ value, rowObject })} />
       ),
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
     },
     {
-      heading: 'Description',
-      column: 'description',
+      headerName: 'Description',
+      field: 'description',
       type: 'String',
-      cell: ({ row }) => row.description,
+      cell: rowObject => rowObject.description,
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
       isResizable: true,
     },
     {
-      heading: 'Category',
-      column: 'category',
+      headerName: 'Category',
+      field: 'category',
       type: 'SingleSelect',
-      cell: ({ row }) => row.category,
+      cell: rowObject => rowObject.category,
       options: ['Grocery', 'Electronics', 'Home', 'Shoes', 'Computers', 'Outdoors', 'Clothing'].map(category => ({
         value: category,
         label: category,
@@ -79,40 +75,39 @@ class MenuItemList extends Component {
       isSearchable: true,
       isFilterable: true,
     },
-
     {
-      heading: 'Price',
-      column: 'price',
+      headerName: 'Price',
+      field: 'price',
       type: 'Number',
-      cell: ({ row }) => row.price,
+      cell: rowObject => rowObject.price,
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
       isResizable: true,
     },
     {
-      heading: 'Expertise',
-      column: 'isExpertised',
+      headerName: 'Expertise',
+      field: 'isExpertised',
       type: 'Boolean',
-      cell: ({ row }) => (row.isExpertised ? 'Yes' : 'No'),
+      cell: rowObject => (rowObject.isExpertised ? 'Yes' : 'No'),
       isSortable: true,
       isSearchable: false,
       isFilterable: true,
     },
     {
-      heading: 'Availability',
-      column: 'availability',
+      headerName: 'Availability',
+      field: 'availability',
       type: 'MultiSelect',
-      cell: ({ row }) => row.availability.join(', '),
+      cell: rowObject => rowObject.availability.join(', '),
       options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
       isSortable: true,
       isSearchable: false,
       isFilterable: true,
     },
     {
-      heading: 'Started at',
-      column: 'created',
-      cell: ({ row }) => format(new Date(row.created), 'dd-MMM-yyyy hh:mm a'),
+      headerName: 'Started at',
+      field: 'created',
+      cell: rowObject => format(new Date(rowObject.created), 'dd-MMM-yyyy hh:mm a'),
       type: 'Date',
       isSortable: true,
       isSearchable: false,
@@ -120,25 +115,24 @@ class MenuItemList extends Component {
     },
   ];
 
-  actionConfig = [
+  updatingObjectId = () => false;
+
+  actionDefs = [
     {
       name: 'Show',
-      show: _row => true,
+      isVisible: _rowObject => true,
+      isDisabled: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
+      isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
       function: this.onShow,
       icon: 'eye',
-      // color: 'blue',
-    },
-    {
-      name: 'Edit',
-      show: _row => true,
-      function: this.onEdit,
-      icon: 'pencil',
-      color: '#FAC51D',
+      color: '#85C1E9',
     },
     {
       name: 'Delete',
-      show: _row => true,
-      function: this.onDelete,
+      isVisible: rowObject => !rowObject.isDeleted,
+      isDisabled: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
+      isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
+      function: rowObject => this.onDelete(rowObject),
       icon: 'trash',
       color: '#E8515D',
     },
@@ -156,13 +150,13 @@ class MenuItemList extends Component {
   render() {
     return (
       <TableComponent
-        actionConfig={this.actionConfig}
+        actionDefs={this.actionDefs}
         bulkActions={[{ action: 'delete', function: this.onDelete }]}
         data={this.state.data || []}
         includeAction={true}
         mandatoryFields={['Name']}
         name={'Table Name'}
-        records={this.tableConfig}>
+        columnDefs={this.columnDefs}>
         {this.customComponents}
       </TableComponent>
     );
@@ -170,10 +164,3 @@ class MenuItemList extends Component {
 }
 
 export default MenuItemList;
-
-// resize: horizontal;
-//     overflow: auto;
-//     width: 210px;
-
-//     display: block;
-//     min-width: 210px;

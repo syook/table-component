@@ -42,22 +42,25 @@ export default class FilterProvider extends PureComponent {
     const { selectedFilters: filters } = this.state;
     const { columns } = this.props;
     let filterToBeUpdated = filters[index];
+
     if (index === 1 && attribute === 'predicate') {
       filters.slice(2).forEach(element => (element.predicate = value));
     }
-    if (attribute !== 'query') {
+
+    if (attribute === 'value') {
+      filterToBeUpdated[attribute] = value;
+    }
+    if (attribute === 'attribute') {
+      const currentColumn = columns.find(i => i.field === value) || {};
+      filterToBeUpdated['type'] = currentColumn.type || '';
+      filterToBeUpdated.label = currentColumn.headerName;
+      filterToBeUpdated.attribute = currentColumn.field;
       filterToBeUpdated['value'] = undefined;
-    }
-    filterToBeUpdated[attribute] = value;
-    if (attribute === 'attribute') {
-      const attrType = (columns.find(i => i.column === filterToBeUpdated[attribute]) || {}).type;
-      filterToBeUpdated['type'] = attrType || '';
-    }
-    if (attribute === 'attribute') {
-      filterToBeUpdated.label = (columns.find(i => i.column === value) || {}).heading || value;
+
       const newQuery = ((filterOperators[filterToBeUpdated.type] || [])[0] || {}).value;
       if (newQuery) filterToBeUpdated.query = newQuery;
     }
+
     this.setState({ selectedFilters: [...filters] });
   };
 
@@ -75,13 +78,14 @@ export default class FilterProvider extends PureComponent {
       predicate = 'And';
     }
     newFilter.predicate = predicate;
-    newFilter.attribute = firstFilterableAttribute.column;
-    newFilter.label = firstFilterableAttribute.heading;
+    newFilter.attribute = firstFilterableAttribute.field;
+    newFilter.label = firstFilterableAttribute.headerName;
     const newQuery = ((filterOperators[firstFilterableAttribute.type] || [])[0] || {}).value;
     newQuery ? (newFilter.query = newQuery) : (newFilter.query = 'contains');
     newFilter.value = '';
     newFilter.type = firstFilterableAttribute.type;
     filters.push(newFilter);
+
     this.setState({ selectedFilters: [...filters] });
   };
 
