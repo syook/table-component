@@ -5,7 +5,7 @@ import { Button, Icon } from 'semantic-ui-react';
 
 const TableActions = ({ actions, row }) => {
   return (
-    <div className="table-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div className="table-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       {(actions || []).map((action, index) =>
         typeof action.isVisible === 'function' && action.isVisible(row) ? (
           <Button
@@ -15,7 +15,7 @@ const TableActions = ({ actions, row }) => {
             size="small"
             disabled={typeof action.isDisabled === 'function' && action.isDisabled(row)}
             loading={typeof action.isLoading === 'function' && action.isLoading(row)}
-            style={{ flex: '1 0 auto', background: action.color || '#5DA1CD' }}>
+            style={{ background: action.color || '#5DA1CD' }}>
             <Icon name={action.icon} /> {action.name}
           </Button>
         ) : null

@@ -7,6 +7,7 @@ import { Popup, Button, Icon, Input, Checkbox } from 'semantic-ui-react';
 import { createPropertyOption } from '../utils';
 import { findColumnOptions } from '../utils';
 import './filter.css';
+// import DropdownSelect from '../dropdownSelect/dropdownSelect';
 
 import DateTimeComponent from '../dateTime';
 
@@ -18,6 +19,7 @@ const TableFilter = props => {
 
   return (
     <Popup
+      size="small"
       className="filter-popUp"
       trigger={
         <Button
@@ -26,9 +28,11 @@ const TableFilter = props => {
           style={{
             backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
             color: '#fff',
-            position: 'absolute',
-            top: 0,
-            right: '50%',
+            gridArea: '1 / 2',
+            alignSelf: 'center',
+            // position: 'absolute',
+            // top: 0,
+            // right: '50%',
           }}>
           <Icon name="filter" /> {buttonText}
         </Button>
@@ -65,13 +69,13 @@ const FilterDiv = props => {
       ) : (
         <div style={{ opacity: 0.5, marginBottom: 10 }}>No filters applied</div>
       )}
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
-        <Button primary size="small" onClick={props.addFilter}>
-          <Icon name="add" /> Add Filter{' '}
+      <div style={{ display: 'flex', alignItems: 'center', marginTop: '15px' }} className="filter-btns">
+        <Button size="small" onClick={props.addFilter} className="filter_btn add">
+          <Icon name="add" size="small" /> Add Filter{' '}
         </Button>
         {!props.filtersSelected || props.filterDisabled ? null : (
           <Button
-            positive
+            className="filter_btn apply"
             size="small"
             onClick={props.applyFilter}
             // disabled={}
@@ -101,8 +105,9 @@ const FilterGrid = props => {
       <div style={{ maxWidth: '40px', paddingTop: 'inherit', flex: '1 0 auto' }}>
         <Icon name="remove" onClick={() => props.removeFilter(props.index)} />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
+      <div style={{ flex: '1 0 auto', minWidth: '100px' }}>
         <Select
+          className="singleSelect"
           isSearchable={false}
           isDisabled={props.column.predicate === 'Where' || (props.secondarySelectionDisabled && props.index > 1)}
           options={predicateOptionConditions}
@@ -110,15 +115,17 @@ const FilterGrid = props => {
           onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
         />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
+      <div style={{ flex: '1 0 auto', minWidth: '100px' }}>
         <Select
+          className="singleSelect"
           options={props.filterableColumns.map(createPropertyOption('field', 'headerName'))}
           value={{ value: props.column.label, label: props.column.label }}
           onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
         />
       </div>
-      <div style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
+      <div style={{ flex: '1 0 auto', minWidth: '100px' }}>
         <Select
+          className="singleSelect"
           options={queryOperatorOptions}
           isDisabled={queryOperatorOptions.length <= 1}
           value={{ value: props.column.query, label: props.column.query }}
@@ -126,7 +133,7 @@ const FilterGrid = props => {
         />
       </div>
       {['is empty', 'is not empty'].includes(props.column.query) ? null : (
-        <div className="text-input" style={{ flex: '1 0 auto', minWidth: '150px', marginLeft: 10 }}>
+        <div className="text-input" style={{ flex: '1 0 auto', minWidth: '100px' }}>
           <InputCategories
             column={props.column}
             updateSelectedFilters={props.updateSelectedFilters}

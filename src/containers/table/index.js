@@ -11,6 +11,7 @@ import HeaderSelector from '../../components/table/headerSelector';
 import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
+import './index.css';
 
 class TableComponent extends Component {
   constructor(props) {
@@ -76,17 +77,19 @@ class TableComponent extends Component {
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
           {searchProps => (
-            <div style={{ padding: '0 15px', position: 'relative' }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <HeaderSelector
-                  hiddenColumnCount={hiddenColumnCount}
-                  columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName))}
-                  toggleColumns={this.toggleColumns}
-                />
-                {hasBulkActions && this.state.selectedRows.length ? (
-                  <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
-                ) : null}
-              </div>
+            <div
+              className="main-table_layout"
+              style={{
+                padding: '0 15px',
+              }}>
+              <HeaderSelector
+                hiddenColumnCount={hiddenColumnCount}
+                columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName))}
+                toggleColumns={this.toggleColumns}
+              />
+              {hasBulkActions && this.state.selectedRows.length ? (
+                <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
+              ) : null}
 
               <FilterProvider
                 data={searchProps.data || []}
@@ -95,7 +98,9 @@ class TableComponent extends Component {
                 <FilterContext.Consumer>
                   {filterProps => (
                     <>
-                      <div style={{ position: 'absolute', top: 0, left: '50%' }}>{this.props.children()}</div>
+                      <div style={{ gridColumn: '3/4', gridRow: '1/2', alignSelf: 'center' }}>
+                        {this.props.children()}
+                      </div>
                       <SortProvider data={filterProps.data || []}>
                         <SortContext.Consumer>
                           {sortProps => (

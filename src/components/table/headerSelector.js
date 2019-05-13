@@ -1,3 +1,4 @@
+import './headerSelector.css';
 import React from 'react';
 import { Button, Popup, List, Icon, Checkbox } from 'semantic-ui-react';
 
@@ -9,6 +10,7 @@ const ColumnList = props => {
           <List.Item>
             <List.Content>
               <Checkbox
+                style={{ marginRight: 8 }}
                 checked={column.isVisible}
                 onChange={(_e, { checked }) => props.toggleColumns(column.headerName, { checked })}
               />{' '}
@@ -24,7 +26,7 @@ const ColumnList = props => {
 const HeaderSelector = props => {
   const hiddenColumnsCount = props.hiddenColumnCount;
   return (
-    <div style={{ textAlign: 'left' }}>
+    <div style={{ textAlign: 'left', gridColumn: '1/2', gridRow: 1, alignSelf: 'center' }}>
       <Popup
         trigger={
           <Button
@@ -43,6 +45,7 @@ const HeaderSelector = props => {
         hoverable
         on="click"
         position="bottom center"
+        className="selectColumns-btn"
       />
     </div>
   );

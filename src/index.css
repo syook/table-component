@@ -41,4 +41,5 @@ code {
   /* width: 210px; */
   display: block;
   min-width: 210px;
+  min-height: 50px;
 }

@@ -20,21 +20,21 @@ const TableHeader = ({ column, index, sortProps, disabled }) => {
             })
           : undefined
       }>
-      {headerName}
+      <span>{headerName}</span>
       {isSortable && !disabled && sortProps.columnName && sortProps.columnName === field ? (
-        <sup>
-          <Icon
-            style={{ fontSize: '11px', marginLeft: 5 }}
-            className={isAscending ? 'arrowUp' : 'arrowDown'}
-            name="arrow up"
-            color={'blue'}
-          />
-        </sup>
+        <Icon
+          style={{ fontSize: '13px', marginLeft: 5 }}
+          className={isAscending ? 'arrowUp' : 'arrowDown'}
+          name="sort up"
+          color={'blue'}
+        />
       ) : (
-        <sup>
-          <Icon color="grey" name="arrow up" style={{ fontSize: '11px', marginRight: 0 }} />
-          <Icon color="grey" name="arrow down" style={{ fontSize: '11px' }} />
-        </sup>
+        // <div style={{ display: 'flex', flexFlow: 'column' }}>
+        //   <Icon color="grey" name="chevron up" style={{ fontSize: '11px', marginRight: 0 }} />
+        //   <Icon color="grey" name="chevron down" style={{ fontSize: '11px' }} />
+        // </div>
+
+        <Icon name="sort" style={{ fontSize: '13px', marginRight: 0 }} />
       )}
     </Table.HeaderCell>
   );
