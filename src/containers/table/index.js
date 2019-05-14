@@ -63,7 +63,18 @@ class TableComponent extends Component {
     let columns = this.state.columns || [];
     let updatableColumn = this.state.columns.find(c => c.headerName === columnName) || {};
     updatableColumn.isVisible = checked;
-    this.setState({ columns });
+    this.setState({ columns: [...columns] });
+  };
+
+  toggleAllColumns = checked => {
+    const updatedColumns = this.state.columns.map(column => {
+      if (this.props.mandatoryFields.includes(column.headerName)) {
+        return column;
+      }
+      column.isVisible = checked;
+      return column;
+    });
+    this.setState({ columns: updatedColumns });
   };
 
   render() {
@@ -86,6 +97,7 @@ class TableComponent extends Component {
                 hiddenColumnCount={hiddenColumnCount}
                 columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName))}
                 toggleColumns={this.toggleColumns}
+                toggleAllColumns={this.toggleAllColumns}
               />
               {hasBulkActions && this.state.selectedRows.length ? (
                 <BulkActionList bulkActions={props.bulkActions} selectedRows={this.state.selectedRows} />
