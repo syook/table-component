@@ -10,7 +10,7 @@ const TableHeader = ({ column, index, sortProps, disabled }) => {
 
   return (
     <Table.HeaderCell
-      className={`sort-table ${!disabled && isResizable ? 'resizable' : ''}`}
+      className={`sort-table ${!disabled && isResizable ? ' resizable' : ''}`}
       key={`table-header-cell-${index}`}
       onClick={
         isSortable
@@ -29,11 +29,6 @@ const TableHeader = ({ column, index, sortProps, disabled }) => {
           color={'blue'}
         />
       ) : (
-        // <div style={{ display: 'flex', flexFlow: 'column' }}>
-        //   <Icon color="grey" name="chevron up" style={{ fontSize: '11px', marginRight: 0 }} />
-        //   <Icon color="grey" name="chevron down" style={{ fontSize: '11px' }} />
-        // </div>
-
         <Icon name="sort" style={{ fontSize: '13px', marginRight: 0 }} />
       )}
     </Table.HeaderCell>

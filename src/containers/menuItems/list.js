@@ -60,7 +60,7 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
-      isResizable: true,
+      // isResizable: true,
     },
     {
       headerName: 'Category',
@@ -83,7 +83,7 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
-      isResizable: true,
+      // isResizable: true,
     },
     {
       headerName: 'Expertise',
