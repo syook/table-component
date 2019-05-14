@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
+import debounce from 'lodash/debounce';
 
 import SearchComponent from '../../components/search';
 
@@ -17,19 +18,19 @@ export default class SearchProvider extends Component {
     }
   }
 
-  search = searchText => {
-    if (!searchText || isEmpty(this.props.searchKeys)) {
-      this.setState({ data: [...(this.props.data || [])] });
-    }
+  search = debounce(
+    searchText => {
+      const { data, searchKeys } = this.props;
+      if (!searchText || isEmpty(searchKeys)) {
+        this.setState({ data: [...(data || [])] });
+      }
 
-    const searchedObjects = getSearchTextFilteredData({
-      data: this.props.data,
-      searchKeys: this.props.searchKeys,
-      searchText,
-    });
-
-    this.setState({ data: searchedObjects });
-  };
+      const searchedObjects = getSearchTextFilteredData({ data, searchKeys, searchText });
+      this.setState({ data: searchedObjects });
+    },
+    300,
+    { leading: true, trailing: true }
+  );
 
   onChangeSearchText = e => {
     const searchText = (e.target.value || '').trimStart().toLowerCase();

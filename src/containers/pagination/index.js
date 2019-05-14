@@ -146,6 +146,8 @@ export default class PaginationProvider extends PureComponent {
 
   setCurrentPage = currentPage => this.setState({ currentPage });
 
+  resetToFirstPage = () => this.setCurrentPage(1);
+
   onSelectRowsPerPage = (selectedRowsPerPage = { value: 10, label: '10 Items' }) => {
     let { currentPage } = this.state;
     const rowCount = (this.props.data || []).length;
@@ -192,7 +194,8 @@ export default class PaginationProvider extends PureComponent {
         id="table-scroll"
         style={{ maxWidth: '100%', overflow: 'auto hidden', marginTop: '10px' }}>
         <Table sortable celled padded className="tableStyle left aligned">
-          <PaginationContext.Provider value={{ ...this.state, data, startIndex, rowCount }}>
+          <PaginationContext.Provider
+            value={{ ...this.state, data, startIndex, rowCount, resetToFirstPage: this.resetToFirstPage }}>
             {children}
             <Pagination
               {...this.props}

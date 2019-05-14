@@ -112,6 +112,7 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: false,
       isFilterable: true,
+      isResizable: true,
     },
   ];
 
@@ -138,6 +139,8 @@ class MenuItemList extends Component {
     },
   ];
 
+  bulkActionDefs = [{ action: 'delete', function: this.onDelete }];
+
   customComponents = () => (
     <>
       <Button disabled size="small" onClick={() => null}>
@@ -151,7 +154,7 @@ class MenuItemList extends Component {
     return (
       <TableComponent
         actionDefs={this.actionDefs}
-        bulkActions={[{ action: 'delete', function: this.onDelete }]}
+        bulkActions={this.bulkActionDefs}
         data={this.state.data || []}
         includeAction={true}
         mandatoryFields={['Name']}
