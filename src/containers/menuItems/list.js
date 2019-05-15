@@ -154,14 +154,13 @@ class MenuItemList extends Component {
     return (
       <TableComponent
         actionDefs={this.actionDefs}
-        bulkActions={this.bulkActionDefs}
+        bulkActionDefs={this.bulkActionDefs}
+        columnDefs={this.columnDefs}
         data={this.state.data || []}
         includeAction={true}
         mandatoryFields={['Name']}
         name={'Table Name'}
-        columnDefs={this.columnDefs}>
-        {this.customComponents}
-      </TableComponent>
+      />
     );
   }
 }
