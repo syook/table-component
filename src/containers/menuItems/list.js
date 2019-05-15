@@ -67,10 +67,12 @@ class MenuItemList extends Component {
       field: 'category',
       type: 'SingleSelect',
       cell: rowObject => rowObject.category,
-      options: ['Grocery', 'Electronics', 'Home', 'Shoes', 'Computers', 'Outdoors', 'Clothing'].map(category => ({
-        value: category,
-        label: category,
-      })),
+      options: ['Grocery', 'Electronics', 'Home', 'Shoes', 'Computers', 'Outdoors', 'Clothing'].map(
+        (category, index) => ({
+          value: index,
+          label: category,
+        })
+      ),
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
