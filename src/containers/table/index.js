@@ -84,6 +84,8 @@ class TableComponent extends Component {
     const visibleColumns = this.state.columns.filter(d => d.isVisible);
     const filterableColumns = visibleColumns.filter(d => d.isFilterable);
 
+    const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
+
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
@@ -94,12 +96,14 @@ class TableComponent extends Component {
               style={{
                 padding: '0 15px',
               }}>
-              <HeaderSelector
-                hiddenColumnCount={hiddenColumnCount}
-                columns={this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName))}
-                toggleColumns={this.toggleColumns}
-                toggleAllColumns={this.toggleAllColumns}
-              />
+              {hidableColumns.length ? (
+                <HeaderSelector
+                  hiddenColumnCount={hiddenColumnCount}
+                  columns={hidableColumns}
+                  toggleColumns={this.toggleColumns}
+                  toggleAllColumns={this.toggleAllColumns}
+                />
+              ) : null}
               {hasBulkActions && this.state.selectedRows.length ? (
                 <BulkActionList bulkActions={props.bulkActionDefs} selectedRows={this.state.selectedRows} />
               ) : null}
@@ -122,6 +126,7 @@ class TableComponent extends Component {
                             <PaginationProvider
                               {...props}
                               data={sortProps.data || []}
+                              resetPagination={sortProps.resetPagination}
                               resetBulkSelection={this.resetBulkSelection}>
                               <PaginationContext.Consumer>
                                 {paginationProps => (
@@ -236,7 +241,8 @@ TableComponent.propTypes = {
   data: PropTypes.array,
   includeAction: PropTypes.bool,
   mandatoryFields: PropTypes.arrayOf(PropTypes.string),
-  name: PropTypes.string,
+  tableFooterName: PropTypes.string,
+  tableName: PropTypes.string,
 };
 
 export default TableComponent;

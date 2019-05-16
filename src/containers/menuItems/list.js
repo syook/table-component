@@ -131,7 +131,7 @@ class MenuItemList extends Component {
       color: '#85C1E9',
     },
     {
-      name: 'Delete',
+      // name: 'Delete',
       isVisible: rowObject => !rowObject.isDeleted,
       isDisabled: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
       isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
@@ -161,7 +161,8 @@ class MenuItemList extends Component {
         data={this.state.data || []}
         includeAction={true}
         mandatoryFields={['Name']}
-        name={'Table Name'}
+        tableName={'Users of all roles'}
+        tableFooterName={'Users'}
       />
     );
   }
