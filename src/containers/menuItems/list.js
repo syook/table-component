@@ -161,6 +161,7 @@ class MenuItemList extends Component {
         data={this.state.data || []}
         includeAction={true}
         mandatoryFields={['Name']}
+        defaultSort="Name"
         tableName={'Users of all roles'}
         tableFooterName={'Users'}>
         {this.customComponents()}

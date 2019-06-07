@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import orderBy from 'lodash/orderBy';
 import { Checkbox, Table } from 'semantic-ui-react';
 
 import FilterProvider, { FilterContext } from '../filter';
@@ -120,7 +121,7 @@ class TableComponent extends Component {
                           {this.props.children}
                         </div>
                       ) : null}
-                      <SortProvider data={filterProps.data || []}>
+                      <SortProvider data={orderBy(filterProps.data, ['name'], ['asc'])}>
                         <SortContext.Consumer>
                           {sortProps => (
                             <PaginationProvider
@@ -151,6 +152,7 @@ class TableComponent extends Component {
                                             column,
                                             index,
                                             sortProps,
+                                            defaultSort: props.defaultSort,
                                             disabled: !paginationProps.rowCount,
                                           })
                                         )}
