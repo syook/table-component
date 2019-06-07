@@ -27,6 +27,9 @@ export const fetchSortedData = ({ data = [], columnType, columnName, direction }
       return data.sort((a, b) => {
         firstValue = a[columnName] || '';
         secondValue = b[columnName] || '';
+        if (typeof firstValue === 'number' || typeof secondValue === 'number') {
+          return isAscending ? +firstValue - +secondValue : +secondValue - +firstValue;
+        }
         return isAscending ? firstValue.localeCompare(secondValue) : secondValue.localeCompare(firstValue);
       });
 

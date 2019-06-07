@@ -15,6 +15,7 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
 
   // date-fns
   if (attributeType === 'date') {
+    attrValue = attrValue ? (attrValue.replace ? attrValue.replace(/-/g, '/') : attrValue) : '';
     attrValue = attrValue ? startOfMinute(new Date(attrValue)) : '';
     searchValue = searchValue ? startOfMinute(new Date(searchValue)) : '';
   }

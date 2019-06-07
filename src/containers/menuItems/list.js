@@ -162,8 +162,9 @@ class MenuItemList extends Component {
         includeAction={true}
         mandatoryFields={['Name']}
         tableName={'Users of all roles'}
-        tableFooterName={'Users'}
-      />
+        tableFooterName={'Users'}>
+        {this.customComponents()}
+      </TableComponent>
     );
   }
 }
