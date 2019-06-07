@@ -60,13 +60,13 @@ export default class PaginationProvider extends PureComponent {
     this.setCurrentPage(+data.page || 1);
   };
 
-  handleDirectionClick = props => e => {
+  handleDirectionClick = e => {
     const { currentPage } = this.state;
     const direction = e.currentTarget.dataset['direction'];
     let change = 0;
     if (direction === 'LEFT' && currentPage > 1) {
       change = -1;
-    } else if (direction === 'RIGHT' && currentPage < props.numberOfPages) {
+    } else if (direction === 'RIGHT' && currentPage < this.state.numberOfPages) {
       change = 1;
     }
     if (change !== 0) {
