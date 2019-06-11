@@ -19,17 +19,6 @@ const queryCondition = ({ attrValue = '', attributeType = '', searchValue = '', 
     attrValue = attrValue ? startOfMinute(new Date(attrValue)) : '';
     searchValue = searchValue ? startOfMinute(new Date(searchValue)) : '';
   }
-  // moment-js
-  // if (attributeType === 'date') {
-  //   attrValue =
-  //     attrValue && attrValue instanceof moment
-  //       ? attrValue.startOf('minute')
-  //       : moment(attrValue || '').startOf('minute');
-  //   searchValue =
-  //     searchValue && searchValue instanceof moment
-  //       ? searchValue.startOf('minute')
-  //       : moment(searchValue || '').startOf('minute');
-  // }
 
   switch (query) {
     case 'contains':
@@ -140,3 +129,15 @@ export const loopFilters = (data, filters) => {
       return [];
   }
 };
+
+// moment-js
+// if (attributeType === 'date') {
+//   attrValue =
+//     attrValue && attrValue instanceof moment
+//       ? attrValue.startOf('minute')
+//       : moment(attrValue || '').startOf('minute');
+//   searchValue =
+//     searchValue && searchValue instanceof moment
+//       ? searchValue.startOf('minute')
+//       : moment(searchValue || '').startOf('minute');
+// }
