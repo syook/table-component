@@ -2,7 +2,6 @@ import React from 'react';
 import { Icon, Table } from 'semantic-ui-react';
 
 const TableHeader = ({ column, index, sortProps, defaultSort, disabled }) => {
-  debugger;
   const { isSortable, isResizable = false, headerName, field } = column;
 
   return (
