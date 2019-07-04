@@ -21,13 +21,15 @@ class TableComponent extends Component {
     super(props);
     this.state = {
       columns:
-        (props.columnDefs || []).map(record => {
-          if (record.isSearchable && record.field) {
-            searchKeys[record.field] = true;
-          }
-          record.isVisible = true;
-          return record;
-        }) || [],
+        (props.columnDefs || [])
+          .filter(c => c.omitInHideList !== true)
+          .map(record => {
+            if (record.isSearchable && record.field) {
+              searchKeys[record.field] = true;
+            }
+            record.isVisible = true;
+            return record;
+          }) || [],
       bulkSelect: false,
       indeterminateSelect: false,
       selectedRows: [],
@@ -81,7 +83,7 @@ class TableComponent extends Component {
 
   render() {
     const props = this.props;
-    const hasBulkActions = (props.bulkActionDefs || []).length;
+    const hasBulkActions = props.showBulkActions && (props.bulkActionDefs || []).length;
     const visibleColumns = this.state.columns.filter(d => d.isVisible);
     const filterableColumns = visibleColumns.filter(d => d.isFilterable);
 
@@ -160,37 +162,40 @@ class TableComponent extends Component {
                                       </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
-                                      {paginationProps.data.map((row, index1) => (
-                                        <Table.Row key={index1}>
-                                          {hasBulkActions ? (
+                                      {paginationProps.data.map((row, index1) => {
+                                        const includeCheckbox = props.showCheckbox(row);
+                                        return (
+                                          <Table.Row key={index1}>
+                                            {hasBulkActions && includeCheckbox !== false ? (
+                                              <Table.Cell>
+                                                <Checkbox
+                                                  checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
+                                                  onChange={(e, { checked }) =>
+                                                    this.updateSelectedRows(
+                                                      { checked },
+                                                      row['_id'] || row['id'],
+                                                      paginationProps.rowCount
+                                                    )
+                                                  }
+                                                />
+                                              </Table.Cell>
+                                            ) : null}
+
                                             <Table.Cell>
-                                              <Checkbox
-                                                checked={this.state.selectedRows.includes(row['_id'] || row['id'])}
-                                                onChange={(e, { checked }) =>
-                                                  this.updateSelectedRows(
-                                                    { checked },
-                                                    row['_id'] || row['id'],
-                                                    paginationProps.rowCount
-                                                  )
-                                                }
-                                              />
+                                              <label>{paginationProps.startIndex + index1 + 1}</label>
                                             </Table.Cell>
-                                          ) : null}
 
-                                          <Table.Cell>
-                                            <label>{paginationProps.startIndex + index1 + 1}</label>
-                                          </Table.Cell>
-
-                                          {visibleColumns.map((column, index2) =>
-                                            TableCell({ column, index2, data: paginationProps, row })
-                                          )}
-                                          {props.includeAction ? (
-                                            <Table.Cell style={{ whiteSpace: 'nowrap' }}>
-                                              <TableActions actions={props.actionDefs} row={row} />
-                                            </Table.Cell>
-                                          ) : null}
-                                        </Table.Row>
-                                      ))}
+                                            {visibleColumns.map((column, index2) =>
+                                              TableCell({ column, index2, data: paginationProps, row })
+                                            )}
+                                            {props.includeAction ? (
+                                              <Table.Cell style={{ whiteSpace: 'nowrap' }}>
+                                                <TableActions actions={props.actionDefs} row={row} />
+                                              </Table.Cell>
+                                            ) : null}
+                                          </Table.Row>
+                                        );
+                                      })}
                                     </Table.Body>
                                   </>
                                 )}
@@ -245,6 +250,10 @@ TableComponent.propTypes = {
   mandatoryFields: PropTypes.arrayOf(PropTypes.string),
   tableFooterName: PropTypes.string,
   tableName: PropTypes.string,
+};
+
+TableComponent.defaultProps = {
+  showCheckbox: () => {},
 };
 
 export default TableComponent;

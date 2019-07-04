@@ -10,8 +10,8 @@ class MenuItemList extends Component {
 
   async componentDidMount() {
     try {
-      const baseUrl = process.env.REACT_APP_BASE_URL;
-      // const baseUrl = 'http://localhost:5000';
+      //const baseUrl = process.env.REACT_APP_BASE_URL;
+      const baseUrl = 'http://localhost:5000';
       if (baseUrl) {
         const response = await fetch(`${baseUrl}/menuItems`);
         const { data } = await response.json();
@@ -60,7 +60,8 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
-      // isResizable: true,
+      isVisible: true,
+      omitInHideList: false,
     },
     {
       headerName: 'Category',
@@ -100,22 +101,22 @@ class MenuItemList extends Component {
       headerName: 'Availability',
       field: 'availability',
       type: 'MultiSelect',
-      cell: rowObject => rowObject.availability.join(', '),
+      cell: rowObject => rowObject.availability,
       options: ['Yes', 'No', 'Maybe'].map(a => ({ value: a, label: a })),
       isSortable: true,
       isSearchable: false,
       isFilterable: true,
     },
-    {
-      headerName: 'Started at',
-      field: 'created',
-      cell: rowObject => format(new Date(rowObject.created), 'dd-MMM-yyyy hh:mm a'),
-      type: 'Date',
-      isSortable: true,
-      isSearchable: false,
-      isFilterable: true,
-      isResizable: true,
-    },
+    // {
+    //   headerName: 'Started at',
+    //   field: 'created',
+    //   cell: rowObject => format(new Date(rowObject.created), 'dd-MMM-yyyy hh:mm a'),
+    //   type: 'DateTime',
+    //   isSortable: true,
+    //   isSearchable: false,
+    //   isFilterable: true,
+    //   isResizable: true,
+    // },
   ];
 
   updatingObjectId = () => false;
@@ -139,16 +140,24 @@ class MenuItemList extends Component {
       icon: 'trash',
       color: '#E8515D',
     },
+    {
+      hasCustomComponent: true,
+      customComponent: row => <p> {row.name} </p>,
+    },
   ];
 
-  bulkActionDefs = [{ action: 'delete', function: this.onDelete }];
+  bulkActionDefs = [{ name: 'delete', function: this.onDelete, isVisible: true }];
+
+  showCheckbox = row => {
+    return false;
+  };
 
   customComponents = () => (
     <>
       <Button disabled size="small" onClick={() => null}>
         Button 1
       </Button>
-      {/* <Button onClick={() => null}>Button 2</Button> */}
+      <Button onClick={() => null}>Button 2</Button>
     </>
   );
 
@@ -157,13 +166,15 @@ class MenuItemList extends Component {
       <TableComponent
         actionDefs={this.actionDefs}
         bulkActionDefs={this.bulkActionDefs}
+        showBulkActions={true}
         columnDefs={this.columnDefs}
         data={this.state.data || []}
         includeAction={true}
         mandatoryFields={['Name']}
         defaultSort="Name"
         tableName={'Users of all roles'}
-        tableFooterName={'Users'}>
+        tableFooterName={'Users'}
+        showCheckbox={this.showCheckbox}>
         {this.customComponents()}
       </TableComponent>
     );
