@@ -27,9 +27,7 @@ const TableFilter = props => {
           style={{
             backgroundColor: selectedFilters ? '#FCB400' : 'rgba(241, 196, 15, 0.8)',
             color: '#fff',
-            gridArea: '1 / 2',
-            alignSelf: 'center',
-            marginLeft: '8px',
+            marginRight: '10px',
           }}>
           <Icon name="filter" /> {buttonText}
         </Button>

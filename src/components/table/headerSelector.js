@@ -30,7 +30,7 @@ const ColumnList = ({ columns, toggleAllColumns, toggleColumns }) => {
 const HeaderSelector = props => {
   const hiddenColumnsCount = props.hiddenColumnCount;
   return (
-    <div style={{ textAlign: 'left', gridColumn: '1/2', gridRow: 1, alignSelf: 'center' }}>
+    <div style={{ textAlign: 'left', display: 'inline-block' }}>
       <Popup
         trigger={
           <Button
@@ -40,6 +40,7 @@ const HeaderSelector = props => {
               background: hiddenColumnsCount ? '#3498DB' : 'rgb(109, 180, 226)',
               color: '#fff',
               padding: hiddenColumnsCount ? '0.78em 0.6em 0.78em' : '',
+              marginRight: '10px',
             }}>
             <Icon name="eye slash outline" />{' '}
             {hiddenColumnsCount === 1
