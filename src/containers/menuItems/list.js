@@ -45,12 +45,38 @@ class MenuItemList extends Component {
       headerName: 'Name',
       field: 'name',
       type: 'String',
-      cell: rowObject => (
-        <Input value={rowObject.name} onChange={(_e, { value }) => this.onInputChange({ value, rowObject })} />
-      ),
+      cell: rowObject => rowObject.name,
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
+    },
+    {
+      headerName: 'Name',
+      field: 'name',
+      type: 'String',
+      cell: rowObject => rowObject.name,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+    },
+    {
+      headerName: 'Name',
+      field: 'name',
+      type: 'String',
+      cell: rowObject => rowObject.name,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+    },
+    {
+      headerName: 'Description',
+      field: 'description',
+      type: 'String',
+      cell: rowObject => rowObject.description,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+      // isResizable: true,
     },
     {
       headerName: 'Description',
@@ -154,10 +180,12 @@ class MenuItemList extends Component {
 
   customComponents = () => (
     <>
-      <Button disabled size="small" onClick={() => null}>
+      <Button disabled size="small" onClick={() => null} style={{ marginRight: '10px' }}>
         Button 1
       </Button>
-      <Button onClick={() => null}>Button 2</Button>
+      <Button onClick={() => null} style={{ marginRight: '10px' }}>
+        Button 2
+      </Button>
     </>
   );
 
