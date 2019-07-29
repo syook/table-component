@@ -43,24 +43,8 @@ class MenuItemList extends Component {
   columnDefs = [
     {
       headerName: 'Name',
-      field: 'name',
-      type: 'String',
-      cell: rowObject => rowObject.name,
-      isSortable: true,
-      isSearchable: true,
-      isFilterable: true,
-    },
-    {
-      headerName: 'Name',
-      field: 'name',
-      type: 'String',
-      cell: rowObject => rowObject.name,
-      isSortable: true,
-      isSearchable: true,
-      isFilterable: true,
-    },
-    {
-      headerName: 'Name',
+      headerMessage: 'Entered value + sum of children submassemnlu work orders time taken',
+      headerMessageColor: 'blueviolet',
       field: 'name',
       type: 'String',
       cell: rowObject => rowObject.name,
