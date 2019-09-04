@@ -1,7 +1,7 @@
 import './list.css';
 import React, { Component } from 'react';
 import format from 'date-fns/format';
-import { Button, Input } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 
 import TableComponent from '../table';
 
@@ -9,9 +9,12 @@ class MenuItemList extends Component {
   state = { data: [] };
 
   async componentDidMount() {
+    let eachRow = document.getElementsByClassName('main-table-row');
+    console.log(eachRow);
+
     try {
-      //const baseUrl = process.env.REACT_APP_BASE_URL;
-      const baseUrl = 'http://localhost:5000';
+      const baseUrl = process.env.REACT_APP_BASE_URL;
+      // const baseUrl = 'http://localhost:5000';
       if (baseUrl) {
         const response = await fetch(`${baseUrl}/menuItems`);
         const { data } = await response.json();
@@ -175,7 +178,7 @@ class MenuItemList extends Component {
   bulkActionDefs = [{ name: 'delete', function: this.onDelete, isVisible: true }];
 
   showCheckbox = row => {
-    return false;
+    return true;
   };
 
   customComponents = () => (
@@ -192,6 +195,7 @@ class MenuItemList extends Component {
   render() {
     return (
       <TableComponent
+        actionOnHover
         actionDefs={this.actionDefs}
         bulkActionDefs={this.bulkActionDefs}
         showBulkActions={true}
