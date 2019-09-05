@@ -232,7 +232,6 @@ TableComponent.propTypes = {
       isLoading: PropTypes.func,
       isDisabled: PropTypes.func,
       function: PropTypes.func,
-      onHover: PropTypes.bool,
     })
   ),
   bulkActionDefs: PropTypes.arrayOf(
