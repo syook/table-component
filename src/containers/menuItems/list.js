@@ -177,6 +177,7 @@ class MenuItemList extends Component {
     return (
       <TableComponent
         actionOnHover
+        tableScroll
         actionDefs={this.actionDefs}
         bulkActionDefs={this.bulkActionDefs}
         showBulkActions={true}

@@ -13,9 +13,9 @@ td {
   padding: 8px 16px;
 }
 
-.tableFixHead {
-  overflow: auto;
+.shouldSroll {
   max-height: calc(100vh - 1rem);
+  overflow: auto;
 }
 
 .tableFixHead thead th {
