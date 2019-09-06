@@ -26,3 +26,12 @@ td {
 .tableBody-scroll::-webkit-scrollbar {
   width: 0;
 }
+.ui.fitted.checkbox.bulkAction_check {
+  min-height: 12px;
+  margin-right: 10px;
+}
+
+.bulkAction-check .ui.fitted.checkbox {
+  min-height: 14px;
+  margin-right: 10px;
+}
