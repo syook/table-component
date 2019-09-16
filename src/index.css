@@ -29,7 +29,6 @@ code {
 }
 
 .ui.celled.table tr td {
-  padding: 10px 10px !important;
   color: #26547c;
   border-bottom: 1px solid rgb(241, 245, 247) !important;
 }
@@ -40,6 +39,9 @@ code {
 
 .main-table-row {
   position: relative;
+}
+.main-table-row td {
+  padding: 14px;
 }
 
 .ui.celled.table tr td.table-action_buttons {
