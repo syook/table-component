@@ -70,6 +70,36 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: true,
       isFilterable: true,
+      // isResizable: true,
+    },
+    {
+      headerName: 'Description',
+      field: 'description',
+      type: 'String',
+      cell: rowObject => rowObject.description,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+      // isResizable: true,
+    },
+    {
+      headerName: 'Description',
+      field: 'description',
+      type: 'String',
+      cell: rowObject => rowObject.description,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
+      // isResizable: true,
+    },
+    {
+      headerName: 'Description',
+      field: 'description',
+      type: 'String',
+      cell: rowObject => rowObject.description,
+      isSortable: true,
+      isSearchable: true,
+      isFilterable: true,
       isVisible: true,
       omitInHideList: false,
     },
@@ -125,7 +155,7 @@ class MenuItemList extends Component {
       isSortable: true,
       isSearchable: false,
       isFilterable: true,
-      isResizable: true,
+      // isResizable: true,
     },
   ];
 
@@ -177,7 +207,7 @@ class MenuItemList extends Component {
     return (
       <TableComponent
         actionOnHover
-        // tableScroll
+        tableScroll
         actionDefs={this.actionDefs}
         bulkActionDefs={this.bulkActionDefs}
         showBulkActions={true}
