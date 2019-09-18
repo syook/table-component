@@ -20,6 +20,7 @@ td {
 
 .tableFixHead {
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .tableFixHead thead th {

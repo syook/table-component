@@ -117,16 +117,16 @@ class MenuItemList extends Component {
       isSearchable: false,
       isFilterable: true,
     },
-    // {
-    //   headerName: 'Started at',
-    //   field: 'created',
-    //   cell: rowObject => format(new Date(rowObject.created), 'dd-MMM-yyyy hh:mm a'),
-    //   type: 'DateTime',
-    //   isSortable: true,
-    //   isSearchable: false,
-    //   isFilterable: true,
-    //   isResizable: true,
-    // },
+    {
+      headerName: 'Started at',
+      field: 'created',
+      cell: rowObject => format(new Date(rowObject.created), 'dd-MMM-yyyy hh:mm a'),
+      type: 'DateTime',
+      isSortable: true,
+      isSearchable: false,
+      isFilterable: true,
+      isResizable: true,
+    },
   ];
 
   updatingObjectId = () => false;
@@ -177,7 +177,7 @@ class MenuItemList extends Component {
     return (
       <TableComponent
         actionOnHover
-        tableScroll
+        // tableScroll
         actionDefs={this.actionDefs}
         bulkActionDefs={this.bulkActionDefs}
         showBulkActions={true}
