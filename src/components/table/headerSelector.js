@@ -57,9 +57,9 @@ const HeaderSelector = props => {
             toggleAllColumns={props.toggleAllColumns}
           />
         }
-        hoverable
         on="click"
-        pinned
+        // pinned
+        positionFixed
         position="bottom center"
         className="selectColumns-btn"
       />
