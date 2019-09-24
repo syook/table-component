@@ -33,7 +33,6 @@ const TableFilter = props => {
       }
       content={<FilterDiv {...props} filtersSelected={!!selectedFilters} />}
       on="click"
-      flowing
       positionFixed
       // pinned
       position="bottom left"
@@ -105,6 +104,8 @@ const FilterGrid = props => {
           options={predicateOptionConditions}
           value={{ value: props.column.predicate, label: props.column.predicate }}
           onChange={value => props.updateSelectedFilters('predicate', value.value, props.index)}
+          menuPlacement="auto"
+          // menuPortalTarget={document.querySelector('#root')}
         />
       </div>
       <div style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
@@ -113,6 +114,8 @@ const FilterGrid = props => {
           options={props.filterableColumns.map(createPropertyOption('field', 'headerName'))}
           value={{ value: props.column.label, label: props.column.label }}
           onChange={value => props.updateSelectedFilters('attribute', value.value, props.index)}
+          menuPlacement="auto"
+          // menuPortalTarget={document.querySelector('#root')}
         />
       </div>
       <div style={{ flex: '1 0 auto', minWidth: '100px', marginLeft: 10 }}>
@@ -122,6 +125,8 @@ const FilterGrid = props => {
           isDisabled={queryOperatorOptions.length <= 1}
           value={{ value: props.column.query, label: props.column.query }}
           onChange={value => props.updateSelectedFilters('query', value.value, props.index)}
+          menuPlacement="auto"
+          // menuPortalTarget={document.querySelector('#root')}
         />
       </div>
       {['is empty', 'is not empty'].includes(props.column.query) ? null : (
@@ -171,6 +176,8 @@ const InputCategories = props => {
             const newValue = isMultiSelect ? value.map(({ label }) => label) : (value || {}).label ? [value.label] : [];
             props.updateSelectedFilters('value', newValue, props.index);
           }}
+          menuPlacement="auto"
+          // menuPortalTarget={document.querySelector('#root')}
         />
       );
     case 'Boolean':
