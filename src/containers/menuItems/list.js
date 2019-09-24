@@ -169,7 +169,7 @@ class MenuItemList extends Component {
       isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
       function: this.onShow,
       icon: 'eye',
-      color: '#85C1E9',
+      color: 'grey',
     },
     {
       // name: 'Delete',
@@ -178,11 +178,11 @@ class MenuItemList extends Component {
       isLoading: rowObject => this.updatingObjectId === (rowObject['id'] || rowObject['_id']),
       function: rowObject => this.onDelete(rowObject),
       icon: 'trash',
-      color: '#E8515D',
+      color: 'red',
     },
     {
       hasCustomComponent: true,
-      customComponent: row => <p> {row.name} </p>,
+      customComponent: row => <p key={row._id}> {row.name} </p>,
     },
   ];
 
