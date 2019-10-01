@@ -203,11 +203,19 @@ class MenuItemList extends Component {
     </>
   );
 
+  showWorkOrderStatus = {
+    IconColor: 'green',
+    IconName: 'check',
+    WoStatus: 'Ok',
+    content: 'This Work Order is marked Ok',
+  };
+
   render() {
     return (
       <TableComponent
         actionOnHover
         tableScroll
+        showWoStatus={this.showWorkOrderStatus}
         actionDefs={this.actionDefs}
         bulkActionDefs={this.bulkActionDefs}
         showBulkActions={true}

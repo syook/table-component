@@ -13,6 +13,7 @@ import HeaderSelector from '../../components/table/headerSelector';
 import TableActions from '../../components/table/actions';
 import TableHeader from '../../components/table/header';
 import TableCell from '../../components/table/cell';
+import WoStatus from '../../components/woStatus/woStatus';
 import './index.css';
 
 class TableComponent extends Component {
@@ -90,6 +91,7 @@ class TableComponent extends Component {
     const hidableColumns = this.state.columns.filter(c => !props.mandatoryFields.includes(c.headerName));
 
     const hiddenColumnCount = this.state.columns.length - visibleColumns.length;
+
     return (
       <SearchProvider {...props} searchKeys={this.state.searchKeys}>
         <SearchContext.Consumer>
@@ -187,6 +189,8 @@ class TableComponent extends Component {
                                                 style={{
                                                   display: 'flex',
                                                   justifyContent: 'space-between',
+                                                  flexDirection: props.showWoStatus ? 'row-reverse' : null,
+                                                  alignItems: 'baseline',
                                                 }}>
                                                 {hasBulkActions && includeCheckbox !== false ? (
                                                   <Checkbox
@@ -201,6 +205,10 @@ class TableComponent extends Component {
                                                     }
                                                   />
                                                 ) : null}
+                                                {props.showWoStatus ? (
+                                                  <WoStatus showWorkOrderStatus={props.showWoStatus} />
+                                                ) : null}
+
                                                 <div
                                                   style={{
                                                     textAlign: 'right',
