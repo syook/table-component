@@ -203,11 +203,17 @@ class MenuItemList extends Component {
     </>
   );
 
-  showWorkOrderStatus = {
-    IconColor: 'green',
-    IconName: 'check',
-    WoStatus: 'Ok',
-    content: 'This Work Order is marked Ok',
+  showWorkOrderStatus = row => {
+    // pass appropriate conditions
+    return {
+      IconColor: row.category === 'Outdoors' ? 'yellow' : 'red',
+      IconName: row.isExpertised === false ? 'trash' : 'heart',
+      WoStatus: row.WoStatus,
+      content:
+        row.category === 'Outdoors'
+          ? (row.IconColor = 'this workorder is completed with status OK')
+          : 'Work Order not Completed',
+    };
   };
 
   render() {
